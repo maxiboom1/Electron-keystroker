@@ -1,39 +1,3 @@
-// const { app, BrowserWindow } = require('electron');
-// const { ipcMain } = require('electron');
-// const robot = require('robotjs');
-
-// function createWindow() {
-//   const win = new BrowserWindow({
-//     width: 800,
-//     height: 600,
-//     webPreferences: {
-//       nodeIntegration: true,
-//       contextIsolation: false
-//     }
-//   });
-
-//   win.loadFile('src/renderer/index.html');
-// }
-
-// app.whenReady().then(createWindow);
-
-// app.on('window-all-closed', () => {
-//   if (process.platform !== 'darwin') {
-//     app.quit();
-//   }
-// });
-
-// app.on('activate', () => {
-//   if (BrowserWindow.getAllWindows().length === 0) {
-//     createWindow();
-//   }
-// });
-
-// ipcMain.on('tick', (event, arg) => {
-//   robot.keyTap(arg);
-//   console.log(`Simulated ${arg} key press`);
-// });
-
 const { app, BrowserWindow, Tray, Menu } = require('electron');
 const { ipcMain } = require('electron');
 const robot = require('robotjs');
@@ -74,7 +38,7 @@ function createWindow() {
 
 function setupTray() {
   tray = new Tray(path.join(__dirname, 'logo.png')); // Update with the path to your tray icon
-  tray.setToolTip('Your App Name');
+  tray.setToolTip('I/O Systems Keystroker');
 
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Show App', click: () => win.show() },
