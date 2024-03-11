@@ -1,0 +1,57 @@
+body{
+    background-color: rgb(45, 45, 45);
+    font-family: serif;
+
+}
+
+
+#notification {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+    max-width: 300px;
+    background-color: #559455; /* Green background color */
+    color: #fff; /* Text color */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.5s ease-in-out;
+}
+
+.hidden{
+    display:none;
+}
+
+#notification.error {
+    background-color: #8d4242; /* Red background color for error */
+}
+
+
+.custom-input {
+    background-color: rgb(200, 200, 200); /* Change the color value as needed */
+}
+
+/* Override Bootstrap's default focus styles for input fields */
+.custom-input:focus {
+    background-color: rgb(229, 226, 226) !important; /* Ensure the background color stays consistent on focus */
+    border-color: rgba(0, 0, 0, 0.15) !important; /* Override the border color */
+    box-shadow: none !important; /* Remove any box shadow */
+}
+
+.app-txt{
+    color:rgba(45, 166, 8, 0.812);
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(0, 0, 0);
+}
+
+span{
+    margin-left: 10px;
+    font-size: 13px;
+    font-family:'Courier New', Courier, monospace;
+    color:rgb(201, 201, 201);
+}

@@ -1,12 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>KEY-STROKER</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyStroker configuration</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
-  <h1>KEY-STROKER VER 1.0 </h1>
-  <input type="text" id="appToFocus" placeholder="Set app name to focus">
-  <button id="btn1">focus app</button>
-  <script src="js/renderer.js"></script>
+    <div class="container">
+        <h3 style="text-align: center;" class="app-txt">Keystroker configuration</h3>
+        <br>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label app-txt">Application</label>
+                <input type="text" class="form-control custom-input" placeholder="App to focus" >
+            </div>
+            <div class="col-md-2">
+                <label class="form-label app-txt">Key</label>
+                <input type="text" class="form-control custom-input" placeholder="Key to send">
+            </div>
+            
+            
+            <div class="col-md-3">
+                <label class="form-label app-txt">Modifier-1</label>
+                <select class="form-select custom-input" aria-label="Large select example">
+                    <option selected>Select</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+            </div>
+            
+            <div class="col-md-3">
+                <label class="form-label app-txt">Modifier-2</label>
+                <select class="form-select custom-input" aria-label="Large select example">
+                    <option selected>Select</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+            </div>  
+        </div>
+        <div id="notification" class="hidden">
+            <div id="notification-text"></div>
+        </div>
+        
+    </div>
+    
+    <footer class="bg-body-tertiary text-center text-lg-start">
+        <div class="d-flex justify-content-between align-items-center p-0.5" style="background-color:rgba(26, 25, 25, 0.952);">
+            <span>Status: Connecting..</span>
+            <!-- Add any other content here if needed -->
+        </div>
+    </footer>
+    
+    <script src="./js/renderer.js"></script>
 </body>
+
 </html>

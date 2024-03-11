@@ -7,8 +7,9 @@ let tray = null;
 
 function createWindow() {
   win = new BrowserWindow({
-    width: 300,
-    height: 230,
+    width: 800,
+    height: 300,
+    resizable: false, // Set resizable to false
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false

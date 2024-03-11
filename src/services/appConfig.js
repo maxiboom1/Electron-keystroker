@@ -4,7 +4,6 @@ const path = require('path');
 class AppConfig {
     
     constructor() {
-        // Load initial values from a file (if the file exists)
         this.loadFromFile('config.json');
     }
     port= 4000; // Default Server Port:
@@ -32,7 +31,7 @@ class AppConfig {
     // Save config changes to config.json
     saveToFile()  {
         const configFilePath = path.join(__dirname,"config.json");
-        const data = JSON.ify(this, null, 2);
+        const data = JSON.stringify(this, null, 2);
         fs.writeFileSync(configFilePath, data, 'utf-8');
     }
 

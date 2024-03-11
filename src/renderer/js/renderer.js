@@ -1,9 +1,8 @@
 const { windowManager } = require('node-window-manager');
 const { ipcRenderer } = require('electron');
 const appConfig = require('../services/appConfig'); // Adjust the path as necessary
-
-
 document.getElementById('btn1').addEventListener('click', focusWindow);
+
 // Function to focus a window by its title
 function focusWindow (){
   console.log(appConfig);
