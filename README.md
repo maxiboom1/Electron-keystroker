@@ -2,12 +2,15 @@
  
 ## Notes
 
-After run npm i you should also run 
+- After run npm i you should also run 
 
 ```
  ./node_modules/.bin/electron-rebuild -f -w robotjs
 
 ```
+
+- Path are relative to html location, not to js.
+
 
 ## Dependencies
 

@@ -2,7 +2,6 @@ const { app, BrowserWindow, Tray, Menu } = require('electron');
 const { ipcMain } = require('electron');
 const robot = require('robotjs');
 const path = require('path');
-
 let win;
 let tray = null;
 
@@ -17,9 +16,8 @@ function createWindow() {
   });
 
   win.loadFile('src/renderer/index.html');
-  
   // Hide the default menu
-  win.setMenu(null);
+  //win.setMenu(null);
 
   // Hide the window instead of closing it
   win.on('close', (event) => {
@@ -77,3 +75,9 @@ ipcMain.on('tick', (event, arg) => {
   robot.keyTap(arg);
   console.log(`Simulated ${arg} key press`);
 });
+
+ipcMain.on('serial-data', (event, arg) => {
+  
+  console.log('Received data:', data);}
+  
+);
