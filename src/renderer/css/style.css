@@ -40,6 +40,7 @@ body{
 
 .app-txt{
     color:rgba(45, 166, 8, 0.812);
+    /* color:#63a263; */
 }
 
 footer {
@@ -50,8 +51,49 @@ footer {
 }
 
 span{
-    margin-left: 10px;
-    font-size: 13px;
+    margin-left: 5px;
+    font-size: 14px;
     font-family:'Courier New', Courier, monospace;
     color:rgb(201, 201, 201);
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.logo-container img {
+    margin: 3px; /* Adjust this value as needed to fine-tune the vertical position */
+}
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 50%;
+    top: 0px;
+    overflow: hidden;
+    transform: translateX(-50%); /* Center it horizontally */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.741); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #483c3c;
+    margin-top:30px;
+    margin-left:auto;
+    margin-right: auto;
+    padding: 20px;
+    border: 3px solid #49bd41;
+    width: 350px; /* Could be more or less, depending on screen size */
+}
+
+.modal-title {
+    margin-bottom: 30px;
+    font-weight: bold;
+    font-family: serif;
+    font-size: 22px;
+    text-align: center;
+    color: #63a263;
 }

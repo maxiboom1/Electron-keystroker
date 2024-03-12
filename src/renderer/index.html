@@ -8,42 +8,76 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/style.css">
 </head>
-
 <body>
-    <div class="container">
-        <h3 style="text-align: center;" class="app-txt">Keystroker configuration</h3>
+    <div class="container">         
+        
+        <h3 style="text-align: center;margin-top: 10px" class="app-txt">Keystroker configuration</h3>
+
         <br>
+        
+        <!-- Form -->
         <div class="row g-3">
+            
+            <!-- Application name -->
             <div class="col-md-4">
                 <label class="form-label app-txt">Application</label>
                 <input type="text" class="form-control custom-input" placeholder="App to focus" >
             </div>
+            
+            <!-- Key to send -->
             <div class="col-md-2">
                 <label class="form-label app-txt">Key</label>
                 <input type="text" class="form-control custom-input" placeholder="Key to send">
             </div>
             
-            
-            <div class="col-md-3">
+            <!-- Modifier-1 -->
+            <div class="col-md-2">
                 <label class="form-label app-txt">Modifier-1</label>
-                <select class="form-select custom-input" aria-label="Large select example">
-                    <option selected>Select</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                <select class="form-select custom-input" name="gpi1mod1" id="gpi1mod1">
+                    <option value="">Select mod-1</option>
+                    <option value="alt">Alt</option>
+                    <option value="command">Command (win)</option>
+                    <option value="control">Control</option>
+                    <option value="shift">Shift</option>
                   </select>
             </div>
             
-            <div class="col-md-3">
+            <!-- Modifier-2 -->
+            <div class="col-md-2">
                 <label class="form-label app-txt">Modifier-2</label>
-                <select class="form-select custom-input" aria-label="Large select example">
-                    <option selected>Select</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                <select class="form-select custom-input" name="gpi1mod2" id="gpi1mod2">
+                    <option value="">Select mod-2</option>
+                    <option value="alt">Alt</option>
+                    <option value="command">Command (win)</option>
+                    <option value="control">Control</option>
+                    <option value="shift">Shift</option>
+                </select>
+            </div> 
+            
+            <!-- Com Port -->            
+            <div class="col-md-2">
+                <label class="form-label app-txt">Com Port</label>
+                <select class="form-select custom-input" id="comPort">
+                    <option value="">Select Port</option>
+                        <option value="COM1">Com-1</option>
+                        <option value="COM2">Com-2</option>
+                        <option value="COM3">Com-3</option>
+                        <option value="COM4">Com-4</option>
+                        <option value="COM5">Com-5</option>
+                        <option value="COM6">Com-6</option>
+                        <option value="COM7">Com-7</option>
+                        <option value="COM8">Com-8</option>
+                        <option value="COM9">Com-9</option>
+                        <option value="COM10">Com-10</option>
+                        <option value="COM11">Com-11</option>
+                        <option value="COM12">Com-12</option>
                   </select>
-            </div>  
+            </div> 
+
+            <button class="btn btn-primary">Save config</button> 
+
         </div>
+
         <div id="notification" class="hidden">
             <div id="notification-text"></div>
         </div>
@@ -51,12 +85,30 @@
     </div>
     
     <footer class="bg-body-tertiary text-center text-lg-start">
-        <div class="d-flex justify-content-between align-items-center p-0.5" style="background-color:rgba(26, 25, 25, 0.952);">
-            <span>Status: Connecting..</span>
-            <!-- Add any other content here if needed -->
+        <div class="d-flex justify-content-between align-items-center p-0.8" style="background-color:rgba(26, 25, 25, 0.952);">
+            <span>Status: 🔴</span>
+            
+            <div class="logo-container">
+                <span>Developed by</span>
+                <img src="./images/logo.webp" height="22" width="120" id="logo">
+            </div>
+            
         </div>
     </footer>
     
+    <!-- Modal Window Structure -->
+    <div id="logoModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-title">Serial Keystroker - v 1.0</span>
+            <span>Website:</span>
+            <span>Developed by Alex, 2024</span>
+            <span style="margin-bottom: 30px;">All rigths reserved to I/O Systems</span>
+            
+            <img style="margin: auto;" src="./images/logo.webp" height="30" width="180" >
+            
+        </div>
+    </div>
+
     <script src="./js/renderer.js"></script>
 </body>
 
