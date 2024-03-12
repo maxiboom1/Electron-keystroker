@@ -2,12 +2,12 @@
   "serialPort": "COM6",
   "gpi1": [
     {
-      "app": "Chrome",
+      "app": "Google Chrome",
       "keyTap": {
-        "key": "R",
+        "key": "tab",
         "modifiers": [
-          "",
-          "control"
+          "control",
+          "shift"
         ]
       }
     }

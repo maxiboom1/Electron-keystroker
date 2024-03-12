@@ -1,5 +1,6 @@
 const { app, BrowserWindow, Tray, Menu } = require('electron');
-const { ipcMain } = require('electron');
+const { windowManager } = require('node-window-manager');
+const appConfig = require('../services/appConfig.js');
 const robot = require('robotjs');
 const path = require('path');
 let win;
@@ -8,8 +9,8 @@ let tray = null;
 function createWindow() {
   win = new BrowserWindow({
     width: 1000,
-    height: 300,
-    resizable: true, // Set resizable to false
+    height: 310,
+    resizable: false, // Set resizable to false
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
@@ -45,7 +46,10 @@ function setupTray() {
         app.isQuitting = true;
         app.quit();
       }
-    }
+    },
+    {label: "Fire",click: () => {
+      focusWindow();
+    }}
   ]);
 
   tray.setContextMenu(contextMenu);
@@ -72,11 +76,32 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('tick', (event, arg) => {
-  robot.keyTap(arg);
-  console.log(`Simulated ${arg} key press`);
-});
+// Function to focus a window by its title
+function focusWindow() {
+  const gpi1 = appConfig.getGpi1[0];
+  const appName = gpi1.app;
+  if (appName.length < 1) { return false; }
+  const windows = windowManager.getWindows();
+  const targetWindow = windows.find(win => win.getTitle().includes(appName));
+  if (targetWindow) {
+    targetWindow.bringToTop();
+    targetWindow.maximize();
+    sendKeystroke(gpi1.keyTap);
+  }
 
-ipcMain.on('serial-data', (event, arg) => {
-  console.log('Received data:', data);}
-);
+  return targetWindow;
+};
+
+// Main function to handle and send keyStrokes
+const sendKeystroke = (keys) => {
+
+  // Filter out empty strings from modifiers
+  const filteredModifiers = keys.modifiers.filter(modifier => modifier);
+  if (filteredModifiers.length === 0) {
+    robot.keyTap(keys.key);
+  } else if (filteredModifiers.length === 1) {
+    robot.keyTap(keys.key, filteredModifiers[0]);
+  } else {
+    robot.keyTap(keys.key, filteredModifiers);
+  }
+};

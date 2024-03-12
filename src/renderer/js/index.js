@@ -1,80 +1,55 @@
+const appConfig = require("../services/appConfig");
+
 document.getElementById("setBtn").addEventListener("click", saveConfig);
 
-function __getAllValues1() {
+// Modal
+var modal = document.getElementById("logoModal");
+var img = document.getElementById("logo");
+img.onclick = function() {modal.style.display = "block";};
+window.onclick = function(event) {
+  if (event.target == modal) {modal.style.display = "none";}
+}
+
+// Updates appConfig on "save config" click
+async function saveConfig() {
+    await appConfig.setConfig(__getAllValues());
+    showNotification();
+}
+
+// Collects all config input fields on UI
+function __getAllValues() {
     const keysData = [];
-    const comPort = document.getElementById('comPort').value;
-    for (let i = 1; i <= 6; i++) {
-        const app = document.getElementById(`gpi${i}app`).value;
-        const key = document.getElementById(`gpi${i}key`).value;
-        const mod1 = document.getElementById(`gpi${i}mod1`).value;
-        const mod2 = document.getElementById(`gpi${i}mod2`).value;
+    const serialPort = document.getElementById('comPort').value; 
+    const app = document.getElementById(`gpi1app`).value;
+    const key = document.getElementById(`gpi1key`).value;
+    const mod1 = document.getElementById(`gpi1mod1`).value;
+    const mod2 = document.getElementById(`gpi1mod2`).value;
 
-        const keyData = {
-            app: app,
-            keyTap: {
-                key: key,
-                modifiers: [mod1, mod2],
-            },
-        };
+    const keyData = {
+        app: app,
+        keyTap: {
+            key: key,
+            modifiers: [mod1, mod2],
+        },
+    };
 
-        keysData.push(keyData);
-    }
+    keysData.push(keyData);
 
-    return keysData;
+    return {keysData, serialPort};
 }
 
+// Fetch config and render it on UI
 async function __setAllValues() {
-    const values = await fetchData(window.location.origin + `/api/get-config`, "GET", null);
-
-    // Set the value for the serial port
-    if (values.serialPort) {
-        document.getElementById('comPort').value = values.serialPort;
-    }
-
-    // Iterate over GPI configurations and set their values
-    for (let i = 1; i <= 6; i++) {
-        const gpiConfig = values[`gpi${i}`];
-
-        if (gpiConfig) {
-            if (gpiConfig.app) {
-                document.getElementById(`gpi${i}app`).value = gpiConfig.app;
-            }
-
-            if (gpiConfig.keyTap) {
-                if (gpiConfig.keyTap.key) {
-                    document.getElementById(`gpi${i}key`).value = gpiConfig.keyTap.key;
-                }
-
-                const modifiers = gpiConfig.keyTap.modifiers;
-                if (modifiers && modifiers.length >= 2) {
-                    document.getElementById(`gpi${i}mod1`).value = modifiers[0];
-                    document.getElementById(`gpi${i}mod2`).value = modifiers[1];
-                }
-            }
-        }
-    }
-}
-
-async function fetchData(url, method, msg) {
+    const values = await appConfig;
+    const gpi1 = values.gpi1[0]
+    console.log(gpi1.keyTap);
     
-    try {
-        const response = await fetch(url, {
-            method,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: msg,
-        });
+    document.getElementById('comPort').value = values.serialPort;
+    document.getElementById('gpi1app').value = gpi1.app;
+    document.getElementById('gpi1key').value = gpi1.keyTap.key;
+    document.getElementById('gpi1mod1').value = gpi1.keyTap.modifiers[0];
+    document.getElementById('gpi1mod2').value = gpi1.keyTap.modifiers[1];
 
-        if (response.ok) {
-            const data = await response.json();
-            return data;
-        } else {
-            console.error(`Failed to ${method} data at URL: ${url}`);
-        }
-    } catch (error) {
-        console.error(`Error while fetching data at URL: ${url}`, error);
-    }
 }
 
 function showNotification(message, isError) {
@@ -94,65 +69,4 @@ function showNotification(message, isError) {
         notification.classList.add('hidden');
     }, 5000); // Hide the notification after 5 seconds
 }
-
-async function saveConfig1() {
-    const url = window.location.origin + `/api/set-config`;
-    const comPortUrl = window.location.origin + `/api/set-comport`;
-    const config = __getAllValues();
-    const comPort = document.getElementById("comPort").value;
-
-    try {
-        const res = await fetchData(comPortUrl,"POST", JSON.stringify({"port":comPort}));
-        const res1 = await fetchData(url, 'POST', JSON.stringify(config));
-        if (res.status === 'success' && res1.status === "success") {
-            showNotification('Config saved', false); // Show success notification
-        } else {
-            showNotification('Error saving config', true); // Show error notification
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        showNotification('Error saving config', true); // Show error notification
-    }
-}
-
-function __getAllValues() {
-    const keysData = [];
-    const comport = document.getElementById('comPort').value;
-    for (let i = 1; i <= 6; i++) {
-        const app = document.getElementById(`gpi${i}app`).value;
-        const key = document.getElementById(`gpi${i}key`).value;
-        const mod1 = document.getElementById(`gpi${i}mod1`).value;
-        const mod2 = document.getElementById(`gpi${i}mod2`).value;
-
-        const keyData = {
-            app: app,
-            keyTap: {
-                key: key,
-                modifiers: [mod1, mod2],
-            },
-        };
-
-        keysData.push(keyData);
-    }
-
-    return {keysData, comport};
-}
-
-async function saveConfig() {
-    const url = window.location.origin + `/api/set-config`;
-
-    try {
-        const res = await fetchData(url, 'POST', JSON.stringify(__getAllValues()));
-        if (res.status === 'success') {
-            showNotification('Config saved', false); // Show success notification
-        } else {
-            showNotification('Error saving config', true); // Show error notification
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        showNotification('Error saving config', true); // Show error notification
-    }
-}
-
-
 __setAllValues();
