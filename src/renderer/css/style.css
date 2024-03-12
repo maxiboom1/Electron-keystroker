@@ -81,12 +81,13 @@ span{
 
 .modal-content {
     background-color: #483c3c;
-    margin-top:30px;
+    margin-top:5px;
     margin-left:auto;
     margin-right: auto;
-    padding: 20px;
+    padding: 15px;
     border: 3px solid #49bd41;
-    width: 350px; /* Could be more or less, depending on screen size */
+    width: 320px; /* Could be more or less, depending on screen size */
+    height: 240px;
 }
 
 .modal-title {
