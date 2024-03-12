@@ -6,9 +6,7 @@ class AppConfig {
     constructor() {
         this.loadFromFile('config.json');
     }
-    port= 4000; // Default Server Port:
-    serialPort = "COM3";  // Default serial port 
-
+    serialPort = "COM3";  
     gpi1 = {
         app: "Google Chrome", 
         keyTap: {
@@ -18,7 +16,7 @@ class AppConfig {
     };
 
     // We loading the config.json once onload
-    loadFromFile(filename)  {
+    async loadFromFile(filename)  {
         try {
             const configFilePath = path.join(__dirname, filename);
             const data = fs.readFileSync(configFilePath, 'utf-8');
@@ -29,21 +27,23 @@ class AppConfig {
         }
     }
     // Save config changes to config.json
-    saveToFile()  {
+    async saveToFile()  {
         const configFilePath = path.join(__dirname,"config.json");
         const data = JSON.stringify(this, null, 2);
         fs.writeFileSync(configFilePath, data, 'utf-8');
     }
 
-    setGPI(index , newGPIValue ) {
-        if (index >= 1 && index <= 6) {
-            const gpiProperty = `gpi${index}`;
-            this[gpiProperty] = newGPIValue;
-        } else {
-            console.error('Invalid GPI index. Index must be between 1 and 7.');
-        }
+    async setConfig(config ) {
+        this.gpi1 = null;
+        this.gpi1 = config.keysData;
+        this.serialPort = config.serialPort;
+        this.saveToFile();
     }
 
+    get getGpi1(){
+        return this.gpi1;
+    }
+    
     setComPort(comPort){
         this.serialPort = comPort;
     }

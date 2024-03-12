@@ -9,7 +9,7 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1000,
     height: 300,
-    resizable: false, // Set resizable to false
+    resizable: true, // Set resizable to false
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
@@ -78,7 +78,5 @@ ipcMain.on('tick', (event, arg) => {
 });
 
 ipcMain.on('serial-data', (event, arg) => {
-  
   console.log('Received data:', data);}
-  
 );

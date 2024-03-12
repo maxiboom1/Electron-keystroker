@@ -1,1 +1,15 @@
-{}
+{
+  "serialPort": "COM6",
+  "gpi1": [
+    {
+      "app": "Chrome",
+      "keyTap": {
+        "key": "R",
+        "modifiers": [
+          "",
+          "control"
+        ]
+      }
+    }
+  ]
+}

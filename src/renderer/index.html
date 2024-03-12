@@ -21,13 +21,13 @@
             <!-- Application name -->
             <div class="col-md-4">
                 <label class="form-label app-txt">Application</label>
-                <input type="text" class="form-control custom-input" placeholder="App to focus" >
+                <input type="text" class="form-control custom-input" id="gpi1app" placeholder="App to focus" >
             </div>
             
             <!-- Key to send -->
             <div class="col-md-2">
                 <label class="form-label app-txt">Key</label>
-                <input type="text" class="form-control custom-input" placeholder="Key to send">
+                <input type="text" class="form-control custom-input" id="gpi1key" placeholder="Key to send">
             </div>
             
             <!-- Modifier-1 -->
@@ -74,7 +74,7 @@
                   </select>
             </div> 
 
-            <button class="btn btn-primary">Save config</button> 
+            <button class="btn btn-primary" id="setBtn">Save config</button> 
 
         </div>
 
@@ -108,7 +108,8 @@
             
         </div>
     </div>
-
+    
+    <script src="./js/config-logic.js"></script>
     <script src="./js/renderer.js"></script>
 </body>
 
