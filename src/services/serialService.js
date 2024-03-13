@@ -6,12 +6,10 @@ class SerialEmitter extends EventEmitter {}
 const serialEmitter = new SerialEmitter();
 
 function listenSerial(){
-    // Connection test
-    serialEmitter.emit('serial-data', "data"); 
     
     try{
     
-    const port = new SerialPort({ path: "COM1", baudRate: 9600 });
+    const port = new SerialPort({ path: appConfig.getComPort, baudRate: 9600 });
     
     const parser = new ReadlineParser();
     
@@ -19,9 +17,7 @@ function listenSerial(){
 
     port.pipe(parser);
 
-    parser.on('data', (data)=>{ 
-        //ipcRenderer.send('serial-data', data); 
-    }); 
+    parser.on('data', (data)=>{ serialEmitter.emit('serial-data', data) }); 
 
     } catch(e){
         console.error("Serial communication failed: ", e);
@@ -33,3 +29,14 @@ module.exports = {
     listenSerial,
     serialEmitter
 }
+
+
+// function scanForDevices() {
+//     SerialPort.list().then((ports) => {
+//       ports.forEach((port) => {
+//         console.log(`Found port: ${port.path}`);  
+//       });
+//     }).catch((err) => {
+//       console.error('Error listing ports:', err);
+//     });
+//   }

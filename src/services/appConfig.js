@@ -44,6 +44,9 @@ class AppConfig {
         return this.gpi1;
     }
     
+    get getComPort(){
+        return this.serialPort;
+    }
     setComPort(comPort){
         this.serialPort = comPort;
     }
