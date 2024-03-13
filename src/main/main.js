@@ -1,4 +1,5 @@
 const { app, BrowserWindow, Tray, Menu } = require('electron');
+const { ipcMain } = require('electron');
 const { windowManager } = require('node-window-manager');
 const appConfig = require('../services/appConfig.js');
 const robot = require('robotjs');
@@ -42,14 +43,15 @@ function setupTray() {
 
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Show App', click: () => win.show() },
+    {label: "Simulate",click: () => {
+      focusWindow();
+    }},
     { label: 'Exit', click: () => {
         app.isQuitting = true;
         app.quit();
       }
     },
-    {label: "Fire",click: () => {
-      focusWindow();
-    }}
+    
   ]);
 
   tray.setContextMenu(contextMenu);
@@ -80,6 +82,7 @@ app.on('activate', () => {
 function focusWindow() {
   const gpi1 = appConfig.getGpi1[0];
   const appName = gpi1.app;
+  
   if (appName.length < 1) { return false; }
   const windows = windowManager.getWindows();
   const targetWindow = windows.find(win => win.getTitle().includes(appName));
@@ -105,3 +108,10 @@ const sendKeystroke = (keys) => {
     robot.keyTap(keys.key, filteredModifiers);
   }
 };
+
+ipcMain.on('update-config', async (event, config) => {
+  console.log('ipc triggered');
+  await appConfig.setConfig(config);
+  // Optionally, send a response back to the renderer
+  event.reply('update-config-reply', 'Configuration updated successfully');
+});

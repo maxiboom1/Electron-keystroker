@@ -1,5 +1,6 @@
-const appConfig = require("../services/appConfig");
+const { ipcRenderer } = require('electron');
 
+const appConfig = require("../services/appConfig");
 document.getElementById("setBtn").addEventListener("click", saveConfig);
 
 // Modal
@@ -12,8 +13,13 @@ window.onclick = function(event) {
 
 // Updates appConfig on "save config" click
 async function saveConfig() {
-    await appConfig.setConfig(__getAllValues());
-    showNotification();
+    const config = __getAllValues();
+    ipcRenderer.send('update-config', config);
+    // Optionally, listen for a reply
+    ipcRenderer.on('update-config-reply', (event, response) => {
+        console.log(response); // "Configuration updated successfully"
+        showNotification(response);
+    });
 }
 
 // Collects all config input fields on UI

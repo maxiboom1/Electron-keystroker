@@ -14,7 +14,7 @@ class AppConfig {
             modifiers:['control', 'shift']
         }
     };
-
+    
     // We loading the config.json once onload
     async loadFromFile(filename)  {
         try {
@@ -33,7 +33,7 @@ class AppConfig {
         fs.writeFileSync(configFilePath, data, 'utf-8');
     }
 
-    async setConfig(config ) {
+    async setConfig(config) {
         this.gpi1 = null;
         this.gpi1 = config.keysData;
         this.serialPort = config.serialPort;
