@@ -127,3 +127,5 @@ ipcMain.on("update-config", async (event, config) => {
 serialEmitter.on("serial-data", (data) => {
   console.log("Received serial data:", data);
 });
+
+

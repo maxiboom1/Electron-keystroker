@@ -8,35 +8,32 @@ const serialEmitter = new SerialEmitter();
 function listenSerial(){
     
     try{
-    
-    const port = new SerialPort({ path: appConfig.getComPort, baudRate: 9600 });
-    
-    const parser = new ReadlineParser();
-    
-    port.on('error', (err) => {setTimeout(listenSerial, 5000);});
-
-    port.pipe(parser);
-
-    parser.on('data', (data)=>{ serialEmitter.emit('serial-data', data) }); 
+        const port = new SerialPort({ path: "COM3", baudRate: 9600 });
+        const parser = port.pipe(new ReadlineParser());
+        sendHeartBeat(port);
+        
+        parser.on('data', (data) => {
+            console.log(data)            
+        });
 
     } catch(e){
+
         console.error("Serial communication failed: ", e);
+
     }
 
+}
+
+function sendHeartBeat(port){
+    port.write("heartbeat\n", (err) => {
+        if (err) {
+          return console.log('Error on write: ', err.message);
+        }
+        console.log('Heartbeat signal sent');
+      });
 }
 
 module.exports = {
     listenSerial,
     serialEmitter
 }
-
-
-// function scanForDevices() {
-//     SerialPort.list().then((ports) => {
-//       ports.forEach((port) => {
-//         console.log(`Found port: ${port.path}`);  
-//       });
-//     }).catch((err) => {
-//       console.error('Error listing ports:', err);
-//     });
-//   }
