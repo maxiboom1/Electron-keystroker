@@ -2,6 +2,8 @@ const { app, BrowserWindow, Tray, Menu } = require('electron');
 const { ipcMain } = require('electron');
 const { windowManager } = require('node-window-manager');
 const appConfig = require('../services/appConfig.js');
+const { listenSerial, serialEmitter } = require('../services/serialService.js');
+
 const robot = require('robotjs');
 const path = require('path');
 let win;
@@ -64,6 +66,7 @@ function setupTray() {
 app.whenReady().then(() => {
   createWindow();
   setupTray();
+  listenSerial();
 });
 
 app.on('window-all-closed', () => {
@@ -114,4 +117,10 @@ ipcMain.on('update-config', async (event, config) => {
   await appConfig.setConfig(config);
   // Optionally, send a response back to the renderer
   event.reply('update-config-reply', 'Configuration updated successfully');
+});
+
+// Listen for serial data events
+serialEmitter.on('serial-data', (data) => {
+    console.log('Received serial data:', data);
+    
 });

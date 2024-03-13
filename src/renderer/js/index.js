@@ -11,17 +11,6 @@ window.onclick = function(event) {
   if (event.target == modal) {modal.style.display = "none";}
 }
 
-// Updates appConfig on "save config" click
-async function saveConfig() {
-    const config = __getAllValues();
-    ipcRenderer.send('update-config', config);
-    // Optionally, listen for a reply
-    ipcRenderer.on('update-config-reply', (event, response) => {
-        console.log(response); // "Configuration updated successfully"
-        showNotification(response);
-    });
-}
-
 // Collects all config input fields on UI
 function __getAllValues() {
     const keysData = [];
@@ -74,5 +63,16 @@ function showNotification(message, isError) {
     setTimeout(() => {
         notification.classList.add('hidden');
     }, 5000); // Hide the notification after 5 seconds
+}
+
+// Updates appConfig (ipc channel ti main.js) on "save config" click
+async function saveConfig() {
+    const config = __getAllValues();
+    ipcRenderer.send('update-config', config);
+    // Optionally, listen for a reply
+    ipcRenderer.on('update-config-reply', (event, response) => {
+        console.log(response);
+        showNotification(response);
+    });
 }
 __setAllValues();

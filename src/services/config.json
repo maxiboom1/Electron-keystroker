@@ -1,5 +1,6 @@
 {
   "serialPort": "COM3",
+  
   "gpi1": [
     {
       "app": "Google Chrome",
@@ -11,6 +12,5 @@
         ]
       }
     }
-  ],
-  "test": "value"
+  ]
 }
