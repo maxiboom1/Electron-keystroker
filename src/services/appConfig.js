@@ -6,6 +6,8 @@ class AppConfig {
     constructor() {
         this.loadFromFile('config.json');
     }
+
+    global = false;
     serialPort = "COM3";  
     gpi1 = {
         app: "Google Chrome", 
@@ -15,12 +17,14 @@ class AppConfig {
         }
     };
     
+
     // We loading the config.json once onload
     async loadFromFile(filename)  {
         try {
             const configFilePath = path.join(__dirname, filename);
             const data = fs.readFileSync(configFilePath, 'utf-8');
             const config = JSON.parse(data);
+            console.log(config);
             Object.assign(this, config);
         } catch (error) {
             console.error('Error loading config file:', error.message);
@@ -37,6 +41,7 @@ class AppConfig {
         this.gpi1 = null;
         this.gpi1 = config.keysData;
         this.serialPort = config.serialPort;
+        this.global = config.global;
         this.saveToFile();
     }
 

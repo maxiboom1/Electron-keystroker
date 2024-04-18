@@ -1,5 +1,6 @@
 {
-  "serialPort": "COM3",
+  "global": true,
+  "serialPort": "",
   "gpi1": [
     {
       "app": "Google Chrome",
@@ -7,7 +8,7 @@
         "key": "tab",
         "modifiers": [
           "shift",
-          "control"
+          "alt"
         ]
       }
     }

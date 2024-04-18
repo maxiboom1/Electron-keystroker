@@ -1,20 +1,17 @@
 const { ipcRenderer } = require('electron');
-
 const appConfig = require("../services/appConfig");
 document.getElementById("setBtn").addEventListener("click", saveConfig);
+document.getElementById("logo").addEventListener("click",() => modal.style.display = "block");
 
 // Modal
-var modal = document.getElementById("logoModal");
-var img = document.getElementById("logo");
-img.onclick = function() {modal.style.display = "block";};
-window.onclick = function(event) {
-  if (event.target == modal) {modal.style.display = "none";}
-}
+const modal = document.getElementById("logoModal");
+window.addEventListener("click", function(event) {if (event.target == modal) {modal.style.display = "none";}});
 
 // Collects all config input fields on UI
 function __getAllValues() {
     const keysData = [];
     const serialPort = document.getElementById('comPort').value; 
+    const global = true;
     const app = document.getElementById(`gpi1app`).value;
     const key = document.getElementById(`gpi1key`).value;
     const mod1 = document.getElementById(`gpi1mod1`).value;
@@ -30,14 +27,14 @@ function __getAllValues() {
 
     keysData.push(keyData);
 
-    return {keysData, serialPort};
+    return {keysData, serialPort, global};
 }
 
 // Fetch config and render it on UI
 async function __setAllValues() {
     const values = await appConfig;
     const gpi1 = values.gpi1[0]
-    console.log(gpi1.keyTap);
+    //console.log(values);
     
     document.getElementById('comPort').value = values.serialPort;
     document.getElementById('gpi1app').value = gpi1.app;
@@ -45,6 +42,17 @@ async function __setAllValues() {
     document.getElementById('gpi1mod1').value = gpi1.keyTap.modifiers[0];
     document.getElementById('gpi1mod2').value = gpi1.keyTap.modifiers[1];
 
+}
+
+// Updates appConfig (ipc channel ti main.js) on "save config" click
+async function saveConfig() {
+    const config = __getAllValues();
+    ipcRenderer.send('update-config', config);
+    // Optionally, listen for a reply
+    ipcRenderer.on('update-config-reply', (event, response) => {
+        console.log(response);
+        showNotification(response);
+    });
 }
 
 function showNotification(message, isError) {
@@ -60,19 +68,7 @@ function showNotification(message, isError) {
         notification.classList.remove('error');
     }
 
-    setTimeout(() => {
-        notification.classList.add('hidden');
-    }, 5000); // Hide the notification after 5 seconds
+    setTimeout(() => {notification.classList.add('hidden');}, 5000);
 }
 
-// Updates appConfig (ipc channel ti main.js) on "save config" click
-async function saveConfig() {
-    const config = __getAllValues();
-    ipcRenderer.send('update-config', config);
-    // Optionally, listen for a reply
-    ipcRenderer.on('update-config-reply', (event, response) => {
-        console.log(response);
-        showNotification(response);
-    });
-}
 __setAllValues();

@@ -9,6 +9,8 @@ const path = require("path");
 let win;
 let tray = null;
 
+//************************************ Electron app configurations *************************************/
+
 function createWindow() {
   win = new BrowserWindow({
     width: 1000,
@@ -84,6 +86,8 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
+//************************************ Electron app configurations *************************************/
 
 // Function to focus a window by its title
 function focusWindow() {
