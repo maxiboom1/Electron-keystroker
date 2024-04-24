@@ -77,9 +77,11 @@ ipcRenderer.on('update-led', (event, color) => {
     const statusIndicator = document.getElementById('statusIndicator');
     if(color === 'green') {
       statusIndicator.textContent = 'GPIO BOX: 🟢'; // Green circle emoji
+    } else if(color === 'yellow') {
+      statusIndicator.textContent = 'GPIO BOX: 🟡'; // Red circle emoji, back to default
     } else {
-      statusIndicator.textContent = 'GPIO BOX: 🔴'; // Red circle emoji, back to default
-    }
+        statusIndicator.textContent = 'GPIO BOX: 🔴'; // Red circle emoji, back to default
+    } 
   });
 
 __setAllValues();

@@ -5,6 +5,7 @@ function createWindow() {
   let win = new BrowserWindow({
     width: 1000,
     height: 310,
+    icon: path.join(__dirname, '../assets/favicon.ico'), // Path to your icon file
     resizable: false,
     webPreferences: {
       nodeIntegration: true,

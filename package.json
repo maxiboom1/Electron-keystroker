@@ -5,12 +5,34 @@
   "main": "src/main/main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
+  "build": {
+    "appId": "IOSystems keystroker_v1",
+    "productName": "Serial Keystroker",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+  ,
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "electron": "^29.1.2",
+    "electron-builder": "^24.13.3",
     "electron-rebuild": "^3.2.9"
   },
   "dependencies": {
