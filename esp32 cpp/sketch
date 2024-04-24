@@ -3,6 +3,7 @@ int lastPinState = HIGH; // Assume the pin starts in the HIGH state
 void setup() {
   Serial.begin(9600);
   pinMode(13, INPUT_PULLUP); // Use internal pull-up resistor
+  Serial.println( digitalRead(13));
 }
 
 void loop() {
@@ -14,10 +15,12 @@ void loop() {
 
   int currentPinState = digitalRead(13);
 
-  // Check if the pin state changed from HIGH to LOW
-  if (lastPinState != currentPinState && currentPinState == LOW) {
-    // Pin state changed to LOW, fire "tick"
-    Serial.println("tick");
+  if (lastPinState != currentPinState){
+    delay(50);
+    if(currentPinState == LOW){
+      // Pin state changed to LOW, fire "tick"
+      Serial.println("tick");
+    }
   }
 
   // Update lastPinState for the next loop iteration
