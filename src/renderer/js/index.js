@@ -71,4 +71,15 @@ function showNotification(message, isError) {
     setTimeout(() => {notification.classList.add('hidden');}, 5000);
 }
 
+// Events from main.js
+ipcRenderer.on('update-led', (event, color) => {
+    console.log("front: ", color)
+    const statusIndicator = document.getElementById('statusIndicator');
+    if(color === 'green') {
+      statusIndicator.textContent = 'GPIO BOX: 🟢'; // Green circle emoji
+    } else {
+      statusIndicator.textContent = 'GPIO BOX: 🔴'; // Red circle emoji, back to default
+    }
+  });
+
 __setAllValues();

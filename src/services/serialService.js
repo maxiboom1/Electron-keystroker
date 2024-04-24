@@ -8,12 +8,13 @@ const serialEmitter = new SerialEmitter();
 function listenSerial(){
     
     try{
-        const port = new SerialPort({ path: "COM3", baudRate: 9600 });
+        const port = new SerialPort({ path: appConfig.serialPort, baudRate: 9600 });
         const parser = port.pipe(new ReadlineParser());
         sendHeartBeat(port);
         
         parser.on('data', (data) => {
-            console.log(data)            
+            let cleanedData = data.trim(); 
+            serialEmitter.emit('serial-data', cleanedData);            
         });
 
     } catch(e){

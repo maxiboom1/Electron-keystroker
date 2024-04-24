@@ -91,10 +91,13 @@ app.on("activate", () => {
 
 // Function to focus a window by its title
 function focusWindow() {
-    const gpi1 = appConfig.getGpi1[0];
+  const gpi1 = appConfig.getGpi1[0];
     const appName = gpi1.app;
 
-    if (appName.length < 1) {return false;}
+    if (appName.length < 1) {
+      sendKeystroke(gpi1.keyTap);
+      return false;
+    }
 
     const windows = windowManager.getWindows();
     const targetWindow = windows.find((win) => win.getTitle().includes(appName));
@@ -129,7 +132,18 @@ ipcMain.on("update-config", async (event, config) => {
 
 // Listen for serial data events
 serialEmitter.on("serial-data", (data) => {
-  console.log("Received serial data:", data);
+  console.log("Received serial data on main serial listener:", data);
+  
+  // GPI received
+  if(data === "tick"){
+    focusWindow();
+  }
+  // Send an IPC message to the renderer process
+  if(data === "ack"){
+    BrowserWindow.getAllWindows().forEach(window => {
+      window.webContents.send('update-led', 'green');
+    });
+  }
 });
 
 
