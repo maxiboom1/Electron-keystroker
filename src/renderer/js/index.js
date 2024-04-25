@@ -1,5 +1,5 @@
 const { ipcRenderer } = require('electron');
-const appConfig = require("../services/appConfig");
+
 document.getElementById("setBtn").addEventListener("click", saveConfig);
 document.getElementById("logo").addEventListener("click",() => modal.style.display = "block");
 
@@ -28,20 +28,6 @@ function __getAllValues() {
     keysData.push(keyData);
 
     return {keysData, serialPort, global};
-}
-
-// Fetch config and render it on UI
-async function __setAllValues() {
-    const values = await appConfig;
-    const gpi1 = values.gpi1[0]
-    //console.log(values);
-    
-    document.getElementById('comPort').value = values.serialPort;
-    document.getElementById('gpi1app').value = gpi1.app;
-    document.getElementById('gpi1key').value = gpi1.keyTap.key;
-    document.getElementById('gpi1mod1').value = gpi1.keyTap.modifiers[0];
-    document.getElementById('gpi1mod2').value = gpi1.keyTap.modifiers[1];
-
 }
 
 // Updates appConfig (ipc channel ti main.js) on "save config" click
@@ -84,4 +70,20 @@ ipcRenderer.on('update-led', (event, color) => {
     } 
   });
 
+ipcRenderer.on('getAppConfig-reply', (event, appConfig) => {
+    console.log(appConfig);
+    const gpi1 = appConfig.gpi1[0]
+    document.getElementById('comPort').value = appConfig.serialPort;
+    document.getElementById('gpi1app').value = gpi1.app;
+    document.getElementById('gpi1key').value = gpi1.keyTap.key;
+    document.getElementById('gpi1mod1').value = gpi1.keyTap.modifiers[0];
+    document.getElementById('gpi1mod2').value = gpi1.keyTap.modifiers[1];
+});
+
+async function __setAllValues() {
+    ipcRenderer.send('getAppConfig');
+}
+
 __setAllValues();
+
+

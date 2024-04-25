@@ -5,7 +5,7 @@ function createWindow() {
   let win = new BrowserWindow({
     width: 1000,
     height: 310,
-    icon: path.join(__dirname, '../assets/favicon.ico'), // Path to your icon file
+    icon:path.join(app.getAppPath(),'src', 'assets', 'favicon.ico'),
     resizable: false,
     webPreferences: {
       nodeIntegration: true,
@@ -13,7 +13,8 @@ function createWindow() {
     },
   });
 
-  win.loadFile(path.join(__dirname, '../renderer/index.html'));
+  win.loadFile(path.join(app.getAppPath(),'src', 'renderer', 'index.html'));
+
   win.on('close', (event) => {
     if (!app.isQuitting) {
       event.preventDefault();
