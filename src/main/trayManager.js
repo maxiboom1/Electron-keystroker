@@ -6,8 +6,8 @@ function setupTray(win) {
   
   // This path points directly to the resources directory in packaged apps
   const iconPath = process.env.NODE_ENV === 'development' 
-      ? path.join(__dirname, '..', 'assets', 'logo.png') // Development path
-      : path.join(__dirname,'assets', 'logo.PNG'); // Packaged app path
+      ? path.join(__dirname, '..', 'assets', 'tray-logo.png') // Development path
+      : path.join(__dirname,'assets', 'tray-logo.PNG'); // Packaged app path
 
 
   let tray = new Tray(iconPath);
