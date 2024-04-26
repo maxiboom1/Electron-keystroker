@@ -13,6 +13,7 @@ function focusWindow() {
     }
 
     const windows = windowManager.getWindows();
+    console.log(windows.map(win => win.getTitle()));
     const targetWindow = windows.find(win => win.getTitle().includes(appName));
     if (targetWindow) {
         targetWindow.bringToTop();

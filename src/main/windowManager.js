@@ -1,10 +1,11 @@
-const {app, BrowserWindow } = require('electron');
+const {app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
 
 function createWindow() {
+  Menu.setApplicationMenu(null);  // This hides the default menu
   let win = new BrowserWindow({
-    width: 1000,
-    height: 310,
+    width: 800,
+    height: 280,
     icon:path.join(app.getAppPath(),'src', 'assets', 'favicon.ico'),
     resizable: false,
     webPreferences: {
