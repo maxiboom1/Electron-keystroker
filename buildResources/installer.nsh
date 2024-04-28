@@ -1,5 +1,5 @@
 !macro customInstall
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "SerialKeystroker" "$INSTDIR\YourAppExecutableName.exe"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "SerialKeystroker" "$INSTDIR\Serial Keystroker.exe"
 !macroend
 
 !macro customUnInstall
