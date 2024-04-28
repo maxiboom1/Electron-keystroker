@@ -24,6 +24,7 @@
       "icon": "src/assets/favicon.ico"
     },
     "nsis": {
+      "include": "buildResources/installer.nsh",
       "oneClick": false,
       "allowElevation": true,
       "allowToChangeInstallationDirectory": true,

@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, dialog } = require("electron");
 const { ipcMain } = require("electron");
 const path = require('path');
 const appConfig = require("../services/appConfig.js");
@@ -7,9 +7,12 @@ const createWindow = require('./windowManager');
 const setupTray = require('./trayManager');
 const { focusWindow, getAvailableWindows } = require("./robotActions");
 
-// Set the default environment if not set
-if (!process.env.NODE_ENV) { 
-  process.env.NODE_ENV = 'development';
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  // This instance was unable to obtain the lock and is a second instance
+  dialog.showErrorBox("Application Already Running", "Another instance of the application is already running.");
+  app.quit();
 }
 
 app.whenReady().then(async () => {
