@@ -4,11 +4,7 @@ const { focusWindow } = require('./robotActions'); // Adjust the path as needed
 
 function setupTray(win) {
   
-  // This path points directly to the resources directory in packaged apps
-  const iconPath = process.env.NODE_ENV === 'development' 
-      ? path.join(__dirname, '..', 'assets', 'tray-logo.png') // Development path
-      : path.join(__dirname,'assets', 'tray-logo.PNG'); // Packaged app path
-
+  const iconPath = path.join(__dirname, '..', 'assets', 'tray-logo.png');
 
   let tray = new Tray(iconPath);
   tray.setToolTip('I/O Systems Keystroker');
