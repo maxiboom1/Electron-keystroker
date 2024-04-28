@@ -13,7 +13,6 @@ function focusWindow() {
     }
 
     const windows = windowManager.getWindows();
-    console.log(windows.map(win => win.getTitle()));
     const targetWindow = windows.find(win => win.getTitle().includes(appName));
     if (targetWindow) {
         targetWindow.bringToTop();
@@ -36,7 +35,13 @@ function sendKeystroke(keys) {
     }
 }
 
+function getAvailableWindows(){
+    const windows = windowManager.getWindows();
+    const titles = windows.map(win => win.getTitle()).filter(title => title && title.trim() !== '' && title !== 'Default IME'); 
+    console.log(titles);
+}
 module.exports = {
     focusWindow,
-    sendKeystroke
+    sendKeystroke,
+    getAvailableWindows
 };

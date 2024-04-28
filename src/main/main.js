@@ -5,7 +5,7 @@ const appConfig = require("../services/appConfig.js");
 const serialService = require("../services/serialService.js");
 const createWindow = require('./windowManager');
 const setupTray = require('./trayManager');
-const { focusWindow } = require("./robotActions");
+const { focusWindow, getAvailableWindows } = require("./robotActions");
 
 // Set the default environment if not set
 if (!process.env.NODE_ENV) { 
@@ -13,7 +13,6 @@ if (!process.env.NODE_ENV) {
 }
 
 app.whenReady().then(async () => {
-  console.log(app.getAppPath());
 
   // Set userFolderPath in appConfig
   await appConfig.setConfigFilePath(path.join(app.getPath('userData'), 'config.json'));
@@ -21,6 +20,7 @@ app.whenReady().then(async () => {
   const win = createWindow();
   setupTray(win);
   serialService.connect(appConfig.getComPort);
+  getAvailableWindows();
 });
 
 app.on("window-all-closed", () => {
