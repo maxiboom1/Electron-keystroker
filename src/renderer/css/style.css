@@ -98,3 +98,36 @@ span{
     text-align: center;
     color: #63a263;
 }
+
+/* TOP NAVBAR ----------------------------------*/
+
+.topNavbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.leftSpacer, .iconContainer {
+    flex: 1;
+}
+
+.app-txt {
+    flex: 2;
+    text-align: center;
+    margin: 0; /* Removes default margin for h3 */
+}
+
+.iconContainer {
+    text-align: right;
+}
+
+.settingsIcon {
+    height: 24px;
+    width: auto;
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.settingsIcon:hover {
+    filter: brightness(0.5); /* Example hover effect: darkens the icon */
+}

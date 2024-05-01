@@ -6,6 +6,7 @@ const serialService = require("../services/serialService.js");
 const createWindow = require('./windowManager');
 const setupTray = require('./trayManager');
 const { focusWindow, getAvailableWindows } = require("./robotActions");
+const expressApp = require('./server'); // Assuming the file is named server.js
 
 const gotTheLock = app.requestSingleInstanceLock();
 
@@ -24,6 +25,7 @@ app.whenReady().then(async () => {
   setupTray(win);
   serialService.connect(appConfig.getComPort);
   getAvailableWindows();
+  expressApp();
 });
 
 app.on("window-all-closed", () => {
