@@ -4,7 +4,6 @@ const appConfig = require("../services/appConfig.js");
 
 // Function to focus a window by its title
 function focusWindow() {
-    console.log("regular");
 
     const gpi1 = appConfig.getGpi1[0]; 
     const appName = gpi1.app;

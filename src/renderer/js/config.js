@@ -16,6 +16,16 @@ async function fetchAppConfig() {
     }
 }
 
+// Get appConfig and render on gui
+async function fetchCue(number) {
+    try {
+        const cue = await ipcRenderer.invoke('getCueByNumber', number);
+        return cue;
+    } catch (error) {
+        console.error('Error fetching cue:', error);
+    }
+}
+
 // Updates appConfig (ipc channel ti main.js) on "save config" click
 async function saveConfig() {
     const config = __getAllValues();
@@ -43,10 +53,14 @@ function __getAllValues() {
         return { error: true, message: `Key missing. Please set key before saving.` }; 
     }
 
-    const global = String(app.length) === 0 ? true : false;
     const keyData = { app, keyTap: { key, modifiers: [mod1, mod2] } };
 
-    return { keysData: [keyData], serialPort, global };
+    return { keysData: [keyData], serialPort};
 }
 
-module.exports = { fetchAppConfig, saveConfig };
+function toggleConfigPage() {
+    const configPage = document.getElementById("configPage");
+    configPage.classList.toggle("hidden");
+}
+
+module.exports = { fetchAppConfig, saveConfig , toggleConfigPage, fetchCue};

@@ -131,3 +131,24 @@ span{
 .settingsIcon:hover {
     filter: brightness(0.5); /* Example hover effect: darkens the icon */
 }
+
+/* Button palette */
+
+.button-palette {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping of buttons */
+    justify-content: center; /* Center the buttons */
+    margin-top: 5px; /*Add some space above the button palette */
+}
+
+.btn-square {
+    width: 100%; /* Make buttons fill the column width */
+    height: 150px; /* Set a fixed height for buttons */
+    font-size: 20px; /* Increase font size for better readability */
+    margin-bottom: 5px; /* Space between rows of buttons */
+}
+
+.btn-primary:hover {
+    background-color: #007bff; /* Change to a lighter blue on hover */
+    border-color: #007bff; /* Match border color */
+}

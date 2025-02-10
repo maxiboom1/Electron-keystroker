@@ -23,7 +23,7 @@ app.whenReady().then(async () => {
   
   const win = createWindow();
   setupTray(win);
-  serialService.connect(appConfig.getComPort);
+  serialService.connect(appConfig.getSerialPort());
   getAvailableWindows();
   expressApp();
 });
@@ -71,12 +71,14 @@ serialService.on('error', (error) => console.log(`Error: ${error.message}`));
 
 ipcMain.handle('getAppConfig', async (event) => { return appConfig; });
 
+ipcMain.handle('getCueByNumber', async (event, number) => { return appConfig.getCueByNumber(number); });
+
 ipcMain.handle('update-config', async (event, config) => { 
   
   try {
     
-    if(appConfig.serialPort !== config.serialPort){ 
-      console.log(`switching from ${appConfig.serialPort} to ${config.serialPort}` )
+    if(appConfig.getSerialPort() !== config.serialPort){ 
+      console.log(`switching from ${appConfig.getSerialPort()} to ${config.serialPort}` )
       serialService.closeConnection();
       setTimeout(()=>serialService.connect(config.serialPort),2000);
     }

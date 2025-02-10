@@ -13,33 +13,33 @@
 
         <div class="topNavbar">
             <div class="leftSpacer"></div>
-            <h3 class="app-txt">KeyStroker configuration</h3>
+            <h3 class="app-txt">I/O System Keystroker</h3>
             <div class="iconContainer">
-                <img src="./images/settings.png" class="settingsIcon" alt="Settings Icon">
+                <img src="./images/settings.png" class="settingsIcon" id="settingsIcon" alt="Settings Icon">
             </div>
         </div>
         
         <br>
         
         <!-- Form -->
-        <div class="row g-3">
+        <div class="row g-3 hidden" id="configPage">
             
             <!-- Application name -->
             <div class="col-md-4">
                 <label class="form-label app-txt">Application</label>
-                <input type="text" class="form-control custom-input" id="gpi1app" placeholder="App to focus" >
+                <input type="text" class="form-control custom-input" id="app" placeholder="App to focus" >
             </div>
             
             <!-- Key to send -->
             <div class="col-md-2">
                 <label class="form-label app-txt">Key</label>
-                <input type="text" class="form-control custom-input" id="gpi1key" placeholder="Key to send">
+                <input type="text" class="form-control custom-input" id="key" placeholder="Key to send">
             </div>
             
             <!-- Modifier-1 -->
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <label class="form-label app-txt">Modifier-1</label>
-                <select class="form-select custom-input" name="gpi1mod1" id="gpi1mod1">
+                <select class="form-select custom-input" name="mod1" id="mod1">
                     <option value="">None</option>
                     <option value="alt">Alt</option>
                     <option value="command">Command (win)</option>
@@ -49,9 +49,9 @@
             </div>
             
             <!-- Modifier-2 -->
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <label class="form-label app-txt">Modifier-2</label>
-                <select class="form-select custom-input" name="gpi1mod2" id="gpi1mod2">
+                <select class="form-select custom-input" name="mod2" id="mod2">
                     <option value="">None</option>
                     <option value="alt">Alt</option>
                     <option value="command">Command (win)</option>
@@ -61,9 +61,9 @@
             </div> 
             
             <!-- Com Port -->            
-            <div class="col-md-2">
+            <!-- <div class="col-md-2">
                 <label class="form-label app-txt">Com Port</label>
-                <select class="form-select custom-input" id="comPort">
+                <select class="form-select custom-input" id="serialPortt">
                         <option value="COM1">Com-1</option>
                         <option value="COM2">Com-2</option>
                         <option value="COM3">Com-3</option>
@@ -77,10 +77,41 @@
                         <option value="COM11">Com-11</option>
                         <option value="COM12">Com-12</option>
                   </select>
-            </div> 
+            </div>  -->
 
             <button class="btn btn-secondary" id="setBtn">Save config</button> 
 
+        </div>
+
+        <!-- Button Palette -->
+        <div class="row g-3 button-palette">
+            <div class="col-md-4 col-sm-6 col-12">
+                <button class="btn btn-primary btn-square" data-cue="1">Button 1</button>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <button class="btn btn-primary btn-square" data-cue="2">Button 2</button>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <button class="btn btn-primary btn-square" data-cue="3">Button 3</button>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <button class="btn btn-primary btn-square" data-cue="4">Button 4</button>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <button class="btn btn-primary btn-square" data-cue="5">Button 5</button>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <button class="btn btn-primary btn-square" data-cue="6">Button 6</button>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <button class="btn btn-primary btn-square" data-cue="7">Button 7</button>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <button class="btn btn-primary btn-square" data-cue="8">Button 8</button>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+                <button class="btn btn-primary btn-square" data-cue="9">Button 9</button>
+            </div>
         </div>
 
         <div id="notification" class="hidden">
