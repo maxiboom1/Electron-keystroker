@@ -34,26 +34,6 @@ app.on("window-all-closed", () => {
   }
 });
 
-ipcMain.on("update-config", async (event, config) => {
-  try {
-    if(appConfig.serialPort !== config.serialPort){ 
-      console.log(`switching from ${appConfig.serialPort} to ${config.serialPort}` )
-      serialService.closeConnection();
-      setTimeout(()=>serialService.connect(config.serialPort),2000);
-    }
-    appConfig.setConfig(config);
-    event.reply("update-config-reply", "Configuration updated successfully");
-  } catch (error) {
-    console.error("Failed to update configuration:", error);
-    event.reply("update-config-reply", "Failed to update configuration");
-  }
-});
-
-ipcMain.on("getAppConfig", async (event) => {
-  event.reply("getAppConfig-reply", appConfig);
-});
-
-
 serialService.on('port-opened', () => {
   console.log(`Event:port-opened`);
 
@@ -86,3 +66,36 @@ serialService.on('disconnected', () => {
 });
 
 serialService.on('error', (error) => console.log(`Error: ${error.message}`));
+
+// --------------------------- Ipc listeners/handlers --------------------------- //
+
+ipcMain.handle('getAppConfig', async (event) => { return appConfig; });
+
+ipcMain.handle('update-config', async (event, config) => { 
+  
+  try {
+    
+    if(appConfig.serialPort !== config.serialPort){ 
+      console.log(`switching from ${appConfig.serialPort} to ${config.serialPort}` )
+      serialService.closeConnection();
+      setTimeout(()=>serialService.connect(config.serialPort),2000);
+    }
+    appConfig.setConfig(config);
+
+    return {
+      succeed: true, 
+      message: "Configuration updated successfully"
+    };
+
+  } catch (error) {
+    
+    console.error("Failed to update configuration:", error);
+    
+    return {
+      succeed: false, 
+      message: "Failed to update configuration. See logs for details"
+    };
+
+  }
+
+});

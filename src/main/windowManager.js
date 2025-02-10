@@ -7,13 +7,14 @@ function createWindow() {
     width: 800,
     height: 280,
     icon:path.join(app.getAppPath(),'src', 'assets', 'favicon.ico'),
-    resizable: false,
+    resizable: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      zoomFactor:1.0
     },
   });
-
+  win.webContents.openDevTools(); // Open dev tools
   win.loadFile(path.join(app.getAppPath(),'src', 'renderer', 'index.html'));
 
   win.on('close', (event) => {

@@ -58,6 +58,7 @@ class AppConfig {
     get getComPort() {
         return this.serialPort;
     }
+    
     setComPort(comPort) {
         this.serialPort = comPort;
     }
