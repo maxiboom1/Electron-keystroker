@@ -1,16 +1,23 @@
 const { ipcRenderer } = require('electron');
-const { fetchAppConfig, saveConfig, toggleConfigPage, fetchCue } = require('./js/config.js');
+const { fetchAppConfig, saveConfig, showConfigPage, setActiveCue } = require('./js/config.js');
 
 
 document.getElementById("setBtn").addEventListener("click", saveConfig);
-document.getElementById("settingsIcon").addEventListener("click", toggleConfigPage);
 document.getElementById("logo").addEventListener("click",() => modal.style.display = "block");
 
 // Add event listeners to cue buttons
 const buttons = document.querySelectorAll('.btn-square');
 buttons.forEach(button => {
+    
+    // Triggered by left-mouse click
     button.addEventListener('click', handleCueClick);
-});
+    
+    // Triggered by right-mouse click
+    button.addEventListener('contextmenu', function(event) {
+        //event.preventDefault(); // Prevents the default right-click menu from appearing
+        const cueData = button.dataset.cue; // Fetch data-cue attribute from button
+        showConfigPage(cueData);
+});});
 
 // Modal
 const modal = document.getElementById("logoModal");
@@ -41,11 +48,7 @@ async function handleCueClick(event){
 
     // Fetch the cue values based on the button clicked
     const cueNumber = clickedButton.getAttribute('data-cue');
-    
-    // This is fetched cue from app config!!!
-    // Now - we need to render it on config page 
-    const cue = await fetchCue(cueNumber);
-    console.log(cue);
+    await setActiveCue(cueNumber);
 }
 
 

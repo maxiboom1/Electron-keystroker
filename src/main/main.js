@@ -73,6 +73,12 @@ ipcMain.handle('getAppConfig', async (event) => { return appConfig; });
 
 ipcMain.handle('getCueByNumber', async (event, number) => { return appConfig.getCueByNumber(number); });
 
+ipcMain.handle('getConfig', async (event) => { return appConfig.getConfig() });
+
+ipcMain.handle('modifyCue', async (event, cue, number) => { return appConfig.modifyCue(cue,number) });
+
+ipcMain.handle('setCueToActive', async (event, number) => { return appConfig.setCueToActive(number) });
+
 ipcMain.handle('update-config', async (event, config) => { 
   
   try {

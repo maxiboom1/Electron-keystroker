@@ -23,9 +23,15 @@
         
         <!-- Form -->
         <div class="row g-3 hidden" id="configPage">
-            
+            <h4 id="configHeader"></h4>
+            <!-- Cue name -->
+            <div class="col-md-3">
+                <label class="form-label app-txt">Cue Label</label>
+                <input type="text" class="form-control custom-input" id="name" placeholder="Label name" >
+            </div>
+
             <!-- Application name -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label app-txt">Application</label>
                 <input type="text" class="form-control custom-input" id="app" placeholder="App to focus" >
             </div>
@@ -37,7 +43,7 @@
             </div>
             
             <!-- Modifier-1 -->
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="form-label app-txt">Modifier-1</label>
                 <select class="form-select custom-input" name="mod1" id="mod1">
                     <option value="">None</option>
@@ -49,7 +55,7 @@
             </div>
             
             <!-- Modifier-2 -->
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="form-label app-txt">Modifier-2</label>
                 <select class="form-select custom-input" name="mod2" id="mod2">
                     <option value="">None</option>
@@ -135,7 +141,7 @@
     <!-- Modal Window Structure -->
     <div id="logoModal" class="modal">
         <div class="modal-content">
-            <span class="modal-title">Serial Keystroker - v 1.1.0</span>
+            <span class="modal-title">Serial Keystroker - v 1.1.2</span>
             <span>Website: www.iosystems.co.il</span>
             <span>Developed by Alex, 2025</span>
             <span style="margin-bottom: 30px;">All rights reserved to I/O Systems</span>
