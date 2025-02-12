@@ -5,6 +5,10 @@ body{
     font-family: serif;
 }
 
+.app-header{
+    margin: auto;
+}
+
 /* Form inputs styles across the app */
 .custom-input {
     background-color: rgb(212, 212, 212); /* Change the color value as needed */
@@ -28,13 +32,14 @@ span{
     display:none;
 }
 
-/* **************************** Footer - bottom bar  **************************** */
-
 footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: rgb(0, 0, 0);
+}
+
+#footer-container{
+    background-color: rgb(22, 22, 22);;
 }
 
 .logo-container {
@@ -52,8 +57,8 @@ footer {
 
 #notification {
     position: fixed;
-    top: 10px;
-    right: 10px;
+    top: 40px;
+    right: 20px;
     padding: 10px;
     max-width: 300px;
     background-color: #559455; /* Green background color */
@@ -67,33 +72,6 @@ footer {
     background-color: #8d4242; /* Red background color for error */
 }
 
-/* **************************** Navbar container  **************************** */
-
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-.navbar-left-spacer, .navbar-icon-container {
-    flex: 1;
-}
-
-.navbar-icon-container {
-    text-align: right;
-}
-
-.navbar-icon {
-    height: 24px;
-    width: auto;
-    transition: color 0.3s ease; /* Smooth transition for hover effect */
-}
-
-.navbar-icon:hover {
-    filter: brightness(0.5);
-}
-
 /* **************************** Main buttons container  **************************** */
 
 .button-palette {
@@ -101,6 +79,7 @@ footer {
     flex-wrap: wrap; /* Allow wrapping of buttons */
     justify-content: center; /* Center the buttons */
     margin-top: 5px; /*Add some space above the button palette */
+    margin-bottom: 35px;
 }
 
 .btn-square {
@@ -121,8 +100,9 @@ footer {
     margin-top: 15px;
     border-radius: 8px; /* Rounded corners */
     padding: 20px; /* Add some padding inside the border */
-    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
+    background-color: rgb(31 31 31 / 44%); /* Slightly transparent background */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a subtle shadow for depth */
+    border: 1px solid #6b7b6b;
 }
 
 #cue-config-header, #app-config-header{
@@ -153,7 +133,7 @@ footer {
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
-    top: 0;
+    top: 20px;
     width: 100%; /* Cover the entire screen */
     height: 100%; /* Cover the entire screen */
     background-color: rgba(0, 0, 0, 0.881); /* Black w/ opacity */
@@ -168,3 +148,4 @@ footer {
     width: 380px; 
     height: 230px;
 }
+

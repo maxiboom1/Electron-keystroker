@@ -46,7 +46,6 @@ function focusWindowHTTP(gpi1) {
     const appName = gpi1.app;
 
     if (appName.length < 1) {
-        console.log("gg");
         sendKeystroke(gpi1.keyTap);
         return;
     }

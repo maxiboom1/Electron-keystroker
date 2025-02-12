@@ -74,8 +74,9 @@ class AppConfig {
         return this._serialPort;
     }
     // Method to set the serial port
-    setSerialPort(serialPort) {
+    async setSerialPort(serialPort) {
         this._serialPort = serialPort;
+        await this.saveToFile();
     }
 
     // *********************************  Config caching  ********************************* //

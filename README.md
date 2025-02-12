@@ -51,6 +51,10 @@ async modifyCue(cue, number)
 
 ## Change-log:
 
+### 1.1.4
+
+- Added Application menu: File (Exit), Settings(preferences), About(about page).
+
 ### 1.1.3
 
 - HTML && CSS Name convention changed:

@@ -1,9 +1,10 @@
 const { ipcRenderer } = require('electron');
-const { fetchAppConfig, saveConfig, showConfigPage, setActiveCue } = require('./js/config.js');
+const { fetchAppConfig, saveConfig, showCueConfig, setActiveCue, closeAppConfig, setSerialPort } = require('./js/config.js');
+require(`./js/menu.js`); // Connect menu.js file
 
 document.getElementById("set-cue-button").addEventListener("click", saveConfig);
-
-document.getElementById("navbar-icon").addEventListener("click",showComConfig);
+document.getElementById("set-com-port").addEventListener("click", setSerialPort);
+document.getElementById("close-app-settings").addEventListener("click", closeAppConfig);
 
 // Add event listeners to cue buttons
 const buttons = document.querySelectorAll('.btn-square');
@@ -16,7 +17,7 @@ buttons.forEach(button => {
     button.addEventListener('contextmenu', function(event) {
         //event.preventDefault(); // Prevents the default right-click menu from appearing
         const cueData = button.dataset.cue; // Fetch data-cue attribute from button
-        showConfigPage(cueData);
+        showCueConfig(cueData);
 });});
 
 
@@ -40,10 +41,6 @@ async function handleCueClick(event){
     await setActiveCue(cueNumber);
 }
 
-function showComConfig(){
-    document.getElementById("app-config-container").classList.remove('hidden');  
-}
-
 // Entry point on load - request config from main
 fetchAppConfig();
 
@@ -60,7 +57,6 @@ window.addEventListener("click", function(event) {if (event.target == modal) {mo
 function openModal(contentId) {
     const modalContent = document.getElementById("modal-content");
     const content = document.getElementById(contentId);
-    console.log(content.innerHTML)
     modalContent.innerHTML = content.innerHTML; // Update the modal content
     modal.style.display = "flex"; // Open the modal
 }
