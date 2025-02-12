@@ -51,6 +51,15 @@ async modifyCue(cue, number)
 
 ## Change-log:
 
+### 1.1.3
+
+- HTML && CSS Name convention changed:
+* Moved from camelCase (```communicationConfig```) to kebab-case (```app-config-container```), which is a good practice for HTML and CSS.
+* Semantic class names like navbar, footer, modal, and notification.
+* The use of descriptive IDs like ```gpio-led```, ```set-cue-button```, and ```about-app-container``` makes it easier to understand the functionality of each element.
+- CSS file was cleaned from some duplicate rules, minimized and separated by page areas (General, navbar, main buttons, config forms etc..)
+- RobotJs focusWindow() adapted to new appConfig methods and cue structure
+
 ### 1.1.2
 
 - Changed appConfig data struct and methods.

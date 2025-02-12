@@ -1,9 +1,9 @@
 const { ipcRenderer } = require('electron');
 const { fetchAppConfig, saveConfig, showConfigPage, setActiveCue } = require('./js/config.js');
 
+document.getElementById("set-cue-button").addEventListener("click", saveConfig);
 
-document.getElementById("setBtn").addEventListener("click", saveConfig);
-document.getElementById("logo").addEventListener("click",() => modal.style.display = "block");
+document.getElementById("navbar-icon").addEventListener("click",showComConfig);
 
 // Add event listeners to cue buttons
 const buttons = document.querySelectorAll('.btn-square');
@@ -19,14 +19,11 @@ buttons.forEach(button => {
         showConfigPage(cueData);
 });});
 
-// Modal
-const modal = document.getElementById("logoModal");
-window.addEventListener("click", function(event) {if (event.target == modal) {modal.style.display = "none";}});
 
 // Async com-status updates from main.js
 ipcRenderer.on('update-led', (event, color) => {
     
-    const led = document.getElementById('statusIndicator');
+    const led = document.getElementById('gpio-led');
 
     if(color === 'green') {
         led.textContent = 'GPIO BOX: 🟢'; 
@@ -38,20 +35,32 @@ ipcRenderer.on('update-led', (event, color) => {
 });
 
 async function handleCueClick(event){
-    // Remove active class from all buttons
-    const buttons = document.querySelectorAll('.btn-square');
-    buttons.forEach(button => {button.classList.remove('active');});
-
-    // Add active class to the clicked button
-    const clickedButton = event.currentTarget;
-    clickedButton.classList.add('active');
-
     // Fetch the cue values based on the button clicked
-    const cueNumber = clickedButton.getAttribute('data-cue');
+    const cueNumber = event.currentTarget.getAttribute('data-cue');
     await setActiveCue(cueNumber);
 }
 
+function showComConfig(){
+    document.getElementById("app-config-container").classList.remove('hidden');  
+}
 
 // Entry point on load - request config from main
 fetchAppConfig();
 
+// *************************** MODAL ******************************** //
+
+// Open modal
+document.getElementById("logo").addEventListener("click",() => openModal("about-app-container"));
+
+// Close modal
+const modal = document.getElementById("modal");
+window.addEventListener("click", function(event) {if (event.target == modal) {modal.style.display = "none";}});
+
+// Open the modal with specific content
+function openModal(contentId) {
+    const modalContent = document.getElementById("modal-content");
+    const content = document.getElementById(contentId);
+    console.log(content.innerHTML)
+    modalContent.innerHTML = content.innerHTML; // Update the modal content
+    modal.style.display = "flex"; // Open the modal
+}

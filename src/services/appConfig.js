@@ -1,13 +1,13 @@
 const fs = require('fs');
 
 class AppConfig {
+    
     constructor() {
         this.configFilePath = "";
         this._serialPort = "COM3"; // Use a private variable
         this.cues = this._initializeCues(); // Initialize cues
     }
 
-    
     // *********************************  Initialization  ********************************* //
     _createCueModel() {
         return {

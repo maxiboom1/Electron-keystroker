@@ -9,67 +9,24 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+    
+    <!-- Main app grid with BS container margins -->
     <div class="container">         
 
-        <div class="topNavbar">
-            <div class="leftSpacer"></div>
-            <h3 class="app-txt">I/O System Keystroker</h3>
-            <div class="iconContainer">
-                <img src="./images/settings.png" class="settingsIcon" id="settingsIcon" alt="Settings Icon">
+        <!-- Navbar / Header -->
+        <div class="navbar">
+            <div class="navbar-left-spacer"></div>
+            <h3 class="app-font-color">I/O Systems Keystroker</h3>
+            <div class="navbar-icon-container">
+                <img src="./images/settings.png" class="navbar-icon" id="navbar-icon" alt="Settings Icon">
             </div>
         </div>
-        
-        <br>
-        
-        <!-- Form -->
-        <div class="row g-3 hidden" id="configPage">
-            <h4 id="configHeader"></h4>
-            <!-- Cue name -->
-            <div class="col-md-3">
-                <label class="form-label app-txt">Cue Label</label>
-                <input type="text" class="form-control custom-input" id="name" placeholder="Label name" >
-            </div>
 
-            <!-- Application name -->
-            <div class="col-md-3">
-                <label class="form-label app-txt">Application</label>
-                <input type="text" class="form-control custom-input" id="app" placeholder="App to focus" >
-            </div>
-            
-            <!-- Key to send -->
-            <div class="col-md-2">
-                <label class="form-label app-txt">Key</label>
-                <input type="text" class="form-control custom-input" id="key" placeholder="Key to send">
-            </div>
-            
-            <!-- Modifier-1 -->
-            <div class="col-md-2">
-                <label class="form-label app-txt">Modifier-1</label>
-                <select class="form-select custom-input" name="mod1" id="mod1">
-                    <option value="">None</option>
-                    <option value="alt">Alt</option>
-                    <option value="command">Command (win)</option>
-                    <option value="control">Control</option>
-                    <option value="shift">Shift</option>
-                  </select>
-            </div>
-            
-            <!-- Modifier-2 -->
-            <div class="col-md-2">
-                <label class="form-label app-txt">Modifier-2</label>
-                <select class="form-select custom-input" name="mod2" id="mod2">
-                    <option value="">None</option>
-                    <option value="alt">Alt</option>
-                    <option value="command">Command (win)</option>
-                    <option value="control">Control</option>
-                    <option value="shift">Shift</option>
-                </select>
-            </div> 
-            
-            <!-- Com Port -->            
-            <!-- <div class="col-md-2">
-                <label class="form-label app-txt">Com Port</label>
-                <select class="form-select custom-input" id="serialPortt">
+        <!-- Application Config Page -->
+        <div class="row g-3 hidden" id="app-config-container">
+            <h4 id="app-config-header">GPIO Settings</h4>
+            <div class="col-md-4">
+                <select class="form-select custom-input" id="serial-port">
                         <option value="COM1">Com-1</option>
                         <option value="COM2">Com-2</option>
                         <option value="COM3">Com-3</option>
@@ -83,9 +40,59 @@
                         <option value="COM11">Com-11</option>
                         <option value="COM12">Com-12</option>
                   </select>
-            </div>  -->
+            </div> 
+            <div class="col-md-3">
+                <button class="btn btn-secondary" id="set-com-port">Save config</button> 
+            </div> 
+            
+        </div>        
+        
+        <!-- Config Page -->
+        <div class="row g-3 hidden" id="cue-config-container">
+            <h4 id="cue-config-header"></h4>
+            <!-- Cue name -->
+            <div class="col-md-3">
+                <label class="form-label app-font-color">Cue Label</label>
+                <input type="text" class="form-control custom-input" id="name" placeholder="Label name" >
+            </div>
 
-            <button class="btn btn-secondary" id="setBtn">Save config</button> 
+            <!-- Application name -->
+            <div class="col-md-3">
+                <label class="form-label app-font-color">Application</label>
+                <input type="text" class="form-control custom-input" id="app" placeholder="App to focus" >
+            </div>
+            
+            <!-- Key to send -->
+            <div class="col-md-2">
+                <label class="form-label app-font-color">Key</label>
+                <input type="text" class="form-control custom-input" id="key" placeholder="Key to send">
+            </div>
+            
+            <!-- Modifier-1 -->
+            <div class="col-md-2">
+                <label class="form-label app-font-color">Modifier-1</label>
+                <select class="form-select custom-input" name="mod1" id="mod1">
+                    <option value="">None</option>
+                    <option value="alt">Alt</option>
+                    <option value="command">Command (win)</option>
+                    <option value="control">Control</option>
+                    <option value="shift">Shift</option>
+                  </select>
+            </div>
+            
+            <!-- Modifier-2 -->
+            <div class="col-md-2">
+                <label class="form-label app-font-color">Modifier-2</label>
+                <select class="form-select custom-input" name="mod2" id="mod2">
+                    <option value="">None</option>
+                    <option value="alt">Alt</option>
+                    <option value="command">Command (win)</option>
+                    <option value="control">Control</option>
+                    <option value="shift">Shift</option>
+                </select>
+            </div> 
+
+            <button class="btn btn-secondary" id="set-cue-button">Save config</button> 
 
         </div>
 
@@ -119,16 +126,13 @@
                 <button class="btn btn-primary btn-square" data-cue="9">Button 9</button>
             </div>
         </div>
-
-        <div id="notification" class="hidden">
-            <div id="notification-text"></div>
-        </div>
         
     </div>
     
+    <!-- Bottom app footer - including GPIO status and logo -->
     <footer class="bg-body-tertiary text-center text-lg-start">
         <div class="d-flex justify-content-between align-items-center p-0.8" style="background-color:rgba(26, 25, 25, 0.952);">
-            <span id="statusIndicator">GPIO BOX: 🔴</span>
+            <span id="gpio-led">GPIO BOX: 🔴</span>
             
             <div class="logo-container">
                 <span>Developed by</span>
@@ -137,18 +141,26 @@
             
         </div>
     </footer>
-    
+
+    <!-- About App container -->
+    <div class="about-app-container" id="about-app-container">
+        <span class="about-app-title">Serial Keystroker - v 1.1.3</span>
+        <span>Website: www.iosystems.co.il</span>
+        <span>Developed by Alex, 2025</span>
+        <span style="margin-bottom: 30px;">All rights reserved to I/O Systems</span>
+        <img style="margin: auto;" src="./images/logo.webp" height="30" width="180" >
+    </div>
+
     <!-- Modal Window Structure -->
-    <div id="logoModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-title">Serial Keystroker - v 1.1.2</span>
-            <span>Website: www.iosystems.co.il</span>
-            <span>Developed by Alex, 2025</span>
-            <span style="margin-bottom: 30px;">All rights reserved to I/O Systems</span>
-            
-            <img style="margin: auto;" src="./images/logo.webp" height="30" width="180" >
-            
+    <div id="modal" class="modal">
+        <div class="modal-content" id="modal-content">
+            <!-- Here openModal(content) func renders dynamic modal content  -->
         </div>
+    </div>
+
+    <!-- Notification container-->
+    <div id="notification" class="hidden">
+        <div id="notification-text"></div>
     </div>
     
     <script src="./js/index.js"></script>

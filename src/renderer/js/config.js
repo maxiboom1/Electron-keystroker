@@ -12,7 +12,6 @@ async function fetchAppConfig() {
 }
 
 function renderCues(cues) {
-    console.log(cues)
     for (let i = 1; i <= 9; i++) {
         const cue = cues[`cue${i}`]; // Fetch cue by number
         const button = document.querySelector(`button[data-cue="${i}"]`);
@@ -56,7 +55,7 @@ function updateButtonModifiers(button, key, modifiers, isActive) {
 
     // Set active state styling
     if (isActive) {
-        button.style.border = '2px solid red'; // Change border color to red
+        button.style.border = '5px solid red'; // Change border color to red
     } else {
         button.style.border = ''; // Reset border if not active
     }
@@ -64,7 +63,7 @@ function updateButtonModifiers(button, key, modifiers, isActive) {
 
 // Updates appConfig (ipc channel ti main.js) on "save config" click
 async function saveConfig() {
-    const cueNumber = document.getElementById('configHeader').textContent.slice(-1);
+    const cueNumber = document.getElementById('cue-config-header').textContent.slice(-1);
     const name = document.getElementById('name').value;
     const app = document.getElementById('app').value;
     const key = document.getElementById('key').value;
@@ -96,7 +95,7 @@ async function saveConfig() {
     await fetchAppConfig();
     
     // Hide the config page
-    document.getElementById('configPage').classList.add('hidden');
+    document.getElementById('cue-config-container').classList.add('hidden');
 }
 
 // Fetch cue by cueNumber, and renders on config page
@@ -105,7 +104,7 @@ async function showConfigPage(cueNumber) {
 
     // Check if the selectedCue object has the expected structure
     if (selectedCue) {
-        document.getElementById('configHeader').textContent = `Settings for cue-${cueNumber}`;
+        document.getElementById('cue-config-header').textContent = `Settings for cue-${cueNumber}`;
         // Set the cue name
         document.getElementById('name').value = selectedCue.name || '';
 
@@ -135,7 +134,7 @@ async function showConfigPage(cueNumber) {
     }
 
     // Show the config page (if hidden)
-    document.getElementById('configPage').classList.remove('hidden');
+    document.getElementById('cue-config-container').classList.remove('hidden');
 }
 
 // Get appConfig and render on gui
@@ -158,6 +157,7 @@ async function setActiveCue(number) {
 
     fetchAppConfig();
 }
+
 
 module.exports = { 
     fetchAppConfig, 
