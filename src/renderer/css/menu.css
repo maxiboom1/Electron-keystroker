@@ -1,0 +1,50 @@
+
+/* **************************** Menu items  **************************** */
+
+#custom-menu {
+    display: flex;
+    background-color: rgb(22, 22, 22);
+    color: white;
+    padding: 2px;
+    margin-bottom: 15px;
+}
+
+.menu-item {
+    padding: 0px 10px;
+    cursor: pointer;
+    color:rgb(201, 201, 201);
+    position: relative;
+}
+
+.menu-item:hover {
+    background-color: #555;
+}
+
+/* **************************** Sub-menu items  **************************** */
+
+.submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgb(22, 22, 22);
+    min-width: 150px;
+    z-index: 1;
+    border-radius: 4px;
+    border: 1px solid #7a867a;
+}
+
+.submenu-item {
+    padding: 3px 30px; /* up/ left */
+    cursor: pointer;
+}
+
+.submenu-item:hover {
+    background-color: rgb(49, 49, 49);
+    color:rgb(200, 200, 200)
+}
+
+.menu-item:hover .submenu {
+    display: block;
+}
+

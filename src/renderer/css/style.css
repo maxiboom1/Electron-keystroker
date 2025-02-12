@@ -1,14 +1,64 @@
-body{
-    background-color: rgb(66, 65, 65);
-    font-family: serif;
+/* **************************** General page styles   **************************** */
 
+body{
+    background-color: rgb(44, 44, 44);
+    font-family: serif;
 }
+
+.app-header{
+    margin: auto;
+}
+
+/* Form inputs styles across the app */
+.custom-input {
+    background-color: rgb(212, 212, 212); /* Change the color value as needed */
+    border-radius: 3px; 
+    padding: 7px; 
+}
+
+.app-font-color{
+    color:rgb(201, 201, 201);
+}
+
+/* Used in footer and about-app text inserts */
+span{
+    margin-left: 5px;
+    font-size: 14px;
+    font-family:'Courier New', Courier, monospace;
+    color:rgb(201, 201, 201);
+}
+
+.hidden{
+    display:none;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#footer-container{
+    background-color: rgb(22, 22, 22);;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.logo-container img {
+    margin: 3px; /* Adjust fine-tune the vertical position */
+}
+
+/* **************************** Notification container  **************************** */
 
 
 #notification {
     position: fixed;
-    top: 10px;
-    right: 10px;
+    top: 40px;
+    right: 20px;
     padding: 10px;
     max-width: 300px;
     background-color: #559455; /* Green background color */
@@ -18,116 +68,84 @@ body{
     transition: opacity 0.5s ease-in-out;
 }
 
-.hidden{
-    display:none;
-}
-
 #notification.error {
     background-color: #8d4242; /* Red background color for error */
 }
 
+/* **************************** Main buttons container  **************************** */
 
-.custom-input {
-    background-color: rgb(200, 200, 200); /* Change the color value as needed */
-}
-
-/* Override Bootstrap's default focus styles for input fields */
-.custom-input:focus {
-    background-color: rgb(229, 226, 226) !important; /* Ensure the background color stays consistent on focus */
-    border-color: rgba(0, 0, 0, 0.15) !important; /* Override the border color */
-    box-shadow: none !important; /* Remove any box shadow */
-}
-
-.app-txt{
-    color:rgb(224, 224, 224);
-    /* color:#63a263; */
-}
-
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: rgb(0, 0, 0);
-}
-
-span{
-    margin-left: 5px;
-    font-size: 14px;
-    font-family:'Courier New', Courier, monospace;
-    color:rgb(201, 201, 201);
-}
-
-.logo-container {
+.button-palette {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-.logo-container img {
-    margin: 3px; /* Adjust this value as needed to fine-tune the vertical position */
+    flex-wrap: wrap; /* Allow wrapping of buttons */
+    justify-content: center; /* Center the buttons */
+    margin-top: 5px; /*Add some space above the button palette */
+    margin-bottom: 35px;
 }
 
-/* Modal Styles */
+.btn-square {
+    width: 100%; /* Make buttons fill the column width */
+    height: 150px; /* Set a fixed height for buttons */
+    font-size: 20px; /* Increase font size for better readability */
+    margin-bottom: 5px; /* Space between rows of buttons */
+}
+
+.btn-primary:hover {
+    background-color: #007bff; /* Change to a lighter blue on hover */
+    border-color: #007bff; /* Match border color */
+}
+
+/* **************************** Config forms container   **************************** */
+
+#cue-config-container, #app-config-container {
+    margin-top: 15px;
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Add some padding inside the border */
+    background-color: rgb(31 31 31 / 44%); /* Slightly transparent background */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a subtle shadow for depth */
+    border: 1px solid #6b7b6b;
+}
+
+#cue-config-header, #app-config-header{
+    text-align: center;
+    margin-top: 0px;
+    color:rgb(224, 224, 224);
+}
+
+
+/************************* About app page *************************/
+
+.about-app-title {
+    
+    margin-bottom: 25px;
+    font-family: serif;
+    font-size: 22px;
+    text-align: center;
+    color:rgb(224, 224, 224);
+}
+
+#about-app-container{
+    display: none;
+}
+
+/************************* Modal Styles *************************/
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    left: 50%;
-    top: 0px;
-    overflow: hidden;
-    transform: translateX(-50%); /* Center it horizontally */
-    background-color: rgb(0, 0, 0); /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.741); /* Black w/ opacity */
+    left: 0;
+    top: 20px;
+    width: 100%; /* Cover the entire screen */
+    height: 100%; /* Cover the entire screen */
+    background-color: rgba(0, 0, 0, 0.881); /* Black w/ opacity */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
 }
 
 .modal-content {
     background-color: #483c3c;
-    margin-top:5px;
-    margin-left:auto;
-    margin-right: auto;
     padding: 15px;
-    border: 3px solid #49bd41;
-    width: 330px; /* Could be more or less, depending on screen size */
+    border: 1px solid #49bd41;
+    width: 380px; 
     height: 230px;
 }
 
-.modal-title {
-    margin-bottom: 30px;
-    font-weight: bold;
-    font-family: serif;
-    font-size: 22px;
-    text-align: center;
-    color: #63a263;
-}
-
-/* TOP NAVBAR ----------------------------------*/
-
-.topNavbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-.leftSpacer, .iconContainer {
-    flex: 1;
-}
-
-.app-txt {
-    flex: 2;
-    text-align: center;
-    margin: 0; /* Removes default margin for h3 */
-}
-
-.iconContainer {
-    text-align: right;
-}
-
-.settingsIcon {
-    height: 24px;
-    width: auto;
-    transition: color 0.3s ease; /* Smooth transition for hover effect */
-}
-
-.settingsIcon:hover {
-    filter: brightness(0.5); /* Example hover effect: darkens the icon */
-}

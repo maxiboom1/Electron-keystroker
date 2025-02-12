@@ -11,91 +11,85 @@ const expressApp = require('./server'); // Assuming the file is named server.js
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
-  // This instance was unable to obtain the lock and is a second instance
-  dialog.showErrorBox("Application Already Running", "Another instance of the application is already running.");
-  app.quit();
+    // This instance was unable to obtain the lock and is a second instance
+    dialog.showErrorBox("Application Already Running", "Another instance of the application is already running.");
+    app.quit();
 }
 
 app.whenReady().then(async () => {
 
-  // Set userFolderPath in appConfig
-  await appConfig.setConfigFilePath(path.join(app.getPath('userData'), 'config.json'));
-  
-  const win = createWindow();
-  setupTray(win);
-  serialService.connect(appConfig.getComPort);
-  getAvailableWindows();
-  expressApp();
+    // Set userFolderPath in appConfig
+    await appConfig.setConfigFilePath(path.join(app.getPath('userData'), 'config.json'));
+
+    const win = createWindow();
+    setupTray(win);
+    serialService.connect(appConfig.getSerialPort());
+    //getAvailableWindows();
+    expressApp();
 });
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
+    if (process.platform !== "darwin") {
+        app.quit();
+    }
 });
 
 serialService.on('port-opened', () => {
-  console.log(`Event:port-opened`);
+    console.log(`Event:port-opened`);
 
-  BrowserWindow.getAllWindows().forEach(window => {
-    window.webContents.send('update-led', 'yellow');
-  });
+    BrowserWindow.getAllWindows().forEach(window => {
+        window.webContents.send('update-led', 'yellow');
+    });
 });
 
 serialService.on('connected', () => {
-  console.log(`Event:connected`);
-  BrowserWindow.getAllWindows().forEach(window => {
-    window.webContents.send('update-led', 'green');
-  });
+    console.log(`Event:connected`);
+    BrowserWindow.getAllWindows().forEach(window => {
+        window.webContents.send('update-led', 'green');
+    });
 });
 
-serialService.on('data', (data)=> {
-  console.log("Received serial data on main serial listener:", data);
-  if (data === "tick") {
-    focusWindow();
-  }else {
-    console.error("Unexpected serial data received:", data);
-  }
+serialService.on('data', (data) => {
+    console.log("Received serial data on main serial listener:", data);
+    if (data === "tick") {
+        focusWindow();
+    } else {
+        console.error("Unexpected serial data received:", data);
+    }
 });
 
 serialService.on('disconnected', () => {
-  console.log(`Event:disconnected`);
-  BrowserWindow.getAllWindows().forEach(window => {
-    window.webContents.send('update-led', 'red');
-  });
+    console.log(`Event:disconnected`);
+    BrowserWindow.getAllWindows().forEach(window => {
+        window.webContents.send('update-led', 'red');
+    });
 });
 
 serialService.on('error', (error) => console.log(`Error: ${error.message}`));
 
 // --------------------------- Ipc listeners/handlers --------------------------- //
 
-ipcMain.handle('getAppConfig', async (event) => { return appConfig; });
+ipcMain.handle('appClose', async (event) => { 
+    app.isQuitting = true; 
+    app.quit(); 
+    return;
+});
 
-ipcMain.handle('update-config', async (event, config) => { 
-  
-  try {
+ipcMain.handle('getConfig', async (event) => { return appConfig.getConfig() });
+
+ipcMain.handle('getCueByNumber', async (event, number) => { return appConfig.getCueByNumber(number); });
+
+ipcMain.handle('modifyCue', async (event, cue, number) => { return appConfig.modifyCue(cue, number) });
+
+ipcMain.handle('setCueToActive', async (event, number) => { return appConfig.setCueToActive(number) });
+
+ipcMain.handle('setSerialPort', async (event, serialPort) => { 
     
-    if(appConfig.serialPort !== config.serialPort){ 
-      console.log(`switching from ${appConfig.serialPort} to ${config.serialPort}` )
-      serialService.closeConnection();
-      setTimeout(()=>serialService.connect(config.serialPort),2000);
+    if(serialPort !== appConfig.getSerialPort()){
+        console.log(`switching from ${appConfig.getSerialPort()} to ${serialPort}`);
+        appConfig.setSerialPort(serialPort);
+        serialService.closeConnection();
+        serialService.connect(serialPort)
     }
-    appConfig.setConfig(config);
-
-    return {
-      succeed: true, 
-      message: "Configuration updated successfully"
-    };
-
-  } catch (error) {
-    
-    console.error("Failed to update configuration:", error);
-    
-    return {
-      succeed: false, 
-      message: "Failed to update configuration. See logs for details"
-    };
-
-  }
-
+    return;
 });
