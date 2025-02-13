@@ -15,8 +15,8 @@ function focusWindow() {
     const targetWindow = windows.find(win => win.getTitle().includes(cue.app));
     if (targetWindow) {
         targetWindow.bringToTop();
-        targetWindow.maximize();
         sendKeystroke(cue.keyTap);
+        //targetWindow.minimize(); 
     }
 
     return;

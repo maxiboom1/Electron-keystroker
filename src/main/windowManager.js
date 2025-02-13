@@ -7,7 +7,7 @@ function createWindow() {
 
     let win = new BrowserWindow({
         width: 800,
-        height: 280,
+        height: 750,
         icon: path.join(app.getAppPath(), 'src', 'assets', 'favicon.ico'),
         resizable: true,
         webPreferences: {

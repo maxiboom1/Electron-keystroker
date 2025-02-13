@@ -149,3 +149,22 @@ footer {
     height: 230px;
 }
 
+/************************* Vertical strollbars *************************/
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+    width: 0px; /* Width of the scrollbar */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent; /* Transparent track */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2); /* Semi-transparent thumb */
+    border-radius: 5px; /* Rounded corners */
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.4); /* Slightly darker on hover */
+  }
