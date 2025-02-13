@@ -5,15 +5,15 @@ const appConfig = require("../services/appConfig.js");
 const serialService = require("../services/serialService.js");
 const createWindow = require('./windowManager');
 const setupTray = require('./trayManager');
-const { focusWindow, getAvailableWindows } = require("./robotActions");
+const { focusWindow } = require("./robotActions");
 const expressApp = require('./server'); // Assuming the file is named server.js
 
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
-    // This instance was unable to obtain the lock and is a second instance
     dialog.showErrorBox("Application Already Running", "Another instance of the application is already running.");
     app.quit();
+    return;
 }
 
 app.whenReady().then(async () => {

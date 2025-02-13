@@ -13,11 +13,10 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
-            zoomFactor: 1.0
         },
     });
 
-    //win.webContents.openDevTools(); // Open dev tools
+    win.webContents.openDevTools(); // Open dev tools
 
     win.loadFile(path.join(app.getAppPath(), 'src', 'renderer', 'index.html'));
 

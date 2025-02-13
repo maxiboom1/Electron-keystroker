@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./css/menu.css">
 </head>
 <body>
-    <section data-area="ALL APP">
+    
     <!-- Custom menu -->
     <div id="custom-menu">
         <!-- File Menu -->
@@ -160,80 +160,44 @@
     <div id="notification" class="hidden">
         <div id="notification-text"></div>
     </div>
-    </section>
-    
-    
+
     <!-- Global app-config page -->
     <div class="container hidden" id="app-config-div">         
-        <div class="container-fluid">
-            <!-- Header -->
-            <div class="row bg-light py-3">
-                <div class="col">
-                    <h2>General Configuration</h2>
-                </div>
-            </div>
-    
-            <!-- Main Content -->
-            <div class="row">
-                <!-- Vertical Tabs -->
-                <div class="col-3 bg-light">
-                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <a class="nav-link active" id="v-pills-general-tab" data-bs-toggle="pill" href="#v-pills-general" role="tab" aria-controls="v-pills-general" aria-selected="true">General</a>
-                        <a class="nav-link" id="v-pills-dom-tab" data-bs-toggle="pill" href="#v-pills-dom" role="tab" aria-controls="v-pills-dom" aria-selected="false">DOM Setting</a>
-                        <a class="nav-link" id="v-pills-user-tab" data-bs-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="false">User Setting</a>
-                    </div>
-                </div>
-    
-                <!-- Tab Content -->
-                <div class="col-9">
-                    <div class="tab-content" id="v-pills-tabContent">
-                        <!-- General Tab -->
-                        <div class="tab-pane fade show active" id="v-pills-general" role="tabpanel" aria-labelledby="v-pills-general-tab">
-                            <form>
-                                <div class="mb-3">
-                                    <label for="setting1" class="form-label">Setting1</label>
-                                    <input type="text" class="form-control" id="setting1">
-                                </div>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="setting2">
-                                    <label class="form-check-label" for="setting2">Setting2</label>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="setting3" class="form-label">Setting3</label>
-                                    <select class="form-select" id="setting3">
-                                        <option selected>Option 1</option>
-                                        <option>Option 2</option>
-                                        <option>Option 3</option>
-                                    </select>
-                                </div>
-                            </form>
-                        </div>
-    
-                        <!-- DOM Setting Tab -->
-                        <div class="tab-pane fade" id="v-pills-dom" role="tabpanel" aria-labelledby="v-pills-dom-tab">
-                            <p>DOM settings content goes here...</p>
-                        </div>
-    
-                        <!-- User Setting Tab -->
-                        <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
-                            <p>User settings content goes here...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-            <!-- Footer Buttons -->
-            <div class="row mt-3">
-                <div class="col text-end">
-                    <button type="button" class="btn btn-secondary">Cancel</button>
-                    <button type="button" class="btn btn-primary">Save</button>
-                </div>
-            </div>
+        <!-- Navbar / Header -->
+        <div class="navbar">
+            <h3 class="app-font-color app-header">KeyStroker Setup</h3>
         </div>
+        <!-- Application Config Page -->
+        <div class="row g-3" id="app-config-container">
+            <h5 id="app-config-header">GPIO Settings</h5>
+            <div class="col-md-12">
+                <label class="form-label app-font-color">Select Com Port [USB]</label>
+                <select class="form-select custom-input" id="serial-port">
+                        <option value="COM1">Com-1</option>
+                        <option value="COM2">Com-2</option>
+                        <option value="COM3">Com-3</option>
+                        <option value="COM4">Com-4</option>
+                        <option value="COM5">Com-5</option>
+                        <option value="COM6">Com-6</option>
+                        <option value="COM7">Com-7</option>
+                        <option value="COM8">Com-8</option>
+                        <option value="COM9">Com-9</option>
+                        <option value="COM10">Com-10</option>
+                        <option value="COM11">Com-11</option>
+                        <option value="COM12">Com-12</option>
+                  </select>
+            </div> 
+            <div class="col-md-12">
+                <button class="btn btn-secondary" id="set-com-port">Save config</button> 
+                <button class="btn btn-secondary" id="close-app-settings">Exit</button> 
+            </div> 
+
+            
+        </div>        
+        
     </div>
     
     <script src="./js/index.js"></script>
-    <script src="./js/bootstrap5.3/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

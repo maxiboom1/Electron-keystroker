@@ -55,7 +55,7 @@ async modifyCue(cue, number)
 
 - Style: Hidden Vertical scrollbar now on app - small change with big impact app visibility
 - Style: Added sticky option to top menu - it always on the top of the screen
-
+- Added new config page struct html with tabs (not styled yet)
 ### 1.1.4
 
 - Added Application menu: File (Exit), Settings(preferences), About(about page).
