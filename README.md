@@ -51,6 +51,14 @@ async modifyCue(cue, number)
 
 ## Change-log:
 
+### 1.1.6
+
+- Finished with app-settings UI - implemented solid settings canvas, with left-sided vertical tabs togglers.
+- Save settings now sends config{serialPort, allowGlobals} - while allowGlobals allows user to leave the app field empty and send global keystrokes.
+- Cue-button key indicator styling
+- Adjusted AppConfig methods and props to handle allowGlobals.
+- App version dynamic injection from index.js (should be moved to backend appVersion prop.)
+
 ### 1.1.5
 
 - Style: Hidden Vertical scrollbar now on app - small change with big impact app visibility
@@ -65,7 +73,7 @@ async modifyCue(cue, number)
 - HTML && CSS Name convention changed:
 * Moved from camelCase (```communicationConfig```) to kebab-case (```app-config-container```), which is a good practice for HTML and CSS.
 * Semantic class names like navbar, footer, modal, and notification.
-* The use of descriptive IDs like ```gpio-led```, ```set-cue-button```, and ```about-app-container``` makes it easier to understand the functionality of each element.
+* The use of descriptive IDs like ```gpio-led```, ```set-cue-config```, and ```about-app-container``` makes it easier to understand the functionality of each element.
 - CSS file was cleaned from some duplicate rules, minimized and separated by page areas (General, navbar, main buttons, config forms etc..)
 - RobotJs focusWindow() adapted to new appConfig methods and cue structure
 

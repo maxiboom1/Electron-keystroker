@@ -4,14 +4,19 @@ const { showNotification } = require('./notifications.js');
 
 // ************** Onload config fetching and rendering ************** //
 
-async function fetchAppConfig() {
+async function fetchAppConfig(renderOnlyConfig = false) {
+    
     try {
-        // Get config as {cues{}, serialPort}
-        const config = await ipcRenderer.invoke('getConfig');
-        // Render cues on buttons
-        renderCues(config.cues);
-        // Set serial port
-        document.getElementById('serial-port').value = config.serialPort;
+    
+    // Get config as {cues{}, number: serialPort, boolean: allowGlobals}
+    const config = await ipcRenderer.invoke('getConfig');
+    document.getElementById('serial-port').value = config.serialPort;
+    document.getElementById('allow-globals').checked = config.allowGlobals;   
+    
+    if(renderOnlyConfig) return; // If we render only config values - return here.
+    
+    renderCues(config.cues);
+
     } catch (error) {
         console.error('Error fetching app config:', error);
     }
@@ -49,10 +54,12 @@ function updateButtonModifiers(button, key, modifiers, isActive) {
 
     // Add modifiers
     modifiers.forEach(mod => {
-        const modifierElement = document.createElement('span');
-        modifierElement.className = 'modifier-indicator';
-        modifierElement.textContent = mod;
-        modifierContainer.appendChild(modifierElement);
+        if(mod){// Don't render empty modifiers
+            const modifierElement = document.createElement('span');
+            modifierElement.className = 'key-modifier key-indicator';
+            modifierElement.textContent = mod;
+            modifierContainer.appendChild(modifierElement);
+        }
     });
 
     // Append modifier container to button
@@ -60,9 +67,11 @@ function updateButtonModifiers(button, key, modifiers, isActive) {
 
     // Set active state styling
     if (isActive) {
-        button.style.border = '4px solid red'; // Change border color to red
+        button.style.border = '3px solid red'; // Change border color to red
+        button.style.background = '#007bff';
     } else {
         button.style.border = ''; // Reset border if not active
+        button.style.background = '';
     }
 }
 
@@ -116,19 +125,26 @@ async function fetchCue(number) {
     }
 }
 
-async function saveConfig() {
+async function saveCueConfig() {
     const cueNumber = document.getElementById('cue-config-header').textContent.slice(-1);
     const name = document.getElementById('name').value;
     const app = document.getElementById('app').value;
     const key = document.getElementById('key').value;
     const mod1 = document.getElementById('mod1').value;
     const mod2 = document.getElementById('mod2').value;
+    const allowGlobals = document.getElementById('allow-globals').checked;
 
     // Config validation
-    if (name === "" || key === "" || app === "") {
+    if (name === "" || key === "" ) {
         showNotification("Complete all fields first", true);
         return;
     }
+    // Config App name validation
+    if (!allowGlobals && app === "" ) {
+        showNotification("Globals keystrokes disabled. Enter app name to focus", true);
+        return;
+    }
+
 
     const cue = {
         app,
@@ -167,23 +183,28 @@ async function setActiveCue(number) {
 // **************************** Application settings page **************************** //
 
 function showAppConfig(){
-    document.getElementById("app-main-div").classList.add('hidden');  
-    document.getElementById("app-config-div").classList.remove('hidden');   
+    const renderOnlyConfig = true;
+    fetchAppConfig(renderOnlyConfig);
+    document.getElementById("app-main-div").classList.add('d-none');  
+    document.getElementById('app-config-div').classList.remove('d-none');  
 }
 
 function closeAppConfig(){
-    document.getElementById("app-main-div").classList.remove('hidden');  
-    document.getElementById("app-config-div").classList.add('hidden');   
+    document.getElementById("app-main-div").classList.remove('d-none');  
+    document.getElementById("app-config-div").classList.add('d-none');   
 }
 
-async function setSerialPort(){
-    const serialPort = document.getElementById('serial-port').value;
+async function setAppConfig(){
+    const config = {
+        serialPort: document.getElementById('serial-port').value,
+        allowGlobals: document.getElementById('allow-globals').checked
+    }
     try {
-        await ipcRenderer.invoke('setSerialPort', serialPort);
-        showNotification(`COM port changed to ${serialPort}`);
+        await ipcRenderer.invoke('setConfig', config);
+        showNotification(`Application settings updated`);
         closeAppConfig();
     } catch (error) {
-        showNotification(`Failed to set COM port`, true);
+        showNotification(`Failed to update app settings`, true);
     }
 
 }
@@ -191,10 +212,10 @@ async function setSerialPort(){
 
 module.exports = { 
     fetchAppConfig, 
-    saveConfig , 
+    saveCueConfig , 
     showCueConfig, 
     setActiveCue,
     showAppConfig,
     closeAppConfig,
-    setSerialPort
+    setAppConfig
 };

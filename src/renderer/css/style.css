@@ -87,6 +87,7 @@ footer {
     height: 150px; /* Set a fixed height for buttons */
     font-size: 20px; /* Increase font size for better readability */
     margin-bottom: 5px; /* Space between rows of buttons */
+    background-color: #3d84bade;
 }
 
 .btn-primary:hover {
@@ -94,9 +95,23 @@ footer {
     border-color: #007bff; /* Match border color */
 }
 
-/* **************************** Config forms container   **************************** */
+.key-indicator{
+    background-color: #565656;
+    border-radius: 15%;
+    color: rgb(255, 255, 255);
+    padding: 3px;
+    position: relative;
+    top: 35px;
+    border: 1px solid black;
+}
 
-#cue-config-container, #app-config-container {
+.key-modifier{
+    background-color: rgb(80 133 86);
+}
+
+/* **************************** Cue edit container   **************************** */
+
+#cue-config-container {
     margin-top: 15px;
     border-radius: 8px; /* Rounded corners */
     padding: 20px; /* Add some padding inside the border */
@@ -105,7 +120,7 @@ footer {
     border: 1px solid #6b7b6b;
 }
 
-#cue-config-header, #app-config-header{
+#cue-config-header{
     text-align: center;
     margin-top: 0px;
     color:rgb(224, 224, 224);
@@ -168,3 +183,63 @@ footer {
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.4); /* Slightly darker on hover */
   }
+
+/************************* Application-config *************************/
+
+
+#app-config-div {
+    display: flex;
+    flex-direction: column;
+    height: 92vh; /* Full viewport height */
+    width: 100%; /* Full width */
+    padding-bottom:30px;
+    padding-left: 10px;
+    /* padding-right: 10px; */
+
+}
+
+#app-config-div > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#app-config-div .row.main-content {
+    flex: 1; /* Allow main content to take remaining space */
+    display: flex;
+}
+
+#app-config-div .row.header {
+    flex: 0; /* Prevent header from growing */
+}
+
+#app-config-div .col-3, #app-config-div .col-9 {
+    display: flex;
+    flex-direction: column;
+}
+
+#app-config-div .tab-content {
+    flex: 1;
+}
+
+#config-header{
+    text-align: center;
+    margin-top: 0px;
+    color:rgb(224, 224, 224);
+    margin-bottom: 25px;
+}
+
+/* side vertical menu buttons */
+#app-config-div .nav-link.active {
+    background-color:#484a4e;
+    color: #d9d9d9;
+}
+
+#app-config-div .nav-link {
+    
+    color: #acacac;
+}
+
+#config-nav-menu{
+    border-right: 1px solid #484a4e;
+}

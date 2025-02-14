@@ -1,12 +1,14 @@
 const { ipcRenderer } = require('electron');
-const { fetchAppConfig, saveConfig, showCueConfig, setActiveCue, closeAppConfig, setSerialPort } = require('./js/config.js');
+const { fetchAppConfig, saveCueConfig, showCueConfig, setActiveCue, closeAppConfig, setAppConfig } = require('./js/config.js');
 require(`./js/menu.js`); // Connect menu.js file
+const appVersion = "1.1.6";
 
-document.getElementById("set-cue-button").addEventListener("click", saveConfig);
-document.getElementById("set-com-port").addEventListener("click", setSerialPort);
-document.getElementById("close-app-settings").addEventListener("click", closeAppConfig);
-
-// Add event listeners to cue buttons
+// *************************** Event Listeners ******************************** //
+document.getElementById("set-cue-config").addEventListener("click", saveCueConfig);
+document.getElementById("set-app-config").addEventListener("click", setAppConfig);
+document.getElementById("close-app-config").addEventListener("click", closeAppConfig);
+document.getElementById("logo").addEventListener("click",() => openModal("about-app-container")); // Open about on logo click
+// listeners to cue buttons
 const buttons = document.querySelectorAll('.btn-square');
 buttons.forEach(button => {
     
@@ -15,12 +17,9 @@ buttons.forEach(button => {
     
     // Triggered by right-mouse click
     button.addEventListener('contextmenu', function(event) {
-        //event.preventDefault(); // Prevents the default right-click menu from appearing
-        const cueData = button.dataset.cue; // Fetch data-cue attribute from button
+        const cueData = button.dataset.cue; // Fetch "data-cue" attr from button
         showCueConfig(cueData);
 });});
-
-
 // Async com-status updates from main.js
 ipcRenderer.on('update-led', (event, color) => {
     
@@ -41,13 +40,7 @@ async function handleCueClick(event){
     await setActiveCue(cueNumber);
 }
 
-// Entry point on load - request config from main
-fetchAppConfig();
-
 // *************************** MODAL ******************************** //
-
-// Open modal
-document.getElementById("logo").addEventListener("click",() => openModal("about-app-container"));
 
 // Close modal
 const modal = document.getElementById("modal");
@@ -60,3 +53,8 @@ function openModal(contentId) {
     modalContent.innerHTML = content.innerHTML; // Update the modal content
     modal.style.display = "flex"; // Open the modal
 }
+
+
+// Entry point on load - request config from main and set app version
+fetchAppConfig();
+document.getElementById('app-version').textContent ='I/O Systems Keystroker '+ appVersion;

@@ -83,13 +83,15 @@ ipcMain.handle('modifyCue', async (event, cue, number) => { return appConfig.mod
 
 ipcMain.handle('setCueToActive', async (event, number) => { return appConfig.setCueToActive(number) });
 
-ipcMain.handle('setSerialPort', async (event, serialPort) => { 
+ipcMain.handle('setConfig', async (event, config) => { 
     
-    if(serialPort !== appConfig.getSerialPort()){
-        console.log(`switching from ${appConfig.getSerialPort()} to ${serialPort}`);
-        appConfig.setSerialPort(serialPort);
+    if(config.serialPort !== appConfig.getSerialPort()){
+        console.log(`switching from ${appConfig.getSerialPort()} to ${config.serialPort}`);
+        appConfig.setConfig(config);
         serialService.closeConnection();
-        serialService.connect(serialPort)
+        serialService.connect(config.serialPort);
+    } else {
+        appConfig.setConfig(config);
     }
     return;
 });

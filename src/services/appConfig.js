@@ -5,6 +5,7 @@ class AppConfig {
     constructor() {
         this.configFilePath = "";
         this._serialPort = "COM3"; // Use a private variable
+        this.allowGlobals = false;
         this.cues = this._initializeCues(); // Initialize cues
     }
 
@@ -33,7 +34,8 @@ class AppConfig {
     getConfig(){
         return {
             cues: this.cues,
-            serialPort: this._serialPort
+            serialPort: this._serialPort,
+            allowGlobals:this.allowGlobals
         }
     }
     
@@ -65,17 +67,17 @@ class AppConfig {
         await this.saveToFile();
     }
 
-
-
     // *********************************  Serial Port  ********************************* //
 
     // Method to get the serial port
     getSerialPort() {
         return this._serialPort;
     }
+    
     // Method to set the serial port
-    async setSerialPort(serialPort) {
-        this._serialPort = serialPort;
+    async setConfig(config) {
+        this._serialPort = config.serialPort;
+        this.allowGlobals = config.allowGlobals;
         await this.saveToFile();
     }
 
