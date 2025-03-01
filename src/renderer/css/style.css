@@ -87,7 +87,7 @@ footer {
     height: 150px; /* Set a fixed height for buttons */
     font-size: 20px; /* Increase font size for better readability */
     margin-bottom: 5px; /* Space between rows of buttons */
-    background-color: #3d84bade;
+    /* background-color: #3d84bade; */
 }
 
 .btn-primary:hover {
@@ -97,12 +97,11 @@ footer {
 
 .key-indicator{
     background-color: #565656;
-    border-radius: 15%;
     color: rgb(255, 255, 255);
     padding: 3px;
     position: relative;
     top: 35px;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .key-modifier{
@@ -194,7 +193,6 @@ footer {
     width: 100%; /* Full width */
     padding-bottom:30px;
     padding-left: 10px;
-    /* padding-right: 10px; */
 
 }
 
@@ -242,4 +240,9 @@ footer {
 
 #config-nav-menu{
     border-right: 1px solid #484a4e;
+}
+
+.app-config-btn{
+    width: 120px;
+    margin-left: 5px;
 }

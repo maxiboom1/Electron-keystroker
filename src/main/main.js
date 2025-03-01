@@ -50,9 +50,12 @@ serialService.on('connected', () => {
 });
 
 serialService.on('data', (data) => {
-    console.log("Received serial data on main serial listener:", data);
+    
     if (data === "tick") {
+        console.log("tick");
         focusWindow();
+    } else if(data === "ack"){
+        console.log(`Received ack from GPIO Box`);
     } else {
         console.error("Unexpected serial data received:", data);
     }

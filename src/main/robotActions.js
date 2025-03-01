@@ -60,6 +60,7 @@ function focusWindowHTTP(gpi1) {
 
     return;
 }
+
 module.exports = {
     focusWindow,
     sendKeystroke,

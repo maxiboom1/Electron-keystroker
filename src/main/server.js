@@ -9,8 +9,9 @@ function startServer() {
 
     server.post('/api', (req, res) => {
         const data = req.body;
+        console.log(data)
         setTimeout(() => {
-            focusWindowHTTP(data);
+            //focusWindowHTTP(data);
         }, 50);
         
         res.send("ack");
