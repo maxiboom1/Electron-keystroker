@@ -95,22 +95,24 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 
 | **Field**           | **Size (Bytes)** | **Offset** | **Default Value**    |
 |---------------------|------------------|------------|----------------------|
-| Device IP           | 4                | 0-3        | `""` (empty, 0.0.0.0)|
-| TCP Enabled         | 1                | 4          | 0 (off)              |
-| TCP IP              | 4                | 5-8        | `""` (empty, 0.0.0.0)|
-| TCP Port            | 2                | 9-10       | 0 (empty)            |
-| TCP Secure          | 1                | 11         | 0 (off)              |
-| TCP User            | 32               | 12-43      | `""` (empty)         |
-| TCP Password        | 32               | 44-75      | `""` (empty)         |
-| HTTP Enabled        | 1                | 76         | 0 (off)              |
-| HTTP URL            | 64               | 77-140     | `""` (empty)         |
-| HTTP Secure         | 1                | 141        | 0 (off)              |
-| HTTP User           | 32               | 142-173    | `""` (empty)         |
-| HTTP Password       | 32               | 174-205    | `""` (empty)         |
-| Serial Enabled      | 1                | 206        | 0 (off)              |
-| Admin Password      | 32               | 207-238    | `admin`              |
-| Config Flag         | 1                | 239        | 0xAA (configured)    |
-| **Total**           | **240 bytes**    |            |                      |
+| Device IP           | 4                | 0-3        | `10.168.0.177`       |
+| Gateway             | 4                | 4-7        | `10.168.0.1`         |
+| Subnet Mask         | 4                | 8-11       | `255.255.255.0`      |
+| TCP Enabled         | 1                | 12         | 0 (off)              |
+| TCP IP              | 4                | 13-16      | `0.0.0.0` (empty)    |
+| TCP Port            | 2                | 17-18      | 0 (empty)            |
+| TCP Secure          | 1                | 19         | 0 (off)              |
+| TCP User            | 32               | 20-51      | `""` (empty)         |
+| TCP Password        | 32               | 52-83      | `""` (empty)         |
+| HTTP Enabled        | 1                | 84         | 0 (off)              |
+| HTTP URL            | 64               | 85-148     | `""` (empty)         |
+| HTTP Secure         | 1                | 149        | 0 (off)              |
+| HTTP User           | 32               | 150-181    | `""` (empty)         |
+| HTTP Password       | 32               | 182-213    | `""` (empty)         |
+| Serial Enabled      | 1                | 214        | 0 (off)              |
+| Admin Password      | 32               | 215-246    | `"admin"`            |
+| Config Flag         | 1                | 247        | 0xAA (configured)    |
+| **Total**           | **248 bytes**    |            |                      |
 
 #### Notes:
 - Fits within ESP32’s 512-byte EEPROM.

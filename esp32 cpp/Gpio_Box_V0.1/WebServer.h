@@ -9,7 +9,7 @@ extern LiquidCrystal_I2C lcd; // For LCD updates
 
 // Forward declarations
 void sendConfigPage(EthernetClient& client);
-void handleSaveIp(EthernetClient& client, String body);
+void handleSaveSettings(EthernetClient& client, String body);
 
 void handleWebClient(EthernetServer& server) {
   EthernetClient client = server.available();
@@ -58,7 +58,7 @@ void handleWebClient(EthernetServer& server) {
           bodyBytesRead++;
           if (bodyBytesRead == contentLength) {
             Serial.println("Full body received: " + body);
-            handleSaveIp(client, body);
+            handleSaveSettings(client, body);
             break;
           }
         }
@@ -153,7 +153,7 @@ void sendConfigPage(EthernetClient& client) {
   }
 }
 
-void handleSaveIp(EthernetClient& client, String body) {
+void handleSaveSettings(EthernetClient& client, String body) {
   StaticJsonDocument<512> doc;
   DeserializationError error = deserializeJson(doc, body);
   if (error) {

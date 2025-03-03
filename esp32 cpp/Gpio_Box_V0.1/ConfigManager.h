@@ -34,62 +34,33 @@ void initConfig(Config& config) {
     Serial.println("Failed to initialize EEPROM");
     return;
   }
-
-  // Debug: Read current EEPROM bytes for IP (offsets 0-3) and configFlag (239)
-  Serial.print("Checking EEPROM IP (0-3) before reset: ");
-  for (int i = 0; i < 4; i++) {
-    Serial.print(EEPROM.read(i), HEX);
-    Serial.print(" ");
+  
+  if (EEPROM.read(239) != 0xAA) {
+    // Defaults (as per project document)
+    config.deviceIp = IPAddress(10, 168, 0, 177); // Default IP
+    config.tcpEnabled = false;
+    config.tcpIp = IPAddress(0, 0, 0, 0); // Empty
+    config.tcpPort = 0;
+    config.tcpSecure = false;
+    memset(config.tcpUser, 0, 32);
+    memset(config.tcpPassword, 0, 32);
+    config.httpEnabled = false;
+    memset(config.httpUrl, 0, 64); // Empty URL
+    config.httpSecure = false;
+    memset(config.httpUser, 0, 32);
+    memset(config.httpPassword, 0, 32);
+    config.serialEnabled = false;
+    strncpy(config.adminPassword, "admin", 32);
+    config.configFlag = 0xAA;
+    saveConfig(config);
+    Serial.println("EEPROM initialized with defaults, IP: 10.168.0.177");
+  } else {
+    loadConfig(config);
+    Serial.println("EEPROM configured, loading existing config...");
   }
-  Serial.println();
-  Serial.print("Checking config flag at offset 239: ");
-  Serial.println(EEPROM.read(239), HEX);
 
-  // Temporary: Reset EEPROM to ensure defaults (remove after testing)
-  Serial.println("Temporarily resetting EEPROM to defaults...");
-  for (int i = 0; i < EEPROM_SIZE; i++) {
-    EEPROM.write(i, 0);
-  }
-  EEPROM.commit();
-  Serial.println("EEPROM cleared to zeros");
-
-  // Set defaults manually
-  IPAddress defaultIp(10, 168, 0, 177);
-  EEPROM.write(0, defaultIp[0]); // IP: 10.168.0.177
-  EEPROM.write(1, defaultIp[1]);
-  EEPROM.write(2, defaultIp[2]);
-  EEPROM.write(3, defaultIp[3]);
-  EEPROM.write(4, false);   // tcpEnabled = false
-  EEPROM.write(5, 0);       // tcpIp = 0.0.0.0
-  EEPROM.write(6, 0);
-  EEPROM.write(7, 0);
-  EEPROM.write(8, 0);
-  EEPROM.write(9, 0);       // tcpPort = 0
-  EEPROM.write(10, 0);
-  EEPROM.write(11, false);  // tcpSecure = false
-  for (int i = 12; i < 76; i++) EEPROM.write(i, 0); // Clear tcpUser, tcpPassword
-  EEPROM.write(76, false);  // httpEnabled = false
-  for (int i = 77; i < 141; i++) EEPROM.write(i, 0); // Clear httpUrl
-  EEPROM.write(141, false); // httpSecure = false
-  for (int i = 142; i < 206; i++) EEPROM.write(i, 0); // Clear httpUser, httpPassword
-  EEPROM.write(206, false); // serialEnabled = false
-  for (int i = 207; i < 239; i++) EEPROM.write(i, 0); // Clear adminPassword
-  EEPROM.write(239, 0xAA);  // Set configFlag
-  EEPROM.commit();
-  Serial.println("EEPROM initialized with defaults, IP: 10.168.0.177");
-
-  // Load the defaults into config
-  loadConfig(config);
   Serial.print("Loaded IP from EEPROM: ");
   Serial.println(config.deviceIp);
-
-  // Debug: Verify EEPROM IP after write/load
-  Serial.print("EEPROM IP (0-3) after operation: ");
-  for (int i = 0; i < 4; i++) {
-    Serial.print(EEPROM.read(i), HEX);
-    Serial.print(" ");
-  }
-  Serial.println();
 }
 
 void loadConfig(Config& config) {
@@ -116,9 +87,6 @@ void loadConfig(Config& config) {
   config.serialEnabled = EEPROM.read(206);
   EEPROM.get(207, config.adminPassword);
   config.configFlag = EEPROM.read(239);
-
-  Serial.print("Loaded config from EEPROM, IP: ");
-  Serial.println(config.deviceIp);
 }
 
 void saveConfig(const Config& config) {
