@@ -31,7 +31,10 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 ### 4. Configuration Page
 - **Style**: Minimal HTML with CSS, featuring a footer (e.g., "GPIO Box v1.0").
 - **Sections**:
-  - **Device Address**: IP address (text input, default empty `""`).
+  - **Device Address**: 
+    - IP address (text input, default `10.168.0.177`).
+    - Subnet mask (text input, default `255.255.255.0`).
+    - Gateway (text input, default `10.168.0.1`).
   - **TCP Settings**:
     - Enabled (checkbox, off by default).
     - IP (text input, default `""`).

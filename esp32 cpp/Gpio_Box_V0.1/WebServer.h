@@ -76,12 +76,17 @@ void handleWebClient(EthernetServer& server) {
 
 void sendConfigPage(EthernetClient& client) {
   String ipStr = config.deviceIp.toString();
+  String gatewayStr = config.gateway.toString();
+  String subnetStr = config.subnetMask.toString();
   String tcpIpStr = config.tcpIp.toString();
+
   String htmlContent = "<!DOCTYPE html><html><body style='font-family: Arial; margin: 20px;'>"
                        "<h2 style='border-bottom: 1px solid #ccc;'>GPIO Box Configuration</h2>"
                        "<form id='configForm' onsubmit='sendJson(event)'>"
-                       "<h3>Device Address</h3>"
-                       "IP: <input type='text' name='ip' value='" + ipStr + "'><br><br>"
+                       "<h3>Network Settings</h3>"
+                       "IP: <input type='text' name='ip' value='" + ipStr + "'><br>"
+                       "Gateway: <input type='text' name='gateway' value='" + gatewayStr + "'><br>"
+                       "Subnet Mask: <input type='text' name='subnetMask' value='" + subnetStr + "'><br><br>"
 
                        "<h3>TCP Settings</h3>"
                        "Enabled: <input type='checkbox' name='tcpEnabled' " + (config.tcpEnabled ? "checked" : "") + "><br>"
@@ -111,6 +116,8 @@ void sendConfigPage(EthernetClient& client) {
                        "  event.preventDefault();"
                        "  let data = {"
                        "    ip: document.querySelector('input[name=ip]').value,"
+                       "    gateway: document.querySelector('input[name=gateway]').value,"
+                       "    subnetMask: document.querySelector('input[name=subnetMask]').value,"
                        "    tcpEnabled: document.querySelector('input[name=tcpEnabled]').checked,"
                        "    tcpIp: document.querySelector('input[name=tcpIp]').value,"
                        "    tcpPort: parseInt(document.querySelector('input[name=tcpPort]').value) || 0,"
@@ -142,8 +149,6 @@ void sendConfigPage(EthernetClient& client) {
                     "Content-Length: " + String(contentLength) + "\r\n"
                     "Connection: close\r\n"
                     "\r\n" + htmlContent;
-  
-
 
   // Calculate actual bytes sent for debugging
   int bytesSent = 0;
@@ -171,6 +176,14 @@ void handleSaveSettings(EthernetClient& client, String body) {
   if (doc.containsKey("ip")) {
     String ipStr = doc["ip"].as<const char*>();
     newConfig.deviceIp.fromString(ipStr);
+  }
+  if (doc.containsKey("gateway")) {
+    String gatewayStr = doc["gateway"].as<const char*>();
+    newConfig.gateway.fromString(gatewayStr);
+  }
+  if (doc.containsKey("subnetMask")) {
+    String subnetStr = doc["subnetMask"].as<const char*>();
+    newConfig.subnetMask.fromString(subnetStr);
   }
   if (doc.containsKey("tcpEnabled")) newConfig.tcpEnabled = doc["tcpEnabled"].as<bool>();
   if (doc.containsKey("tcpIp")) {

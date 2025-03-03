@@ -9,20 +9,22 @@
 // Config structure
 struct Config {
   IPAddress deviceIp;         // 0-3
-  bool tcpEnabled;            // 4
-  IPAddress tcpIp;            // 5-8
-  uint16_t tcpPort;           // 9-10
-  bool tcpSecure;             // 11
-  char tcpUser[32];           // 12-43
-  char tcpPassword[32];       // 44-75
-  bool httpEnabled;           // 76
-  char httpUrl[64];           // 77-140
-  bool httpSecure;            // 141
-  char httpUser[32];          // 142-173
-  char httpPassword[32];      // 174-205
-  bool serialEnabled;         // 206
-  char adminPassword[32];     // 207-238
-  uint8_t configFlag;         // 239 (0xAA if configured)
+  IPAddress gateway;          // 4-7
+  IPAddress subnetMask;       // 8-11
+  bool tcpEnabled;            // 12
+  IPAddress tcpIp;            // 13-16
+  uint16_t tcpPort;           // 17-18
+  bool tcpSecure;             // 19
+  char tcpUser[32];           // 20-51
+  char tcpPassword[32];       // 52-83
+  bool httpEnabled;           // 84
+  char httpUrl[64];           // 85-148
+  bool httpSecure;            // 149
+  char httpUser[32];          // 150-181
+  char httpPassword[32];      // 182-213
+  bool serialEnabled;         // 214
+  char adminPassword[32];     // 215-246
+  uint8_t configFlag;         // 247 (0xAA if configured)
 };
 
 // Forward declarations
@@ -58,9 +60,6 @@ void initConfig(Config& config) {
     loadConfig(config);
     Serial.println("EEPROM configured, loading existing config...");
   }
-
-  Serial.print("Loaded IP from EEPROM: ");
-  Serial.println(config.deviceIp);
 }
 
 void loadConfig(Config& config) {
@@ -116,8 +115,6 @@ void saveConfig(const Config& config) {
   EEPROM.write(239, 0xAA); // Config flag
   EEPROM.commit();
   Serial.println("Config saved to EEPROM");
-  Serial.print("Saved IP: ");
-  Serial.println(config.deviceIp);
 }
 
 // Helper to parse JSON POST
