@@ -88,7 +88,7 @@ void setup() {
 
 void loop() {
     handleWebClient(webServer);
-    TcpClient::manageConnection();  // Keep TCP connection alive
+    TcpClient::manageConnection();  // Maintain TCP connection
 
     unsigned long currentMillis = millis();
     if (currentMillis - lastEthCheck >= ethCheckInterval) {
@@ -105,18 +105,18 @@ void loop() {
         int currentState = digitalRead(inputPins[i]);
 
         if (lastPinState[i] != currentState) {
-            delay(50);
+            delay(50); // Debounce
             int stableState = digitalRead(inputPins[i]);
 
             if (stableState == currentState) {
                 lastPinState[i] = currentState;
                 String stateStr = (currentState == HIGH) ? "HIGH" : "LOW";
-                String message = MessageBuilder::constructMessage(gpiNames[i], stateStr);
 
                 if (ethConnected) {
-                    Serial.println(message);
-                    sendHttpPost();  // Send via HTTP
-                    TcpClient::sendTcpMessage(message);  // Send via TCP
+                    sendTcpMessage(i, stateStr);
+                    sendHttpMessage(i, stateStr);
+                    sendSerialMessage(i, stateStr);
+
                     lcd.setCursor(0, 1);
                     lcd.print("Sent: " + String(gpiNames[i]) + " " + stateStr);
                 } else {
@@ -126,6 +126,31 @@ void loop() {
                 }
             }
         }
+    }
+}
+
+void sendTcpMessage(int index, const String& stateStr) {
+    if (config.tcpEnabled) {
+        String tcpUser = config.tcpSecure ? String(config.tcpUser) : "";
+        String tcpPassword = config.tcpSecure ? String(config.tcpPassword) : "";
+        String message = MessageBuilder::constructMessage(gpiNames[index], stateStr, tcpUser, tcpPassword);
+        TcpClient::sendTcpMessage(message);
+    }
+}
+
+void sendHttpMessage(int index, const String& stateStr) {
+    if (config.httpEnabled) {
+        String httpUser = config.httpSecure ? String(config.httpUser) : "";
+        String httpPassword = config.httpSecure ? String(config.httpPassword) : "";
+        String message = MessageBuilder::constructMessage(gpiNames[index], stateStr, httpUser, httpPassword);
+        sendHttpPost(message);
+    }
+}
+
+void sendSerialMessage(int index, const String& stateStr) {
+    if (config.serialEnabled) {
+        String message = MessageBuilder::constructMessage(gpiNames[index], stateStr, "", "");
+        Serial.println(message);
     }
 }
 

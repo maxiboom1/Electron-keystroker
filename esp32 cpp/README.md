@@ -140,3 +140,10 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 - Managed connection state to avoid unnecessary reconnections.
 - Stopped TCP communication when `tcpEnabled` is disabled in the config.
 - Integrated `TcpClient.h` into `Gpio_Box_V0.04.ino` for seamless TCP messaging.
+
+#### V 0.05:
+- Refactored message handling into separate functions for TCP, HTTP, and Serial.
+- Fixed Secure Mode handling, ensuring correct user/password usage for TCP and HTTP.
+- Updated `HttpClient.h` to retrieve the HTTP URL from EEPROM instead of using a hardcoded value.
+- Modified `sendHttpPost()` to accept the JSON message as a parameter.
+- The only issue that the http url cannot pars port from url in current version. We will fix it in 0.06
