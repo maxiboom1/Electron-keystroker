@@ -2,29 +2,24 @@
 #include <Ethernet.h>
 #include <LiquidCrystal_I2C.h>
 #include <EEPROM.h>
-#include <ArduinoJson.h> // Ensure ESP32-compatible version
 #include "HttpClient.h"
 #include "EthManager.h"
 #include "ConfigManager.h"
 #include "WebServer.h"
+#include "MessageBuilder.h"
 
-// Network Configuration
-byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 Config config; // Global config
-IPAddress gateway(10, 168, 0, 1); // Adjust to your router's gateway
-IPAddress subnet(255, 255, 255, 0); // Adjust to your subnet mask
-
-const char* server = "10.168.0.10";
-const int port = 3123;
-const char* url = "/api";
 
 #define W5500_CS 15
-int lastPinState = HIGH;
-int inputPin = 16; // Placeholder, replace with GPI pins later
+
+// Define monitored GPIO Inputs (According to project documentation)
+#define TOTAL_GPI 8
+const int inputPins[TOTAL_GPI] = {4, 5, 12, 13, 14, 16, 17, 25}; 
+const char* gpiNames[TOTAL_GPI] = {"GPI-1", "GPI-2", "GPI-3", "GPI-4", "GPI-5", "GPI-6", "GPI-7", "GPI-8"};
+int lastPinState[TOTAL_GPI] = {HIGH}; // Ensure default HIGH to prevent false triggers
 
 #define I2C_SDA 21
 #define I2C_SCL 22
-
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 bool ethConnected = false;
@@ -48,21 +43,25 @@ MyEthernetServer webServer(80);
 
 void setup() {
   Serial.begin(9600);
-  pinMode(inputPin, INPUT_PULLUP);
 
-  Wire.begin(I2C_SDA, I2C_SCL); // ESP32 syntax
-  
+  Wire.begin(I2C_SDA, I2C_SCL);
   lcd.init();
   lcd.backlight();
   lcd.setCursor(0, 0);
   lcd.print("I/O Systems");
+  lcd.setCursor(0, 1);
+  lcd.print("GPIO Box V 1.0");
+
+  // Initialize GPIO Inputs with Pull-ups to avoid floating state
+  for (int i = 0; i < TOTAL_GPI; i++) {
+      pinMode(inputPins[i], INPUT_PULLUP); 
+      lastPinState[i] = digitalRead(inputPins[i]); // Initialize with current state
+  }
 
   initConfig(config);
-  Serial.print("Initial IP: ");
-  Serial.println(config.deviceIp);
 
   Ethernet.init(W5500_CS);
-  attemptEthernetInit(config.deviceIp); // Pass config.deviceIp directly
+  attemptEthernetInit();
   Serial.print("Ethernet IP after init: ");
   Serial.println(Ethernet.localIP());
   Serial.print("Link status: ");
@@ -100,21 +99,33 @@ void loop() {
     heartbeatHandler(received);
   }
 
-  int currentPinState = digitalRead(inputPin);
-  if (lastPinState != currentPinState) {
-    delay(50);
-    if (currentPinState == LOW) {
-      if (ethConnected) {
-        Serial.println("tick");
-        sendHttpPost(server, port, url);
-        lcd.setCursor(0, 1);
-        lcd.print("Sent tick      ");
-      } else {
-        Serial.println("tick (not sent - no Ethernet)");
-        lcd.setCursor(0, 1);
-        lcd.print("No Eth - Tick  ");
+  // Monitor all 8 GPIOs
+  for (int i = 0; i < TOTAL_GPI; i++) {
+      int currentState = digitalRead(inputPins[i]);
+
+      // Detect state change
+      if (lastPinState[i] != currentState) {
+          delay(50);  // Debounce delay
+          int stableState = digitalRead(inputPins[i]); // Re-read after debounce
+
+          if (stableState == currentState) {  // Confirm stable change
+              lastPinState[i] = currentState;  // Update last known state
+              
+              String stateStr = (currentState == HIGH) ? "HIGH" : "LOW";
+              String message = MessageBuilder::constructMessage(gpiNames[i], stateStr);
+
+              if (ethConnected) {
+                  Serial.println(message);
+                  sendHttpPost();  
+                  lcd.setCursor(0, 1);
+                  lcd.print("Sent: " + String(gpiNames[i]) + " " + stateStr);
+              } else {
+                  Serial.println("tick (not sent - no Ethernet)");
+                  lcd.setCursor(0, 1);
+                  lcd.print("No Eth - Tick");
+              }
+          }
       }
-    }
   }
 }
 

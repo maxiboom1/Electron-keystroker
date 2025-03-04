@@ -3,8 +3,12 @@
 
 #include <Ethernet.h>
 
+const char* server = "10.168.0.10";
+const int port = 3123;
+const char* url = "/api";
+
 // This func is sending post tick to the keystroker app.
-void sendHttpPost(const char* server, int port, const char* url) {
+void sendHttpPost() {
   EthernetClient client;
   if (client.connect(server, port)) {
     // Start HTTP Request

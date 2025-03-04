@@ -78,14 +78,14 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 ### Assigned Pins:
 | **GPI Inputs (GPI-1 to GPI-8)** | **GPO Outputs (GPO-1 to GPO-8)** |
 |---------------------------------|----------------------------------|
-| GPI-1: GPIO 2                   | GPO-1: GPIO 32                   |
+| GPI-1: GPIO 4                   | GPO-1: GPIO 32                   |
 | GPI-2: GPIO 5                   | GPO-2: GPIO 33                   |
 | GPI-3: GPIO 12                  | GPO-3: GPIO 34                   |
 | GPI-4: GPIO 13                  | GPO-4: GPIO 35                   |
-| GPI-5: GPIO 14                  | GPO-5: GPIO 4 (freed W5500 RST)  |
-| GPI-6: GPIO 16                  | GPO-6: GPIO 26                   |
-| GPI-7: GPIO 17                  | GPO-7: GPIO 27                   |
-| GPI-8: GPIO 25                  | GPO-8: GPIO 0 (if not EN; else use GPIO 15 if freed or another) |
+| GPI-5: GPIO 14                  | GPO-5: GPIO 26  |
+| GPI-6: GPIO 16                  | GPO-6: GPIO 27                   |
+| GPI-7: GPIO 17                  | GPO-7: GPIO 0 (May conflict with reset)                  |
+| GPI-8: GPIO 25                  | GPO-8: n/a |
 
 - **Reset Button**: GPIO 0 (preferred, check if tied to EN; fallback GPIO 26).
 
@@ -127,3 +127,9 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 
 - **GPO Control**: Remotely trigger GPO-1 to GPO-8 via TCP, HTTP, or Serial commands (e.g., `{"event": "GPO-1", "state": "HIGH", "user": "", "password": ""}`).
 - **Error Handling**: Define behavior for unreachable servers or invalid configs.
+
+## Future Enhancements
+
+#### V 0.03:
+- Implemented MessageBuilder.h module to construct messages.
+- Implemented 8 GPI pins handling logic.
