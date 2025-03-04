@@ -7,6 +7,7 @@
 #include "ConfigManager.h"
 #include "WebServer.h"
 #include "MessageBuilder.h"
+#include "TcpClient.h"  
 
 Config config; // Global config
 
@@ -27,16 +28,16 @@ unsigned long lastEthCheck = 0;
 const unsigned long ethCheckInterval = 5000;
 
 class MyEthernetServer : public EthernetServer {
-public:
-  MyEthernetServer(uint16_t port) : EthernetServer(port) {}
-  void begin(uint16_t port = 0) override {
-    if (port != 0) {
-      EthernetServer::begin();
-    } else {
-      EthernetServer::begin();
+  public:
+    MyEthernetServer(uint16_t port) : EthernetServer(port) {}
+    void begin(uint16_t port = 0) override {
+      if (port != 0) {
+        EthernetServer::begin();
+      } else {
+        EthernetServer::begin();
+      }
+      Serial.println("Server begin called");
     }
-    Serial.println("Server begin called");
-  }
 };
 
 MyEthernetServer webServer(80);
@@ -86,47 +87,46 @@ void setup() {
 }
 
 void loop() {
-  handleWebClient(webServer);
+    handleWebClient(webServer);
+    TcpClient::manageConnection();  // Keep TCP connection alive
 
-  unsigned long currentMillis = millis();
-  if (currentMillis - lastEthCheck >= ethCheckInterval) {
-    updateEthernetStatus(lcd);
-    lastEthCheck = currentMillis;
-  }
+    unsigned long currentMillis = millis();
+    if (currentMillis - lastEthCheck >= ethCheckInterval) {
+        updateEthernetStatus(lcd);
+        lastEthCheck = currentMillis;
+    }
 
-  if (Serial.available()) {
-    String received = Serial.readStringUntil('\n');
-    heartbeatHandler(received);
-  }
+    if (Serial.available()) {
+        String received = Serial.readStringUntil('\n');
+        heartbeatHandler(received);
+    }
 
-  // Monitor all 8 GPIOs
-  for (int i = 0; i < TOTAL_GPI; i++) {
-      int currentState = digitalRead(inputPins[i]);
+    for (int i = 0; i < TOTAL_GPI; i++) {
+        int currentState = digitalRead(inputPins[i]);
 
-      // Detect state change
-      if (lastPinState[i] != currentState) {
-          delay(50);  // Debounce delay
-          int stableState = digitalRead(inputPins[i]); // Re-read after debounce
+        if (lastPinState[i] != currentState) {
+            delay(50);
+            int stableState = digitalRead(inputPins[i]);
 
-          if (stableState == currentState) {  // Confirm stable change
-              lastPinState[i] = currentState;  // Update last known state
-              
-              String stateStr = (currentState == HIGH) ? "HIGH" : "LOW";
-              String message = MessageBuilder::constructMessage(gpiNames[i], stateStr);
+            if (stableState == currentState) {
+                lastPinState[i] = currentState;
+                String stateStr = (currentState == HIGH) ? "HIGH" : "LOW";
+                String message = MessageBuilder::constructMessage(gpiNames[i], stateStr);
 
-              if (ethConnected) {
-                  Serial.println(message);
-                  sendHttpPost();  
-                  lcd.setCursor(0, 1);
-                  lcd.print("Sent: " + String(gpiNames[i]) + " " + stateStr);
-              } else {
-                  Serial.println("tick (not sent - no Ethernet)");
-                  lcd.setCursor(0, 1);
-                  lcd.print("No Eth - Tick");
-              }
-          }
-      }
-  }
+                if (ethConnected) {
+                    Serial.println(message);
+                    sendHttpPost();  // Send via HTTP
+                    TcpClient::sendTcpMessage(message);  // Send via TCP
+                    lcd.setCursor(0, 1);
+                    lcd.print("Sent: " + String(gpiNames[i]) + " " + stateStr);
+                } else {
+                    Serial.println("tick (not sent - no Ethernet)");
+                    lcd.setCursor(0, 1);
+                    lcd.print("No Eth - Tick");
+                }
+            }
+        }
+    }
 }
 
 void heartbeatHandler(String received) {

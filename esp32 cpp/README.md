@@ -133,3 +133,10 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 #### V 0.03:
 - Implemented MessageBuilder.h module to construct messages.
 - Implemented 8 GPI pins handling logic.
+
+#### V 0.04:
+- Implemented a persistent TCP connection instead of reconnecting per message.
+- Added automatic reconnection every 5 seconds if the server is unreachable.
+- Managed connection state to avoid unnecessary reconnections.
+- Stopped TCP communication when `tcpEnabled` is disabled in the config.
+- Integrated `TcpClient.h` into `Gpio_Box_V0.04.ino` for seamless TCP messaging.
