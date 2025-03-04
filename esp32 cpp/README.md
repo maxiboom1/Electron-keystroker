@@ -17,7 +17,7 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 
 ### 2. Communication Modes
 - **Serial**: Sends JSON messages (e.g., `{"event": "GPI-1", "state": "HIGH", "user": "", "password": ""}`) via `Serial.println()` when enabled.
-- **TCP**: Sends JSON messages to a specified IP and port (e.g., `{"event": "GPI-1", "state": "HIGH", "user": "xxx", "password": "yyy"}`) when enabled.
+- **TCP**: Sends JSON messages (`{"event": "GPI-1", "state": "HIGH", "user": "xxx", "password": "yyy"}`) to a specified IP and port while maintaining a persistent connection. If the server is unreachable, it retries every 5 seconds. .
 - **HTTP**: Sends POST requests with JSON in the body (e.g., `{"event": "GPI-1", "state": "HIGH", "user": "xxx", "password": "yyy"}` with `Content-Type: application/json`) to a specified URL when enabled.
 - **Mode Selection**: Only enabled modes activate on GPIO trigger; multiple modes can be enabled simultaneously (e.g., TCP + HTTP). All interfaces are disabled by default.
 
