@@ -16,9 +16,13 @@ void handleLogin(EthernetClient& client, String body);
 
 // Local helper function for JSON parsing
 bool parseJsonConfig(String json, Config& config) {
-  StaticJsonDocument<512> doc;
+  StaticJsonDocument<2048> doc;
   DeserializationError error = deserializeJson(doc, json);
-  if (error) return false;
+  if (error) {
+      Serial.print("JSON Parsing Failed: ");
+      Serial.println(error.f_str());  // Print exact parsing error
+      return false;
+  }
   
   // Parse network settings
   if (doc.containsKey("ip")) {

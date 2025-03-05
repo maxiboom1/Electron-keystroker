@@ -147,3 +147,9 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 - Updated `HttpClient.h` to retrieve the HTTP URL from EEPROM instead of using a hardcoded value.
 - Modified `sendHttpPost()` to accept the JSON message as a parameter.
 - The only issue that the http url cannot pars port from url in current version. We will fix it in 0.06
+
+#### V 0.06:
+- Fixed HTTP URL handling to correctly support custom ports (e.g., `10.168.0.10:5000/api`).
+- Increased JSON parsing buffer size from `512` to `2048` to prevent `NoMemory` errors.
+- Verified that URLs with and without ports are stored and parsed correctly.
+- Added error print in Json parser.
