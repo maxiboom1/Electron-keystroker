@@ -29,7 +29,14 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 - **Config Page Access**: Requires basic authentication with fixed user `admin` and configurable password (default `admin`).
 
 ### 4. Configuration Page
-- **Style**: Minimal HTML with CSS, featuring a footer (e.g., "GPIO Box v1.0").
+- **UI/UX**
+  - The page implements a **two-step enable/disable mechanism**:
+    1. **Feature Toggle:** When TCP/HTTP is disabled, all related fields (IP, Port, URL, Secure Mode) are disabled.
+    2. **Secure Mode Toggle:** If Secure Mode is enabled, User and Password fields become editable; otherwise, they remain disabled.
+  - On **page load**, the UI automatically syncs enable/disable states based on stored configuration.
+  - Toggling **TCP or HTTP enables the main fields and then triggers Secure Mode handling**.
+  - Style: Minimal HTML with CSS, featuring a footer (e.g., "GPIO Box v1.0").
+
 - **Sections**:
   - **Device Address**: 
     - IP address (text input, default `10.168.0.177`).
@@ -53,6 +60,45 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
   - **Admin Access**:
     - Login: Fixed `admin`, password (configurable, default `admin`).
     - Password change option via POST.
+
+- **Validation**
+  - The page validates all fields **before submission** to ensure correct formatting and prevent invalid data storage.
+  - **Validated Fields:**
+    - **Device Network:** IP, Gateway, Subnet Mask (must be valid IPv4)
+    - **TCP:** IP (IPv4), Port (1-65535), Secure Mode fields (User, Password required if Secure Mode is enabled)
+    - **HTTP:** URL (must be a valid format), Secure Mode fields (User, Password required if Secure Mode is enabled)
+    - **Admin Password:** Must be ≤ 32 characters (only sent if changed)
+
+- **Data Post**
+  - The form **only sends TCP/HTTP settings if enabled** to prevent overwriting stored values.
+  - **If Secure Mode is OFF**, TCP and HTTP only send **IP/Port and URL**.
+  - **If Admin Password is empty**, it is **not sent** (preserving the current password).
+
+- **Example Payloads:**
+  - **TCP Enabled & Secure Mode OFF**:   
+  ```json
+  {
+    "tcpEnabled": true,
+    "tcpIp": "10.168.0.109",
+    "tcpPort": 5555
+  }```
+  - **TCP Enabled & Secure Mode ON:**
+  ```json
+    {
+    "tcpEnabled": true,
+    "tcpIp": "10.168.0.109",
+    "tcpPort": 5555,
+    "tcpSecure": true,
+    "tcpUser": "SOME-USER2",
+    "tcpPassword": "123123"
+  }```
+  - **Admin Password Only Sent If Changed:**
+    ```json
+    {
+      "adminPassword": "newSecurePass123"
+    }```
+
+ 
 
 ### 5. Persistence and Reset
 - **EEPROM Storage**: All configuration options stored in EEPROM, restored on boot.
