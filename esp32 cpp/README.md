@@ -81,7 +81,7 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
     "tcpEnabled": true,
     "tcpIp": "10.168.0.109",
     "tcpPort": 5555
-  }```
+  }
   - **TCP Enabled & Secure Mode ON:**
   ```json
     {
@@ -91,12 +91,12 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
     "tcpSecure": true,
     "tcpUser": "SOME-USER2",
     "tcpPassword": "123123"
-  }```
+  }
   - **Admin Password Only Sent If Changed:**
     ```json
     {
       "adminPassword": "newSecurePass123"
-    }```
+    }
 
  
 
