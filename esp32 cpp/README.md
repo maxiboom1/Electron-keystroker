@@ -76,14 +76,16 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 
 - **Example Payloads:**
   - **TCP Enabled & Secure Mode OFF**:   
-  ```json
+  ```
   {
     "tcpEnabled": true,
     "tcpIp": "10.168.0.109",
     "tcpPort": 5555
   }
+  ```
+
   - **TCP Enabled & Secure Mode ON:**
-  ```json
+  ```
     {
     "tcpEnabled": true,
     "tcpIp": "10.168.0.109",
@@ -92,13 +94,14 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
     "tcpUser": "SOME-USER2",
     "tcpPassword": "123123"
   }
+  ```
+
   - **Admin Password Only Sent If Changed:**
-    ```json
+    ```
     {
       "adminPassword": "newSecurePass123"
     }
-
- 
+    ```
 
 ### 5. Persistence and Reset
 - **EEPROM Storage**: All configuration options stored in EEPROM, restored on boot.
