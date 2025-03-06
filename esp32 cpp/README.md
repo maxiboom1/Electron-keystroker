@@ -97,11 +97,11 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
   ```
 
   - **Admin Password Only Sent If Changed:**
-    ```
+  ```
     {
       "adminPassword": "newSecurePass123"
     }
-    ```
+  ```
 
 ### 5. Persistence and Reset
 - **EEPROM Storage**: All configuration options stored in EEPROM, restored on boot.
