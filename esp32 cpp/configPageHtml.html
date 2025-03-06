@@ -121,11 +121,13 @@
                 ip: document.getElementById('ip').value,
                 gateway: document.getElementById('gateway').value,
                 subnetMask: document.getElementById('subnetMask').value,
+                tcpEnabled:document.getElementById('tcpEnabled').checked,
+                httpEnabled:document.getElementById('httpEnabled').checked,
                 serialEnabled: document.getElementById('serialEnabled').checked
             };
 
             // Add tcpData if enabled
-            if (document.getElementById('tcpEnabled').checked) {
+            if (data.tcpEnabled) {
                 data.tcpEnabled = true;
                 data.tcpIp = document.getElementById('tcpIp').value;
                 data.tcpPort = parseInt(document.getElementById('tcpPort').value) || 0;
@@ -137,7 +139,7 @@
             }
 
             // Add HttpData if enabled
-            if (document.getElementById('httpEnabled').checked) {
+            if (data.httpEnabled) {
                 data.httpEnabled = true;
                 data.httpUrl = document.getElementById('httpUrl').value;
                 data.httpSecure = document.getElementById('httpSecure').checked;

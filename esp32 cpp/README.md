@@ -71,6 +71,7 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 
 - **Data Post**
   - The form **only sends TCP/HTTP settings if enabled** to prevent overwriting stored values.
+  - If TCP/HTTP disabled, the `enabled` state is still sent.
   - **If Secure Mode is OFF**, TCP and HTTP only send **IP/Port and URL**.
   - **If Admin Password is empty**, it is **not sent** (preserving the current password).
 
