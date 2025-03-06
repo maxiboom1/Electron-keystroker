@@ -203,3 +203,14 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 - Increased JSON parsing buffer size from `512` to `2048` to prevent `NoMemory` errors.
 - Verified that URLs with and without ports are stored and parsed correctly.
 - Added error print in Json parser.
+
+#### V 0.07:
+- Implemented **client-side validation** for all configuration fields.
+- **Ensured validation logic applies only to enabled TCP/HTTP fields**, preventing unnecessary alerts while keeping stored values intact.
+- **Fixed admin password handling** so it is only updated if a new value is entered.
+- Added a **two-step enable/disable mechanism** to dynamically control form fields.
+- Ensured **form submission only includes enabled settings**, preventing unwanted overwrites.
+- **Always sends `tcpEnabled` and `httpEnabled` states**, even when disabled, ensuring the backend updates these settings correctly when toggled off.
+- Refactored **config page JavaScript** to streamline secure mode toggling and validation logic.
+- Improved **page load behavior**, dynamically setting input field states based on stored configuration.
+- **Updated backend to merge incoming configuration with stored values**, preventing unintended data loss.
