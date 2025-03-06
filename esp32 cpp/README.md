@@ -214,3 +214,9 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 - Refactored **config page JavaScript** to streamline secure mode toggling and validation logic.
 - Improved **page load behavior**, dynamically setting input field states based on stored configuration.
 - **Updated backend to merge incoming configuration with stored values**, preventing unintended data loss.
+
+#### V 0.08:
+- Implemented **Factory Reset Button** functionality (GPIO 0):
+  - Holding the "BOOT" button for **≥ 5 seconds** resets the configuration to factory defaults.
+  - Reset action provides visual LCD feedback and device restart.
+- Verified proper storage and reloading of default configuration settings after reset.

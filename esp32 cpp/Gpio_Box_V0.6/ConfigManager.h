@@ -139,11 +139,11 @@ void saveConfig(const Config& config) {
 
 void setDefaultConfig(Config& config){
     config.deviceIp = IPAddress(10, 168, 0, 177);
-    config.gateway = IPAddress(10, 168, 0, 1);
-    config.subnetMask = IPAddress(255, 255, 255, 0);
+    config.gateway = IPAddress(255, 255, 255, 0);
+    config.subnetMask = IPAddress(10, 168, 0, 1);
     config.tcpEnabled = false;
-    config.tcpIp = IPAddress(0, 0, 0, 0); 
-    config.tcpPort = 0;
+    config.tcpIp = IPAddress(10, 10, 10, 10); 
+    config.tcpPort = 12345;
     config.tcpSecure = false;
     memset(config.tcpUser, 0, 32);
     memset(config.tcpPassword, 0, 32);
