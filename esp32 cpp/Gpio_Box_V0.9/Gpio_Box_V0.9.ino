@@ -56,7 +56,7 @@ void setup() {
   lcd.setCursor(0, 0);
   lcd.print("I/O Systems");
   lcd.setCursor(0, 1);
-  lcd.print("GPIO Box V0.08");
+  lcd.print("GPIO Box V1.00");
 
   // Initialize GPIO Inputs with Pull-ups to avoid floating state
   for (int i = 0; i < TOTAL_GPI; i++) {

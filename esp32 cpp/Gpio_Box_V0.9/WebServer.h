@@ -12,8 +12,8 @@ extern LiquidCrystal_I2C lcd; // For LCD updates
 // Forward declarations
 void sendConfigPage(EthernetClient& client);
 void handleSaveSettings(EthernetClient& client, const String& body);
-void sendLoginPage(EthernetClient& client, const String& request);
-void handleLogin(EthernetClient& client, const String& body);
+void sendLoginPage(EthernetClient& client, const String& request, bool loginFailed = false);
+void handleLogin(EthernetClient& client, const String& body, const String& request);
 void sendNoContentResponse(EthernetClient& client);
 
 // Local helper function for JSON parsing
@@ -89,7 +89,7 @@ void handleWebClient(EthernetServer& server) {
               body += b;
               bodyBytesRead++;
             }
-            handleLogin(client, body);
+            handleLogin(client, body, request);
             return;
           }
 
@@ -128,7 +128,8 @@ void handleWebClient(EthernetServer& server) {
   }
 }
 
-void sendLoginPage(EthernetClient& client, const String& request) {
+// Handles "GET /" requests
+void sendLoginPage(EthernetClient& client, const String& request, bool loginFailed) {
   
   // If Cookie found, serve config page
   if (request.indexOf("Cookie: sessionToken=loggedIn") >= 0) {
@@ -137,20 +138,22 @@ void sendLoginPage(EthernetClient& client, const String& request) {
   }
   
   // No cookie found, serve login form: 
+  String errorMsg = "";
+  if (loginFailed) {errorMsg = "<p style='color:red;'>No match, try again</p>";}
   String loginPage = "<!DOCTYPE html><html><head>"
-                     "<style>body {font-family: Arial; }</style></head>"
-                     "<body><h2>Login</h2>"
-                     "<form method='POST' action='/'>"
-                     "User: <input type='text' name='user'><br>"
-                     "Password: <input type='password' name='password'><br>"
-                     "<input type='submit' value='Login'></form>"
-                     "</body></html>";
+                      "<style>body { font-family: Arial; } input { margin: 2.5px; }</style>"
+                      "</head><body>"
+                      "<h2>GPIO Box Login</h2>"
+                      "<form method='POST' action='/'>"
+                      "User: <input name='user'><br>"
+                      "Password: <input name='password' type='password'><br>"
+                      "<input type='submit' value='Login'>" + errorMsg +
+                      "</form></body></html>";
 
   client.print("HTTP/1.1 200 OK\r\n"
-               "Content-Type: text/html\r\n"
-               "Content-Length: " + String(loginPage.length()) + "\r\n"
-               "Connection: close\r\n\r\n" + loginPage);
-
+                "Content-Type: text/html\r\n"
+                "Content-Length: " + String(loginPage.length()) + "\r\n"
+                "Connection: close\r\n\r\n" + loginPage);
 }
 
 void sendNoContentResponse(EthernetClient& client){
@@ -415,13 +418,6 @@ struct LoginCredentials {
   bool isValid = false;
 };
 
-void sendUnauthorizedResponse(EthernetClient& client) {
-    client.print("HTTP/1.1 401 Unauthorized\r\n"
-                 "Content-Type: text/html\r\n"
-                 "Connection: close\r\n\r\n"
-                 "<h2>Login Failed. Try again.</h2>");
-}
-
 LoginCredentials extractCredentials(const String& body){
     LoginCredentials creds;
     int userStart = body.indexOf("user=");
@@ -442,12 +438,14 @@ LoginCredentials extractCredentials(const String& body){
     return creds;
 }
 
-void handleLogin(EthernetClient& client, const String& body) {
+// Handles "POST / " that comes by submitting on login page
+void handleLogin(EthernetClient& client, const String& body, const String& request) {
   
   LoginCredentials creds = extractCredentials(body);
   
   if (!creds.isValid || creds.username != "admin" || creds.password != String(config.adminPassword)) {
-        sendUnauthorizedResponse(client);
+        //sendUnauthorizedResponse(client);
+        sendLoginPage(client, request, true);  // true indicates login failure
         return;
     }
   
