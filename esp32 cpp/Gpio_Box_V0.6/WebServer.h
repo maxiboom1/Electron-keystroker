@@ -13,7 +13,7 @@ void sendConfigPage(EthernetClient& client);
 void handleSaveSettings(EthernetClient& client, String body);
 void sendLoginPage(EthernetClient& client);
 void handleLogin(EthernetClient& client, String body);
-
+void sendNoContentResponse(EthernetClient& client);
 // Local helper function for JSON parsing
 bool parseJsonConfig(String json, Config& config) {
     StaticJsonDocument<2048> doc;
@@ -101,6 +101,17 @@ void handleWebClient(EthernetServer& server) {
             handleSaveSettings(client, body);
             return;
           }
+          
+          if (request.startsWith("POST /save ")){
+
+          }
+
+          // Return 404 for favicon requests
+          if (request.startsWith("GET /favicon.ico ")){
+            Serial.println("Got favicon req. Responsed with 404");
+            sendNoContentResponse(client);
+            return;
+          }
 
           // If not a POST request, always show the login form
           sendLoginPage(client);
@@ -127,6 +138,14 @@ void sendLoginPage(EthernetClient& client) {
                "Content-Type: text/html\r\n"
                "Content-Length: " + String(loginPage.length()) + "\r\n"
                "Connection: close\r\n\r\n" + loginPage);
+}
+
+void sendNoContentResponse(EthernetClient& client){
+  client.print("HTTP/1.1 404 Not Found\r\n"
+               "Content-Type: text/html\r\n"
+               "Content-Length: 9\r\n"
+               "Connection: close\r\n\r\n"
+               "Not Found");
 }
 
 void handleLogin(EthernetClient& client, String body) {
@@ -158,10 +177,10 @@ void sendConfigPage(EthernetClient& client) {
                      "<body><h2>GPIO Box Configuration</h2><hr>"
                      "<form id='configForm' onsubmit='return validateForm(event)'>"
 
-                     "<h3>Network Settings</h3>"
+                     "<h3>Device Network Settings</h3>"
                      "IP: <input type='text' name='ip' id='ip' value='" + config.deviceIp.toString() + "'><br>"
-                     "Gateway: <input type='text' name='gateway' id='gateway' value='" + config.gateway.toString() + "'><br>"
-                     "Subnet Mask: <input type='text' name='subnetMask' id='subnetMask' value='" + config.subnetMask.toString() + "'><br><hr>"
+                     "Subnet Mask: <input type='text' name='subnetMask' id='subnetMask' value='" + config.subnetMask.toString() + "'><br>"                     
+                     "Gateway: <input type='text' name='gateway' id='gateway' value='" + config.gateway.toString() + "'><br><hr>"
 
                      "<h3>TCP Settings</h3>"
                      "Enabled: <input type='checkbox' name='tcpEnabled' id='tcpEnabled' onchange='toggleTcpSettings()' " + (config.tcpEnabled ? "checked" : "") + "><br>"
@@ -354,6 +373,7 @@ void sendConfigPage(EthernetClient& client) {
                 "Content-Length: " + String(contentLength) + "\r\n"
                 "Connection: close\r\n\r\n";
 
+  
   client.print(header);
   delay(50);
   client.print(htmlContent);
