@@ -247,3 +247,9 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 - Simplified URL structure:
   - **Eliminated the separate `/login` endpoint**.
   - Login and configuration pages are now served seamlessly from the root (`/`) URL, improving user experience and URL clarity.
+
+#### V 1.00:
+- Implemented enhanced **login user experience**:
+  - Incorrect credentials no longer redirect to a separate page.
+  - Users see a clear, inline red-colored error message: "**No match, try again**".
+- Removed unused `sendUnauthorizedResponse` function for cleaner backend code.
