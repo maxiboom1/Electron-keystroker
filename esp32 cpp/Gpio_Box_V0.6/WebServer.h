@@ -8,12 +8,14 @@
 extern Config config; // From main sketch
 extern LiquidCrystal_I2C lcd; // For LCD updates
 
+
 // Forward declarations
 void sendConfigPage(EthernetClient& client);
-void handleSaveSettings(EthernetClient& client, String body);
-void sendLoginPage(EthernetClient& client);
-void handleLogin(EthernetClient& client, String body);
+void handleSaveSettings(EthernetClient& client, const String& body);
+void sendLoginPage(EthernetClient& client, const String& request);
+void handleLogin(EthernetClient& client, const String& body);
 void sendNoContentResponse(EthernetClient& client);
+
 // Local helper function for JSON parsing
 bool parseJsonConfig(String json, Config& config) {
     StaticJsonDocument<2048> doc;
@@ -81,7 +83,7 @@ void handleWebClient(EthernetServer& server) {
           }
 
           // Handle login form submission
-          if (request.startsWith("POST /login ")) {
+          if (request.startsWith("POST / ")) {
             while (client.available() && bodyBytesRead < contentLength) {
               char b = client.read();
               body += b;
@@ -102,20 +104,22 @@ void handleWebClient(EthernetServer& server) {
             return;
           }
           
-          if (request.startsWith("POST /save ")){
-
-          }
-
           // Return 404 for favicon requests
           if (request.startsWith("GET /favicon.ico ")){
             Serial.println("Got favicon req. Responsed with 404");
             sendNoContentResponse(client);
             return;
           }
-
-          // If not a POST request, always show the login form
-          sendLoginPage(client);
+          
+          if (request.startsWith("GET / ")) {
+              sendLoginPage(client, request);
+              return;
+          }
+          
+          Serial.println("Unknown Web request. Sending fallback response");
+          sendNoContentResponse(client);
           return;
+
         }
       }
     }
@@ -124,11 +128,19 @@ void handleWebClient(EthernetServer& server) {
   }
 }
 
-void sendLoginPage(EthernetClient& client) {
+void sendLoginPage(EthernetClient& client, const String& request) {
+  
+  // If Cookie found, serve config page
+  if (request.indexOf("Cookie: sessionToken=loggedIn") >= 0) {
+    sendConfigPage(client);  
+    return;
+  }
+  
+  // No cookie found, serve login form: 
   String loginPage = "<!DOCTYPE html><html><head>"
                      "<style>body {font-family: Arial; }</style></head>"
                      "<body><h2>Login</h2>"
-                     "<form method='POST' action='/login'>"
+                     "<form method='POST' action='/'>"
                      "User: <input type='text' name='user'><br>"
                      "Password: <input type='password' name='password'><br>"
                      "<input type='submit' value='Login'></form>"
@@ -138,6 +150,7 @@ void sendLoginPage(EthernetClient& client) {
                "Content-Type: text/html\r\n"
                "Content-Length: " + String(loginPage.length()) + "\r\n"
                "Connection: close\r\n\r\n" + loginPage);
+
 }
 
 void sendNoContentResponse(EthernetClient& client){
@@ -146,29 +159,6 @@ void sendNoContentResponse(EthernetClient& client){
                "Content-Length: 9\r\n"
                "Connection: close\r\n\r\n"
                "Not Found");
-}
-
-void handleLogin(EthernetClient& client, String body) {
-  String user, pass;
-  if (body.indexOf("user=") != -1 && body.indexOf("password=") != -1) {
-    int userStart = body.indexOf("user=") + 5;
-    int userEnd = body.indexOf("&", userStart);
-    user = body.substring(userStart, userEnd);
-
-    int passStart = body.indexOf("password=") + 9;
-    pass = body.substring(passStart);
-
-    if (user == "admin" && pass == String(config.adminPassword)) {
-      sendConfigPage(client);
-      return;
-    }
-  }
-
-  // If authentication fails
-  client.print("HTTP/1.1 401 Unauthorized\r\n"
-               "Content-Type: text/html\r\n"
-               "Connection: close\r\n\r\n"
-               "<h2>Login Failed. Try again.</h2>");
 }
 
 void sendConfigPage(EthernetClient& client) {
@@ -385,7 +375,7 @@ void sendConfigPage(EthernetClient& client) {
   client.print(footer);
 }
 
-void handleSaveSettings(EthernetClient& client, String body) {
+void handleSaveSettings(EthernetClient& client, const String& body) {
     Config newConfig = config; // Copy current config to preserve existing values
     //Serial.println(config);
     // Parse the JSON body into newConfig
@@ -417,5 +407,57 @@ void handleSaveSettings(EthernetClient& client, String body) {
     client.print(response);
     Serial.println("Config saved and applied");
 }
+
+// ***************************** Login Handling functions ***************************** //
+struct LoginCredentials {
+  String username;
+  String password;
+  bool isValid = false;
+};
+
+void sendUnauthorizedResponse(EthernetClient& client) {
+    client.print("HTTP/1.1 401 Unauthorized\r\n"
+                 "Content-Type: text/html\r\n"
+                 "Connection: close\r\n\r\n"
+                 "<h2>Login Failed. Try again.</h2>");
+}
+
+LoginCredentials extractCredentials(const String& body){
+    LoginCredentials creds;
+    int userStart = body.indexOf("user=");
+    int passStart = body.indexOf("password=");
+    
+    if (userStart == -1 || passStart == -1) {return creds;}
+
+    userStart += 5;
+    passStart += 9;
+    
+    int userEnd = body.indexOf("&", userStart);
+    if (userEnd == -1) {return creds;}
+
+    creds.username = body.substring(userStart, userEnd);
+    creds.password = body.substring(passStart);
+    creds.isValid = true;
+    
+    return creds;
+}
+
+void handleLogin(EthernetClient& client, const String& body) {
+  
+  LoginCredentials creds = extractCredentials(body);
+  
+  if (!creds.isValid || creds.username != "admin" || creds.password != String(config.adminPassword)) {
+        sendUnauthorizedResponse(client);
+        return;
+    }
+  
+  // Login success: Send session cookie and redirect
+  client.print("HTTP/1.1 302 Found\r\n");
+  client.print("Set-Cookie: sessionToken=loggedIn; HttpOnly\r\n");
+  client.print("Location: /\r\n");
+  client.print("Connection: close\r\n\r\n");
+
+}
+
 
 #endif

@@ -108,6 +108,20 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 - **EEPROM Storage**: All configuration options stored in EEPROM, restored on boot.
 - **Reset Button**: Physical button (GPIO 0) resets to factory defaults (e.g., all interfaces disabled, IP/URL/ports empty, admin password `admin`).
 
+### 6. Session Authentication
+
+- The GPIO Box implements a **simple, cookie-based session authentication** mechanism for securing the configuration page.
+- Upon successful login, the device returns a `Set-Cookie` header (`sessionToken=loggedIn`) to the user's browser.
+- The cookie is configured as a session cookie, automatically expiring when the browser/tab closes, or explicitly after **1 hour** (`Max-Age=3600`).
+- Subsequent requests from the browser automatically include this cookie, allowing seamless navigation and page refresh without repeated login prompts.
+- **No persistent session state** is maintained on the device, ensuring simplicity and minimal resource usage.
+
+#### Session Lifecycle:
+- **Login**: User submits valid credentials → Device sets a cookie in the browser.
+- **Authenticated Requests**: Browser automatically sends the cookie → Device verifies and directly serves the configuration page.
+- **Session Expiry**: Cookie expires automatically after 1 hour or when the browser/tab is closed.
+
+
 ## ESP32 Wiring and GPIO Mapping
 
 ### Hardware Configuration
@@ -178,7 +192,7 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
 - **GPO Control**: Remotely trigger GPO-1 to GPO-8 via TCP, HTTP, or Serial commands (e.g., `{"event": "GPO-1", "state": "HIGH", "user": "", "password": ""}`).
 - **Error Handling**: Define behavior for unreachable servers or invalid configs.
 
-## Future Enhancements
+## Change Log
 
 #### V 0.03:
 - Implemented MessageBuilder.h module to construct messages.
@@ -220,3 +234,16 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
   - Holding the "BOOT" button for **≥ 5 seconds** resets the configuration to factory defaults.
   - Reset action provides visual LCD feedback and device restart.
 - Verified proper storage and reloading of default configuration settings after reset.
+
+#### V 0.09:
+- Implemented **cookie-based session authentication**:
+  - Added session cookie (`sessionToken=loggedIn`) upon successful login.
+  - Cookie expires automatically when the browser/tab is closed.
+  - Subsequent browser requests automatically send this cookie, removing the need for repeated authentication.
+  - No persistent session state is maintained on the device, ensuring simplicity and efficient resource usage.
+- **Refactored `handleLogin` function** for improved readability and maintainability:
+  - Credentials extraction logic moved into a dedicated helper function (`extractCredentials`).
+  - Improved error handling with clear and reusable responses.
+- Simplified URL structure:
+  - **Eliminated the separate `/login` endpoint**.
+  - Login and configuration pages are now served seamlessly from the root (`/`) URL, improving user experience and URL clarity.

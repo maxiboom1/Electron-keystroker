@@ -139,8 +139,8 @@ void saveConfig(const Config& config) {
 
 void setDefaultConfig(Config& config){
     config.deviceIp = IPAddress(10, 168, 0, 177);
-    config.gateway = IPAddress(255, 255, 255, 0);
-    config.subnetMask = IPAddress(10, 168, 0, 1);
+    config.subnetMask = IPAddress(255, 255, 255, 0);    
+    config.gateway = IPAddress(10, 168, 0, 1);
     config.tcpEnabled = false;
     config.tcpIp = IPAddress(10, 10, 10, 10); 
     config.tcpPort = 12345;
