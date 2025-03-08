@@ -253,3 +253,4 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
   - Incorrect credentials no longer redirect to a separate page.
   - Users see a clear, inline red-colored error message: "**No match, try again**".
 - Removed unused `sendUnauthorizedResponse` function for cleaner backend code.
+- Tested with external power supply.
