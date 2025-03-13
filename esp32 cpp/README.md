@@ -254,3 +254,6 @@ The GPIO Box serves as a versatile, network-enabled input/output controller for 
   - Users see a clear, inline red-colored error message: "**No match, try again**".
 - Removed unused `sendUnauthorizedResponse` function for cleaner backend code.
 - Tested with external power supply.
+
+#### V 1.01:
+- Migrating to esp-idf, which has optimized libraries to work with ESP32.
