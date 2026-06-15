@@ -6,6 +6,9 @@ class AppConfig {
         this.configFilePath = "";
         this._serialPort = "COM3"; // Use a private variable
         this.allowGlobals = false;
+        this.cueLabelFontSize = "small";
+        this.shortcutLabelFontSize = "small";
+        this.selectedCueBackground = "#f59e0b";
         this.cues = this._initializeCues(); // Initialize cues
     }
 
@@ -35,7 +38,10 @@ class AppConfig {
         return {
             cues: this.cues,
             serialPort: this._serialPort,
-            allowGlobals:this.allowGlobals
+            allowGlobals:this.allowGlobals,
+            cueLabelFontSize: this.cueLabelFontSize,
+            shortcutLabelFontSize: this.shortcutLabelFontSize,
+            selectedCueBackground: this.selectedCueBackground
         }
     }
     
@@ -78,6 +84,9 @@ class AppConfig {
     async setConfig(config) {
         this._serialPort = config.serialPort;
         this.allowGlobals = config.allowGlobals;
+        this.cueLabelFontSize = config.cueLabelFontSize || "small";
+        this.shortcutLabelFontSize = config.shortcutLabelFontSize || "small";
+        this.selectedCueBackground = config.selectedCueBackground || "#f59e0b";
         await this.saveToFile();
     }
 
@@ -94,12 +103,19 @@ class AppConfig {
                 const data = fs.readFileSync(this.configFilePath, 'utf-8');
                 const config = JSON.parse(data);
                 Object.assign(this, config);
+                this._applyConfigDefaults();
             } catch (error) {
                 console.error('Failed to parse config file:', error.message);
             }
         } else {
             console.log('Config file does not exist, loading defaults.');
         }
+    }
+
+    _applyConfigDefaults() {
+        this.cueLabelFontSize = this.cueLabelFontSize || "small";
+        this.shortcutLabelFontSize = this.shortcutLabelFontSize || "small";
+        this.selectedCueBackground = this.selectedCueBackground || "#f59e0b";
     }
 
     async saveToFile() {

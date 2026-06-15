@@ -1,6 +1,25 @@
 const { ipcRenderer } = require('electron');
 const { showNotification } = require('./notifications.js');
 
+const DEFAULT_DISPLAY_SETTINGS = {
+    cueLabelFontSize: "small",
+    shortcutLabelFontSize: "small",
+    selectedCueBackground: "#f59e0b"
+};
+
+const DISPLAY_SIZE_VALUES = {
+    cueLabelFontSize: {
+        small: "20px",
+        mid: "24px",
+        big: "28px"
+    },
+    shortcutLabelFontSize: {
+        small: "14px",
+        mid: "16px",
+        big: "18px"
+    }
+};
+
 
 // ************** Onload config fetching and rendering ************** //
 
@@ -10,8 +29,12 @@ async function fetchAppConfig(renderOnlyConfig = false) {
     
     // Get config as {cues{}, number: serialPort, boolean: allowGlobals}
     const config = await ipcRenderer.invoke('getConfig');
+    const displaySettings = normalizeDisplaySettings(config);
+
     document.getElementById('serial-port').value = config.serialPort;
-    document.getElementById('allow-globals').checked = config.allowGlobals;   
+    document.getElementById('allow-globals').checked = config.allowGlobals;
+    renderDisplaySettings(displaySettings);
+    applyDisplaySettings(displaySettings);
     
     if(renderOnlyConfig) return; // If we render only config values - return here.
     
@@ -22,24 +45,58 @@ async function fetchAppConfig(renderOnlyConfig = false) {
     }
 }
 
+function normalizeDisplaySettings(config) {
+    return {
+        cueLabelFontSize: getValidSize(config.cueLabelFontSize, DEFAULT_DISPLAY_SETTINGS.cueLabelFontSize),
+        shortcutLabelFontSize: getValidSize(config.shortcutLabelFontSize, DEFAULT_DISPLAY_SETTINGS.shortcutLabelFontSize),
+        selectedCueBackground: getValidColor(config.selectedCueBackground, DEFAULT_DISPLAY_SETTINGS.selectedCueBackground)
+    };
+}
+
+function getValidSize(value, fallback) {
+    return DISPLAY_SIZE_VALUES.cueLabelFontSize[value] ? value : fallback;
+}
+
+function getValidColor(value, fallback) {
+    return /^#[0-9a-f]{6}$/i.test(value || "") ? value : fallback;
+}
+
+function renderDisplaySettings(settings) {
+    document.getElementById('cue-label-font-size').value = settings.cueLabelFontSize;
+    document.getElementById('shortcut-label-font-size').value = settings.shortcutLabelFontSize;
+    document.getElementById('selected-cue-background').value = settings.selectedCueBackground;
+    updateSelectedCueBackgroundValue(settings.selectedCueBackground);
+}
+
+function applyDisplaySettings(settings) {
+    document.documentElement.style.setProperty('--cue-label-font-size', DISPLAY_SIZE_VALUES.cueLabelFontSize[settings.cueLabelFontSize]);
+    document.documentElement.style.setProperty('--shortcut-label-font-size', DISPLAY_SIZE_VALUES.shortcutLabelFontSize[settings.shortcutLabelFontSize]);
+    document.documentElement.style.setProperty('--selected-cue-background', settings.selectedCueBackground);
+}
+
+function updateSelectedCueBackgroundValue(color) {
+    document.getElementById('selected-cue-background-value').textContent = color;
+}
+
 function renderCues(cues) {
     for (let i = 1; i <= 9; i++) {
         const cue = cues[`cue${i}`]; // Fetch cue by number
         const button = document.querySelector(`button[data-cue="${i}"]`);
 
-        if (cue) {
-            button.textContent = cue.name || `Button ${i}`; // Set button text to cue name or default
-            updateButtonModifiers(button, cue.keyTap.key, cue.keyTap.modifiers, cue.active);
-        }
+        renderCueButton(
+            button,
+            cue?.name || `Button ${i}`,
+            cue?.keyTap?.key || "",
+            cue?.keyTap?.modifiers || [],
+            Boolean(cue?.active)
+        );
     }
 }
 
-function updateButtonModifiers(button, key, modifiers, isActive) {
-    // Clear any existing modifier indicators
-    const existingModifiers = button.querySelector('.modifier-container');
-    if (existingModifiers) {
-        button.removeChild(existingModifiers);
-    }
+function renderCueButton(button, name, key, modifiers, isActive) {
+    const labelElement = document.createElement('span');
+    labelElement.className = 'cue-label';
+    labelElement.textContent = name;
 
     const modifierContainer = document.createElement('div');
     modifierContainer.className = 'modifier-container';
@@ -62,17 +119,8 @@ function updateButtonModifiers(button, key, modifiers, isActive) {
         }
     });
 
-    // Append modifier container to button
-    button.appendChild(modifierContainer);
-
-    // Set active state styling
-    if (isActive) {
-        button.style.border = '3px solid red'; // Change border color to red
-        button.style.background = '#007bff';
-    } else {
-        button.style.border = ''; // Reset border if not active
-        button.style.background = '';
-    }
+    button.replaceChildren(labelElement, modifierContainer);
+    button.classList.toggle('is-active-cue', isActive);
 }
 
 // **************************** Cue editing / saving **************************** //
@@ -197,10 +245,17 @@ function closeAppConfig(){
 async function setAppConfig(){
     const config = {
         serialPort: document.getElementById('serial-port').value,
-        allowGlobals: document.getElementById('allow-globals').checked
+        allowGlobals: document.getElementById('allow-globals').checked,
+        cueLabelFontSize: document.getElementById('cue-label-font-size').value,
+        shortcutLabelFontSize: document.getElementById('shortcut-label-font-size').value,
+        selectedCueBackground: document.getElementById('selected-cue-background').value
     }
+    const displaySettings = normalizeDisplaySettings(config);
+
     try {
         await ipcRenderer.invoke('setConfig', config);
+        renderDisplaySettings(displaySettings);
+        applyDisplaySettings(displaySettings);
         showNotification(`Application settings updated`);
         closeAppConfig();
     } catch (error) {
@@ -208,6 +263,10 @@ async function setAppConfig(){
     }
 
 }
+
+document.getElementById('selected-cue-background').addEventListener('input', (event) => {
+    updateSelectedCueBackgroundValue(event.target.value);
+});
 
 
 module.exports = { 

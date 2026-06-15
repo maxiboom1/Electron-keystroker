@@ -41,11 +41,6 @@
 
     <!-- Main app grid with BS container margins -->
     <div class="container" id="app-main-div">         
-        <!-- Navbar / Header -->
-        <div class="navbar">
-            <h3 class="app-font-color app-header">I/O Systems Keystroker</h3>
-        </div>  
-        
         <!-- Config Page -->
         <div class="row g-3 hidden" id="cue-config-container">
             <h4 id="cue-config-header"></h4>
@@ -98,31 +93,31 @@
         <!-- Button Palette -->
         <div class="row g-3 button-palette">
             <div class="col-md-4 col-sm-6 col-12">
-                <button class="btn btn-primary btn-square" data-cue="1">Button 1</button>
+                <button class="btn btn-primary btn-square" data-cue="1"><span class="cue-label">Button 1</span></button>
             </div>
             <div class="col-md-4 col-sm-6 col-12">
-                <button class="btn btn-primary btn-square" data-cue="2">Button 2</button>
+                <button class="btn btn-primary btn-square" data-cue="2"><span class="cue-label">Button 2</span></button>
             </div>
             <div class="col-md-4 col-sm-6 col-12">
-                <button class="btn btn-primary btn-square" data-cue="3">Button 3</button>
+                <button class="btn btn-primary btn-square" data-cue="3"><span class="cue-label">Button 3</span></button>
             </div>
             <div class="col-md-4 col-sm-6 col-12">
-                <button class="btn btn-primary btn-square" data-cue="4">Button 4</button>
+                <button class="btn btn-primary btn-square" data-cue="4"><span class="cue-label">Button 4</span></button>
             </div>
             <div class="col-md-4 col-sm-6 col-12">
-                <button class="btn btn-primary btn-square" data-cue="5">Button 5</button>
+                <button class="btn btn-primary btn-square" data-cue="5"><span class="cue-label">Button 5</span></button>
             </div>
             <div class="col-md-4 col-sm-6 col-12">
-                <button class="btn btn-primary btn-square" data-cue="6">Button 6</button>
+                <button class="btn btn-primary btn-square" data-cue="6"><span class="cue-label">Button 6</span></button>
             </div>
             <div class="col-md-4 col-sm-6 col-12">
-                <button class="btn btn-primary btn-square" data-cue="7">Button 7</button>
+                <button class="btn btn-primary btn-square" data-cue="7"><span class="cue-label">Button 7</span></button>
             </div>
             <div class="col-md-4 col-sm-6 col-12">
-                <button class="btn btn-primary btn-square" data-cue="8">Button 8</button>
+                <button class="btn btn-primary btn-square" data-cue="8"><span class="cue-label">Button 8</span></button>
             </div>
             <div class="col-md-4 col-sm-6 col-12">
-                <button class="btn btn-primary btn-square" data-cue="9">Button 9</button>
+                <button class="btn btn-primary btn-square" data-cue="9"><span class="cue-label">Button 9</span></button>
             </div>
         </div>
         
@@ -193,8 +188,34 @@
                             <form>
                                 <div class="mb-3 form-check">
                                     <input type="checkbox" class="form-check-input custom-input" id="allow-globals">
-                                    <label class="form-check-label app-font-color" for="setting2">Allow global keystrokes</label>
-                                </div>                                
+                                    <label class="form-check-label app-font-color" for="allow-globals">Allow global keystrokes</label>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label app-font-color" for="cue-label-font-size">Cue Label Font Size</label>
+                                    <select class="form-select custom-input" id="cue-label-font-size">
+                                        <option value="small">Small</option>
+                                        <option value="mid">Mid</option>
+                                        <option value="big">Big</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label app-font-color" for="shortcut-label-font-size">Shortcut Label Font Size</label>
+                                    <select class="form-select custom-input" id="shortcut-label-font-size">
+                                        <option value="small">Small</option>
+                                        <option value="mid">Mid</option>
+                                        <option value="big">Big</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label app-font-color" for="selected-cue-background">Selected Button Background</label>
+                                    <div class="selected-color-control">
+                                        <input type="color" class="form-control form-control-color custom-input" id="selected-cue-background" value="#f59e0b">
+                                        <span id="selected-cue-background-value">#f59e0b</span>
+                                    </div>
+                                </div>
                             </form>
                         </div>
 

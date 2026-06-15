@@ -51,6 +51,14 @@ async modifyCue(cue, number)
 
 ## Change-log:
 
+### 1.1.7
+
+- Removed the top in-app header to keep the cue grid as the primary operator surface.
+- Centered cue labels inside buttons and bottom-aligned shortcut indicators.
+- Added General settings for cue label size, shortcut label size, and selected button background color.
+- Improved selected cue visibility with configurable background color plus red border.
+- Updated cue and shortcut typography to use normal font weight.
+
 ### 1.1.6
 
 - Finished with app-settings UI - implemented solid settings canvas, with left-sided vertical tabs togglers.
@@ -110,10 +118,10 @@ const appConfig = await ipcRenderer.invoke('getAppConfig');
 
 ## Notes
 
-- After run npm i you should also run 
+- After running `npm i`, rebuild RobotJS for the Electron runtime:
 
 ```
- ./node_modules/.bin/electron-rebuild -f -w robotjs
+npm run rebuild:robotjs
 
 ```
 
@@ -129,19 +137,19 @@ Python:
 
 Install it globally on pc (ver 3.xx). Check "Add Python to PATH" option, to make it accessible from the command line.
 
-Electron-rebuild:
+Electron rebuild:
 
 ```
-npm install electron-rebuild --save-dev
+npm install @electron/rebuild@3.7.2 --save-dev
 ```
 
 ## Dependencies
 
 This Electron project's dependencies include 
 - Node.js, 
-- Python 2.7 (for building certain native modules), 
+- Python 3.x (for building native modules),
 - Visual Studio Build Tools (for compiling native modules on Windows) - Download Visual Studio, and install "Desktop development with C++". 
 - electron, 
 - robotjs (and its prerequisites like node-gyp for building native addons), 
 - node-window-manager for window management functions
-- electron-rebuild
+- @electron/rebuild

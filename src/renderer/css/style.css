@@ -1,12 +1,14 @@
 /* **************************** General page styles   **************************** */
 
+:root {
+    --cue-label-font-size: 20px;
+    --shortcut-label-font-size: 14px;
+    --selected-cue-background: #f59e0b;
+}
+
 body{
     background-color: rgb(44, 44, 44);
     font-family: serif;
-}
-
-.app-header{
-    margin: auto;
 }
 
 /* Form inputs styles across the app */
@@ -78,16 +80,54 @@ footer {
     display: flex;
     flex-wrap: wrap; /* Allow wrapping of buttons */
     justify-content: center; /* Center the buttons */
-    margin-top: 5px; /*Add some space above the button palette */
+    margin-top: 20px; /* Add some space above the button palette */
     margin-bottom: 35px;
 }
 
 .btn-square {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%; /* Make buttons fill the column width */
     height: 150px; /* Set a fixed height for buttons */
-    font-size: 20px; /* Increase font size for better readability */
     margin-bottom: 5px; /* Space between rows of buttons */
-    /* background-color: #3d84bade; */
+    padding: 0;
+    border: 3px solid transparent;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-square .cue-label {
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    left: 18px;
+    transform: translateY(-50%);
+    display: block;
+    width: auto;
+    margin-left: 0;
+    color: #ffffff;
+    font-family: serif;
+    font-size: var(--cue-label-font-size);
+    font-weight: 400;
+    line-height: 1.2;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.modifier-container {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3px;
+    min-height: 24px;
 }
 
 .btn-primary:hover {
@@ -95,13 +135,30 @@ footer {
     border-color: #007bff; /* Match border color */
 }
 
+.btn-square.is-active-cue,
+.btn-square.is-active-cue:hover,
+.btn-square.is-active-cue:focus {
+    --bs-btn-bg: var(--selected-cue-background);
+    --bs-btn-hover-bg: var(--selected-cue-background);
+    --bs-btn-active-bg: var(--selected-cue-background);
+    --bs-btn-border-color: red;
+    --bs-btn-hover-border-color: red;
+    --bs-btn-active-border-color: red;
+    background: var(--selected-cue-background) !important;
+    border-color: red !important;
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.22);
+}
+
 .key-indicator{
     background-color: #565656;
     color: rgb(255, 255, 255);
-    padding: 3px;
-    position: relative;
-    top: 35px;
-    /* border: 1px solid black; */
+    margin-left: 0;
+    padding: 2px 4px;
+    border-radius: 1px;
+    font-family:'Courier New', Courier, monospace;
+    font-size: var(--shortcut-label-font-size);
+    font-weight: 400;
+    line-height: 1;
 }
 
 .key-modifier{
@@ -245,4 +302,22 @@ footer {
 .app-config-btn{
     width: 120px;
     margin-left: 5px;
+}
+
+.selected-color-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#selected-cue-background {
+    width: 60px;
+    height: 38px;
+    padding: 3px;
+}
+
+#selected-cue-background-value {
+    margin-left: 0;
+    color: rgb(201, 201, 201);
+    font-size: 14px;
 }

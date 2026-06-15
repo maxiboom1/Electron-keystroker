@@ -90,11 +90,11 @@ ipcMain.handle('setConfig', async (event, config) => {
     
     if(config.serialPort !== appConfig.getSerialPort()){
         console.log(`switching from ${appConfig.getSerialPort()} to ${config.serialPort}`);
-        appConfig.setConfig(config);
+        await appConfig.setConfig(config);
         serialService.closeConnection();
         serialService.connect(config.serialPort);
     } else {
-        appConfig.setConfig(config);
+        await appConfig.setConfig(config);
     }
     return;
 });
