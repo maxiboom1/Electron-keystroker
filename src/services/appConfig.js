@@ -9,6 +9,8 @@ class AppConfig {
         this.cueLabelFontSize = "small";
         this.shortcutLabelFontSize = "small";
         this.selectedCueBackground = "#f59e0b";
+        this.buttonFontFamily = "serif";
+        this.buttonFontWeight = "400";
         this.cues = this._initializeCues(); // Initialize cues
     }
 
@@ -41,7 +43,9 @@ class AppConfig {
             allowGlobals:this.allowGlobals,
             cueLabelFontSize: this.cueLabelFontSize,
             shortcutLabelFontSize: this.shortcutLabelFontSize,
-            selectedCueBackground: this.selectedCueBackground
+            selectedCueBackground: this.selectedCueBackground,
+            buttonFontFamily: this.buttonFontFamily,
+            buttonFontWeight: this.buttonFontWeight
         }
     }
     
@@ -87,6 +91,8 @@ class AppConfig {
         this.cueLabelFontSize = config.cueLabelFontSize || "small";
         this.shortcutLabelFontSize = config.shortcutLabelFontSize || "small";
         this.selectedCueBackground = config.selectedCueBackground || "#f59e0b";
+        this.buttonFontFamily = config.buttonFontFamily || "serif";
+        this.buttonFontWeight = config.buttonFontWeight || "400";
         await this.saveToFile();
     }
 
@@ -116,6 +122,8 @@ class AppConfig {
         this.cueLabelFontSize = this.cueLabelFontSize || "small";
         this.shortcutLabelFontSize = this.shortcutLabelFontSize || "small";
         this.selectedCueBackground = this.selectedCueBackground || "#f59e0b";
+        this.buttonFontFamily = this.buttonFontFamily || "serif";
+        this.buttonFontWeight = this.buttonFontWeight || "400";
     }
 
     async saveToFile() {

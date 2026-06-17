@@ -1,5 +1,6 @@
 const { app, BrowserWindow, dialog } = require("electron");
 const { ipcMain } = require("electron");
+const fs = require('fs');
 const path = require('path');
 const appConfig = require("../services/appConfig.js");
 const serialService = require("../services/serialService.js");
@@ -97,4 +98,31 @@ ipcMain.handle('setConfig', async (event, config) => {
         await appConfig.setConfig(config);
     }
     return;
+});
+
+ipcMain.handle('downloadControllerDriver', async () => {
+    const driverFileName = 'CH34x_Install_Windows_v3_4.zip';
+    const sourcePath = path.join(app.getAppPath(), 'src', 'assets', 'drivers', driverFileName);
+
+    if (!fs.existsSync(sourcePath)) {
+        throw new Error(`Driver package was not found: ${sourcePath}`);
+    }
+
+    const { canceled, filePath } = await dialog.showSaveDialog({
+        title: 'Save GPIO Box Controller Driver',
+        defaultPath: path.join(app.getPath('downloads'), driverFileName),
+        buttonLabel: 'Save driver',
+        filters: [
+            { name: 'ZIP archive', extensions: ['zip'] }
+        ]
+    });
+
+    if (canceled || !filePath) {
+        return { canceled: true };
+    }
+
+    const driverPackage = fs.readFileSync(sourcePath);
+    fs.writeFileSync(filePath, driverPackage);
+
+    return { canceled: false, filePath };
 });

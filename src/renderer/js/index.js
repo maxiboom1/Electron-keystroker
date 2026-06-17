@@ -1,7 +1,7 @@
 const { ipcRenderer } = require('electron');
 const { fetchAppConfig, saveCueConfig, showCueConfig, setActiveCue, closeAppConfig, setAppConfig } = require('./js/config.js');
 require(`./js/menu.js`); // Connect menu.js file
-const appVersion = "1.1.7";
+const appVersion = "1.1.9";
 
 // *************************** Event Listeners ******************************** //
 document.getElementById("set-cue-config").addEventListener("click", saveCueConfig);

@@ -4,7 +4,9 @@ const { showNotification } = require('./notifications.js');
 const DEFAULT_DISPLAY_SETTINGS = {
     cueLabelFontSize: "small",
     shortcutLabelFontSize: "small",
-    selectedCueBackground: "#f59e0b"
+    selectedCueBackground: "#f59e0b",
+    buttonFontFamily: "serif",
+    buttonFontWeight: "400"
 };
 
 const DISPLAY_SIZE_VALUES = {
@@ -19,6 +21,18 @@ const DISPLAY_SIZE_VALUES = {
         big: "18px"
     }
 };
+
+const BUTTON_FONT_FAMILIES = [
+    "serif",
+    "Calibri, Arial, sans-serif",
+    "Arial, sans-serif",
+    "'Segoe UI', Arial, sans-serif",
+    "Tahoma, sans-serif",
+    "Verdana, sans-serif",
+    "Georgia, serif"
+];
+
+const BUTTON_FONT_WEIGHTS = ["300", "400", "600", "700"];
 
 
 // ************** Onload config fetching and rendering ************** //
@@ -49,7 +63,9 @@ function normalizeDisplaySettings(config) {
     return {
         cueLabelFontSize: getValidSize(config.cueLabelFontSize, DEFAULT_DISPLAY_SETTINGS.cueLabelFontSize),
         shortcutLabelFontSize: getValidSize(config.shortcutLabelFontSize, DEFAULT_DISPLAY_SETTINGS.shortcutLabelFontSize),
-        selectedCueBackground: getValidColor(config.selectedCueBackground, DEFAULT_DISPLAY_SETTINGS.selectedCueBackground)
+        selectedCueBackground: getValidColor(config.selectedCueBackground, DEFAULT_DISPLAY_SETTINGS.selectedCueBackground),
+        buttonFontFamily: getValidFontFamily(config.buttonFontFamily, DEFAULT_DISPLAY_SETTINGS.buttonFontFamily),
+        buttonFontWeight: getValidFontWeight(config.buttonFontWeight, DEFAULT_DISPLAY_SETTINGS.buttonFontWeight)
     };
 }
 
@@ -61,21 +77,55 @@ function getValidColor(value, fallback) {
     return /^#[0-9a-f]{6}$/i.test(value || "") ? value : fallback;
 }
 
+function getValidFontFamily(value, fallback) {
+    return BUTTON_FONT_FAMILIES.includes(value) ? value : fallback;
+}
+
+function getValidFontWeight(value, fallback) {
+    return BUTTON_FONT_WEIGHTS.includes(String(value)) ? String(value) : fallback;
+}
+
 function renderDisplaySettings(settings) {
     document.getElementById('cue-label-font-size').value = settings.cueLabelFontSize;
     document.getElementById('shortcut-label-font-size').value = settings.shortcutLabelFontSize;
     document.getElementById('selected-cue-background').value = settings.selectedCueBackground;
+    document.getElementById('button-font-family').value = settings.buttonFontFamily;
+    document.getElementById('button-font-weight').value = settings.buttonFontWeight;
     updateSelectedCueBackgroundValue(settings.selectedCueBackground);
+    updateAppearancePreview(settings);
 }
 
 function applyDisplaySettings(settings) {
     document.documentElement.style.setProperty('--cue-label-font-size', DISPLAY_SIZE_VALUES.cueLabelFontSize[settings.cueLabelFontSize]);
     document.documentElement.style.setProperty('--shortcut-label-font-size', DISPLAY_SIZE_VALUES.shortcutLabelFontSize[settings.shortcutLabelFontSize]);
     document.documentElement.style.setProperty('--selected-cue-background', settings.selectedCueBackground);
+    document.documentElement.style.setProperty('--button-font-family', settings.buttonFontFamily);
+    document.documentElement.style.setProperty('--button-font-weight', settings.buttonFontWeight);
 }
 
 function updateSelectedCueBackgroundValue(color) {
     document.getElementById('selected-cue-background-value').textContent = color;
+}
+
+function getDisplaySettingsFromControls() {
+    return normalizeDisplaySettings({
+        cueLabelFontSize: document.getElementById('cue-label-font-size').value,
+        shortcutLabelFontSize: document.getElementById('shortcut-label-font-size').value,
+        selectedCueBackground: document.getElementById('selected-cue-background').value,
+        buttonFontFamily: document.getElementById('button-font-family').value,
+        buttonFontWeight: document.getElementById('button-font-weight').value
+    });
+}
+
+function updateAppearancePreview(settings = getDisplaySettingsFromControls()) {
+    const previewButton = document.getElementById('appearance-preview-button');
+    if (!previewButton) return;
+
+    previewButton.style.setProperty('--cue-label-font-size', DISPLAY_SIZE_VALUES.cueLabelFontSize[settings.cueLabelFontSize]);
+    previewButton.style.setProperty('--shortcut-label-font-size', DISPLAY_SIZE_VALUES.shortcutLabelFontSize[settings.shortcutLabelFontSize]);
+    previewButton.style.setProperty('--selected-cue-background', settings.selectedCueBackground);
+    previewButton.style.setProperty('--button-font-family', settings.buttonFontFamily);
+    previewButton.style.setProperty('--button-font-weight', settings.buttonFontWeight);
 }
 
 function renderCues(cues) {
@@ -248,7 +298,9 @@ async function setAppConfig(){
         allowGlobals: document.getElementById('allow-globals').checked,
         cueLabelFontSize: document.getElementById('cue-label-font-size').value,
         shortcutLabelFontSize: document.getElementById('shortcut-label-font-size').value,
-        selectedCueBackground: document.getElementById('selected-cue-background').value
+        selectedCueBackground: document.getElementById('selected-cue-background').value,
+        buttonFontFamily: document.getElementById('button-font-family').value,
+        buttonFontWeight: document.getElementById('button-font-weight').value
     }
     const displaySettings = normalizeDisplaySettings(config);
 
@@ -264,9 +316,27 @@ async function setAppConfig(){
 
 }
 
+async function downloadControllerDriver() {
+    try {
+        const result = await ipcRenderer.invoke('downloadControllerDriver');
+        if (result?.canceled) return;
+
+        showNotification(`Driver package saved`);
+    } catch (error) {
+        showNotification(`Failed to save driver package`, true);
+        console.error(error);
+    }
+}
+
 document.getElementById('selected-cue-background').addEventListener('input', (event) => {
     updateSelectedCueBackgroundValue(event.target.value);
+    updateAppearancePreview();
 });
+document.querySelectorAll('.appearance-control').forEach(control => {
+    control.addEventListener('change', () => updateAppearancePreview());
+    control.addEventListener('input', () => updateAppearancePreview());
+});
+document.getElementById('download-controller-driver').addEventListener('click', downloadControllerDriver);
 
 
 module.exports = { 
@@ -276,5 +346,6 @@ module.exports = {
     setActiveCue,
     showAppConfig,
     closeAppConfig,
-    setAppConfig
+    setAppConfig,
+    downloadControllerDriver
 };

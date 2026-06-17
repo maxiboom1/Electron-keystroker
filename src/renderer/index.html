@@ -175,6 +175,7 @@
                 <div class="col-3" id="config-nav-menu">
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         <a class="nav-link active" id="v-pills-general-tab" data-bs-toggle="pill" href="#v-pills-general" role="tab" aria-controls="v-pills-general" aria-selected="true">General</a>
+                        <a class="nav-link" id="v-pills-appearance-tab" data-bs-toggle="pill" href="#v-pills-appearance" role="tab" aria-controls="v-pills-appearance" aria-selected="false">Appearance</a>
                         <a class="nav-link" id="v-pills-dom-tab" data-bs-toggle="pill" href="#v-pills-dom" role="tab" aria-controls="v-pills-dom" aria-selected="false">Communication</a>
                     </div>
                 </div>
@@ -190,30 +191,74 @@
                                     <input type="checkbox" class="form-check-input custom-input" id="allow-globals">
                                     <label class="form-check-label app-font-color" for="allow-globals">Allow global keystrokes</label>
                                 </div>
+                            </form>
+                        </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label app-font-color" for="cue-label-font-size">Cue Label Font Size</label>
-                                    <select class="form-select custom-input" id="cue-label-font-size">
-                                        <option value="small">Small</option>
-                                        <option value="mid">Mid</option>
-                                        <option value="big">Big</option>
-                                    </select>
-                                </div>
+                        <!-- Appearance settings Tab -->
+                        <div class="tab-pane fade" id="v-pills-appearance" role="tabpanel" aria-labelledby="v-pills-appearance-tab">
+                            <form>
+                                <div class="appearance-settings-grid">
+                                    <div class="appearance-controls">
+                                        <div class="mb-3">
+                                            <label class="form-label app-font-color" for="cue-label-font-size">Cue Label Font Size</label>
+                                            <select class="form-select custom-input appearance-control" id="cue-label-font-size">
+                                                <option value="small">Small</option>
+                                                <option value="mid">Mid</option>
+                                                <option value="big">Big</option>
+                                            </select>
+                                        </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label app-font-color" for="shortcut-label-font-size">Shortcut Label Font Size</label>
-                                    <select class="form-select custom-input" id="shortcut-label-font-size">
-                                        <option value="small">Small</option>
-                                        <option value="mid">Mid</option>
-                                        <option value="big">Big</option>
-                                    </select>
-                                </div>
+                                        <div class="mb-3">
+                                            <label class="form-label app-font-color" for="shortcut-label-font-size">Shortcut Label Font Size</label>
+                                            <select class="form-select custom-input appearance-control" id="shortcut-label-font-size">
+                                                <option value="small">Small</option>
+                                                <option value="mid">Mid</option>
+                                                <option value="big">Big</option>
+                                            </select>
+                                        </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label app-font-color" for="selected-cue-background">Selected Button Background</label>
-                                    <div class="selected-color-control">
-                                        <input type="color" class="form-control form-control-color custom-input" id="selected-cue-background" value="#f59e0b">
-                                        <span id="selected-cue-background-value">#f59e0b</span>
+                                        <div class="mb-3">
+                                            <label class="form-label app-font-color" for="button-font-family">Button Font</label>
+                                            <select class="form-select custom-input appearance-control" id="button-font-family">
+                                                <option value="serif">Serif</option>
+                                                <option value="Calibri, Arial, sans-serif">Calibri</option>
+                                                <option value="Arial, sans-serif">Arial</option>
+                                                <option value="'Segoe UI', Arial, sans-serif">Segoe UI</option>
+                                                <option value="Tahoma, sans-serif">Tahoma</option>
+                                                <option value="Verdana, sans-serif">Verdana</option>
+                                                <option value="Georgia, serif">Georgia</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label app-font-color" for="button-font-weight">Button Font Weight</label>
+                                            <select class="form-select custom-input appearance-control" id="button-font-weight">
+                                                <option value="300">Light</option>
+                                                <option value="400">Regular</option>
+                                                <option value="600">Semi-bold</option>
+                                                <option value="700">Bold</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label app-font-color" for="selected-cue-background">Selected Button Background</label>
+                                            <div class="selected-color-control">
+                                                <input type="color" class="form-control form-control-color custom-input appearance-control" id="selected-cue-background" value="#f59e0b">
+                                                <span id="selected-cue-background-value">#f59e0b</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="appearance-preview-panel">
+                                        <label class="form-label app-font-color">Button Preview</label>
+                                        <button type="button" class="btn btn-primary btn-square is-active-cue preview-button" id="appearance-preview-button">
+                                            <span class="cue-label">Preview Cue</span>
+                                            <div class="modifier-container">
+                                                <span class="key-indicator">A</span>
+                                                <span class="key-modifier key-indicator">alt</span>
+                                                <span class="key-modifier key-indicator">control</span>
+                                            </div>
+                                        </button>
                                     </div>
                                 </div>
                             </form>
@@ -238,6 +283,14 @@
                                             <option value="COM11">Com-11</option>
                                             <option value="COM12">Com-12</option>
                                       </select>
+                                </div>
+
+                                <div class="driver-download-section">
+                                    <label class="form-label app-font-color">GPIO Box Controller Driver</label>
+                                    <p class="settings-help-text">
+                                        To use an Arduino or ESP32-based GPIO box, install the USB serial controller driver on this PC first. Download the driver package here, then run the installer before connecting the controller.
+                                    </p>
+                                    <button type="button" class="btn btn-secondary" id="download-controller-driver">Download CH34x driver</button>
                                 </div>
                             </form>
                         </div>

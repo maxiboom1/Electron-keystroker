@@ -4,6 +4,8 @@
     --cue-label-font-size: 20px;
     --shortcut-label-font-size: 14px;
     --selected-cue-background: #f59e0b;
+    --button-font-family: serif;
+    --button-font-weight: 400;
 }
 
 body{
@@ -109,9 +111,9 @@ footer {
     width: auto;
     margin-left: 0;
     color: #ffffff;
-    font-family: serif;
+    font-family: var(--button-font-family);
     font-size: var(--cue-label-font-size);
-    font-weight: 400;
+    font-weight: var(--button-font-weight);
     line-height: 1.2;
     text-align: center;
     overflow-wrap: anywhere;
@@ -155,9 +157,9 @@ footer {
     margin-left: 0;
     padding: 2px 4px;
     border-radius: 1px;
-    font-family:'Courier New', Courier, monospace;
+    font-family: var(--button-font-family);
     font-size: var(--shortcut-label-font-size);
-    font-weight: 400;
+    font-weight: var(--button-font-weight);
     line-height: 1;
 }
 
@@ -320,4 +322,41 @@ footer {
     margin-left: 0;
     color: rgb(201, 201, 201);
     font-size: 14px;
+}
+
+.appearance-settings-grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) minmax(260px, 360px);
+    gap: 24px;
+    align-items: start;
+}
+
+.appearance-preview-panel {
+    min-width: 0;
+}
+
+.preview-button {
+    max-width: 340px;
+    margin-bottom: 0;
+    pointer-events: none;
+}
+
+@media (max-width: 900px) {
+    .appearance-settings-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.driver-download-section {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid #484a4e;
+}
+
+.settings-help-text {
+    max-width: 640px;
+    margin-bottom: 12px;
+    color: rgb(201, 201, 201);
+    font-size: 14px;
+    line-height: 1.45;
 }

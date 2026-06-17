@@ -51,6 +51,16 @@ async modifyCue(cue, number)
 
 ## Change-log:
 
+### 1.1.9
+
+- Release build for the Appearance settings and bundled controller driver updates.
+
+### 1.1.8
+
+- Added Appearance settings for cue button typography and selected-state styling.
+- Added a live cue button preview that reflects appearance changes before saving.
+- Added configurable button font family and font weight, including Calibri.
+
 ### 1.1.7
 
 - Removed the top in-app header to keep the cue grid as the primary operator surface.
@@ -58,6 +68,7 @@ async modifyCue(cue, number)
 - Added General settings for cue label size, shortcut label size, and selected button background color.
 - Improved selected cue visibility with configurable background color plus red border.
 - Updated cue and shortcut typography to use normal font weight.
+- Added bundled CH34x USB serial controller driver download from Communication settings.
 
 ### 1.1.6
 
