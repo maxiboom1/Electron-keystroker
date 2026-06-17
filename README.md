@@ -51,6 +51,13 @@ async modifyCue(cue, number)
 
 ## Change-log:
 
+### 1.2.0
+
+- Release build renamed to Keystroker 1.2.0.
+- Consolidated the top menu into Settings with Preferences, About, and Exit.
+- Reduced button font weight choices to the two reliably rendered states: Regular and Bold.
+- Updated About screen year to 2026.
+
 ### 1.1.9
 
 - Release build for the Appearance settings and bundled controller driver updates.

@@ -49,7 +49,7 @@ async function menuRouter(event){
         showAppConfig();
     }
 
-    if(event === "About App"){
+    if(event === "About"){
         openModal("about-app-container");
     }
     

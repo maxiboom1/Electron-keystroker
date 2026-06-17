@@ -32,7 +32,13 @@ const BUTTON_FONT_FAMILIES = [
     "Georgia, serif"
 ];
 
-const BUTTON_FONT_WEIGHTS = ["300", "400", "600", "700"];
+const BUTTON_FONT_WEIGHTS = ["400", "700"];
+const BUTTON_FONT_WEIGHT_ALIASES = {
+    "200": "400",
+    "300": "400",
+    "600": "700",
+    "900": "700"
+};
 
 
 // ************** Onload config fetching and rendering ************** //
@@ -82,7 +88,8 @@ function getValidFontFamily(value, fallback) {
 }
 
 function getValidFontWeight(value, fallback) {
-    return BUTTON_FONT_WEIGHTS.includes(String(value)) ? String(value) : fallback;
+    const normalizedValue = BUTTON_FONT_WEIGHT_ALIASES[String(value)] || String(value);
+    return BUTTON_FONT_WEIGHTS.includes(normalizedValue) ? normalizedValue : fallback;
 }
 
 function renderDisplaySettings(settings) {

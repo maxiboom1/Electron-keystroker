@@ -1,9 +1,9 @@
 {
   "name": "serial-keystroker",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "description": "keystroker",
   "main": "src/main/main.js",
-  "productName": "Serial-Keystroker",
+  "productName": "Keystroker",
   "scripts": {
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
@@ -12,7 +12,8 @@
   },
   "build": {
     "appId": "IOSystems.keystroker_v1",
-    "productName": "Serial Keystroker",
+    "productName": "Keystroker",
+    "artifactName": "${productName}-${version}.${ext}",
     "directories": {
       "output": "dist",
       "buildResources": "src/assets"
